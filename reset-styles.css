@@ -20,35 +20,20 @@ body {
   padding: 0;
   min-height: 100%;
   font-size: 100%;
-  font-family: var(--tipo-principal);
-  color: var(--negro);
   /* (Opcional) */
   hyphens: auto;
-  /* (Opcional) */
-  font-smooth: always;
   /* (Opcional) */
   -webkit-font-smoothing: antialiased;
   /* (Opcional) */
   -moz-osx-font-smoothing: grayscale;
 }
 
-/*  Others Documents ============================================= */
-
-/* Define Custom properties */
-:root {
-  /* Colores */
-  --negro: #393939;
-  /* Tipografía */
-  --tipo-principal: Helvetica, Arial, sans-serif;
-  --tipo-secundaria: 'Roboto';
+/*Avoid averflowing problems on some browsers when use margings styles*/
+nav{
+  box-sizing: border-box;
 }
 
-/* (Optional) Las adaptamos al modo oscuro */
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --negro: #ececec;
-  }
-} */
+/*  Others - Documents ============================================= */
 
 /* (Optional) Define high contrast if user select */
 @media (prefers-contrast: high) {
@@ -82,14 +67,6 @@ td {
     width: 100%;
     display: block;
     fill: currentColor;
-} */
-
-/* (Optional) user deactivate animations */
-/* @media (prefers-reduced-motion: reduce) {
-  {
-    animation: none !important;
-    transition: none !important;
-  }
 } */
 
 /* Sections  ========================================================================== */
