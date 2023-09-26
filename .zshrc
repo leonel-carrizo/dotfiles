@@ -1,3 +1,4 @@
+###################################################################################
 # neofetch
 # Fix the Java Problem
 export _JAVA_AWT_WM_NONREPARENTING=1
@@ -15,7 +16,7 @@ prompt adam1
 setopt histignorealldups sharehistory
 
 # Use emacs keybindings even if our EDITOR is set to vi
-#bindkey -e
+bindkey -e
 
 # Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
 HISTSIZE=1000
@@ -58,7 +59,10 @@ alias lla='lsd -lha --group-dirs=first'
 alias ls='lsd --group-dirs=first'
 alias cat='bat'
 alias myip="curl http://ipecho.net/plain; echo"
-alias vi="nvim"
+alias vi='nvim'
+alias norm="norminette"
+alias comp="cc -Wall -Werror -Wextra"
+alias cl="clear"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -66,7 +70,6 @@ alias vi="nvim"
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/zsh/plugins/zsh-sudo/sudo.plugin.zsh
-
 
 # Set 'man' colors
 function man() {
@@ -96,4 +99,7 @@ bindkey "^[[F" end-of-line
 bindkey "^[[3~" delete-char
 bindkey "^[[1;3C" forward-word
 bindkey "^[[1;3D" backward-word
+source ~/powerlevel10k/powerlevel10k.zsh-theme
+
+source ~/powerlevel10k/powerlevel10k.zsh-theme
 source ~/powerlevel10k/powerlevel10k.zsh-theme
