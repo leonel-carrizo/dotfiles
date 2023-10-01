@@ -4,8 +4,9 @@ from libqtile.lazy import lazy
 from libqtile import bar, layout, widget
 
 
+
 terminal = "kitty"
-browser = "brave"
+browser = "firefox"
 mod = "mod4"
 
 #### Key Defaults #####
@@ -35,20 +36,19 @@ keys = [
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
 
     ### MY KEYBINDINGS ###
-    Key([mod, "shift"], "c", lazy.spawn("code"), desc="open VSC"),
+   # Key([mod, "shift"], "c", lazy.spawn("code"), desc="open VSC &"),
     Key([mod, "shift"], "b", lazy.spawn(browser), desc="open browser"),
     Key([mod], "m", lazy.window.toggle_maximize(), desc=" Maximize focus window"),
     Key([mod, "control"], "m", lazy.window.toggle_minimize(), desc="Hide focus window"),
     Key([mod, "control"], "b", lazy.hide_show_bar(), desc="Toggle hide - show bar"),
-    # Volume
+   ### Volume
     Key([],"XF86AudioRaiseVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +5%"), desc="increase vol"),
     Key([], "XF86AudioLowerVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ -5%"), desc="decrese vol"),
     Key([], "XF86AudioMute", lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle"), desc="mute"),
-    Key(["Mode_switch"], "f10", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +5%"), desc="increase vol"),
-    Key(["control", "shift"], "b", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +5%"), desc="decrese vol"),
-    # Brightness
-    # Key([mod, "control"], "f9", "XF86MonBrightnessUp", "brightnessctl set +10%"),
-    # Key([mod, "control"], "f10", "XF86MonBrightnessDown", "brightnessctl set 10%-"),
+    Key([], "XF86AudioMicMute", lazy.spawn("pactl set-source-mute @DEFAULT_SOURCE@ toggle"), desc="mute microphone"),
+   ### Brightness
+    Key([],"XF86MonBrightnessUp", lazy.spawn("brightnessctl set +5%"), desc="Increase brightness"),
+    Key([],"XF86MonBrightnessDown", lazy.spawn("brightnessctl set 5%-"), desc="decrease brightness"),
 ]
 
 

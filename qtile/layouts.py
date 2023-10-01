@@ -5,7 +5,7 @@ from colors import color
 # Layouts and layout rules
 
 
-layout_conf = {"border_focus": color["focus"][0], "border_width": 1, "margin": 4}
+layout_conf = {"border_focus": color["focus"][0], "border_width": 2, "margin": 4}
 
 layouts = [
     layout.Bsp(**layout_conf),
@@ -14,7 +14,7 @@ layouts = [
     layout.MonadWide(**layout_conf),
     #layout.Matrix(columns=2, **layout_conf),
     #layout.RatioTile(**layout_conf),
-    # layout.Columns(),
+    layout.Columns(),
     # layout.Tile(),
     # layout.TreeTab(),
     # layout.VerticalTile(),
@@ -31,5 +31,5 @@ floating_layout = layout.Floating(
         Match(title="branchdialog"),
         Match(title="pinentry"),
     ],
-    border_focus=color["color4"][0],
+    border_focus=color["color1"][0],
 )

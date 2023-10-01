@@ -8,8 +8,8 @@ from widgets import primary_widgets, secondary_widgets
 def init_screens(widgets):
     return bar.Bar(
         widgets,
-        20,
-        opacity=1.0,
+        26,
+        opacity=0.95,
     )
 
 

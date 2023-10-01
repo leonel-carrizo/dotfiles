@@ -17,7 +17,7 @@ qtile_path = path.join(path.expanduser("~"), ".config", "qtile")
 #rosepine
 
 def load_theme():
-    theme = "monokai-pro"
+    theme = "material-ocean"
 
     config_theme = path.join(qtile_path, "config.json")
     if path.isfile(config_theme):
