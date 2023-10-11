@@ -5,16 +5,16 @@ from colors import color
 # Layouts and layout rules
 
 
-layout_conf = {"border_focus": color["focus"][0], "border_width": 2, "margin": 4}
+layout_conf = {"border_focus": color["focus"][0], "border_width": 2, "margin": 5}
 
 layouts = [
-    layout.Bsp(**layout_conf),
-    layout.Max(),
     layout.MonadTall(**layout_conf),
     layout.MonadWide(**layout_conf),
+    layout.Bsp(**layout_conf),
+    layout.Max(**layout_conf),
     #layout.Matrix(columns=2, **layout_conf),
     #layout.RatioTile(**layout_conf),
-    layout.Columns(),
+    #layout.Columns(),
     # layout.Tile(),
     # layout.TreeTab(),
     # layout.VerticalTile(),

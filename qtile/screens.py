@@ -8,12 +8,18 @@ from widgets import primary_widgets, secondary_widgets
 def init_screens(widgets):
     return bar.Bar(
         widgets,
-        26,
-        opacity=0.95,
+        17,
+        #opacity=1,
     )
 
 
-screens = [Screen(top=init_screens(primary_widgets))]
+screens = [
+        Screen(
+            top=init_screens(primary_widgets),
+            wallpaper='/home/l3o/pictures/wallpapers/0116_hongkong-minimal-city-sunset.jpg',
+            wallpaper_mode='fill'
+            )
+        ]
 
 ### VERIFICACIÓN DE PANTALLAS CONETADAS ###
 #  Variable para almacenar la consulta de contar el número de pantallas conectadas.(Bash)
