@@ -1,0 +1,9 @@
+[Plymouth Theme]
+Name=archGrey
+Description=display my custom splash, i don't know what to put here anymore...
+Comment=created By l3o @leonel-carrizo
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/archGrey
+ScriptFile=/usr/share/plymouth/themes/archGrey/archGrey.script
