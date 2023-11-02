@@ -1,105 +1,114 @@
-"let g:user42 = 'lcarrizo'
-"let g:mail42 = 'lcarrizo@student.42london.com'
 
-  set nocompatible               " Be iMproved
-  "set runtimepath+=~/.vim/bundle/neobundle.vim/
-  let g:user42 = 'lcarrizo'
-  let g:mail42 = 'lcarrizo@student.42london.com'
+" Add line numbers
+set number
 
-  syntax enable                     " Turn on syntax highlighting.
-  "filetype indent on         " Turn on file type detection.
-  set showcmd                       " Display incomplete commands.
-  set showmode                      " Display the mode you're in.
-   
- " set backspace=indent,eol,start    " Intuitive backspacing.
-   
-  set hidden                        " Handle multiple buffers better.
-   
-  set wildmenu                      " Enhanced command line completion.
-  set wildmode=list:longest         " Complete files like a shell.
-   
-  set ignorecase                    " Case-insensitive searching.
-  set smartcase                     " But case-sensitive if expression contains a capital letter.
- " set autoindent 
+set ruler                         " Show cursor position.
+set relativenumber
 
-  set number                        " Show line numbers.
-  set ruler                         " Show cursor position.
-  set relativenumber  
-  set mouse=a
- 
-  set incsearch                     " Highlight matches as you type.
-  set hlsearch                      " Highlight matches.
-  set tabstop=8
-  "set expandtab 
-  set shiftwidth=8
-  set cindent
-  "set smartindent
-  syntax on
-  filetype indent plugin on 
+" Disable compatibility with vi which can cause unexpected issues.
+set nocompatible
 
-  set wrap                          " Turn on line wrapping.
-  set scrolloff=0                   " Show 3 lines of context around the cursor.
-   
-  set title                         " Set the terminal's title
-   
-  set visualbell                    " No beeping.
-   
-  set laststatus=2                  " Show the status line all the time
+" Enable type file detection. Vim will be able to try to detect the type of file in use.
+filetype on
 
-  set background=dark
+" Enable plugins and load plugin for the detected file type.
+filetype plugin on
 
-  let mapleader = ","
-   
-  " Tab mappings.
-  map <leader>tt :tabnew<cr>
-  map <leader>te :tabedit
-  map <leader>tc :tabclose<cr>
-  map <leader>to :tabonly<cr>
-  map <leader>tn :tabnext<cr>
-  map <leader>tp :tabprevious<cr>
-  map <leader>tf :tabfirst<cr>
-  map <leader>tl :tablast<cr>
-  map <leader>tm :tabmove
+" Load an indent file for the detected file type.
+filetype indent on
 
-  inoremap <C-S> <C-O>:update<CR>
-  noremap <C-S> :update<CR>
-  vnoremap <C-S> <C-C>:update<CR>
-  
-  "close the parentesis
-  inoremap ( ()<left>
-  inoremap [ []<left>
-  inoremap { {}<left>
-  inoremap < <><left>
-  inoremap " ""<left>
-  inoremap ' ''<left>
-  
-  "Enter in the midle of [] {}
+" Turn syntax highlighting on.
+syntax on
+filetype indent plugin on
+
+" Set shift width to 4 spaces.
+set shiftwidth=8
+
+" Set tab width to 4 columns.
+set tabstop=8
+set cindent
+
+" Use space characters instead of tabs.
+"set expandtab
+
+" Do not save backup files.
+set nobackup
+
+" Do not let cursor scroll below or above N number of lines when scrolling.
+set scrolloff=10
+
+" Set Mouse support
+set mouse=a
+
+" Do not wrap lines. Allow long lines to extend as far as the line goes.
+" set nowrap
+
+" While searching though a file incrementally highlight matching characters as you type.
+set incsearch
+
+" Ignore capital letters during search.
+set ignorecase
+
+" Override the ignorecase option if searching for capital letters.
+" This will allow you to search specifically for capital letters.
+set smartcase
+
+" Show partial command you type in the last line of the screen.
+set showcmd
+
+" Show the mode you are on the last line.
+set showmode
+
+" Show matching words during a search.
+set showmatch
+
+" Use highlighting when doing a search.
+set hlsearch
+
+" Set the commands to save in history default number is 20.
+set history=1000
+
+set wildmode=list:longest         " Complete files like a shell.
+
+set laststatus=2                  " Show the status line all the time
+
+set title                         " Set the terminal's title
+
+" saving
+inoremap <C-S> <C-O>:update<CR>
+noremap <C-S> :update<CR>
+vnoremap <C-S> <C-C>:update<CR>
+
+"close the parentesis
+inoremap ( ()<left>
+inoremap [ []<left>
+inoremap { {}<left>
+inoremap < <><left>
+inoremap " ""<left>
+inoremap ' ''<left>
+
+"Enter in the midle of [] {}
   inoremap <expr> <CR> CheckBraces()
   function! CheckBraces()
-  	let col = col('.') - 1
-  	let prev_char = getline('.')[col - 1]
-  	let next_char = getline('.')[col]
+    let col = col('.') - 1
+    let prev_char = getline('.')[col - 1]
+    let next_char = getline('.')[col]
 
-	if (prev_char == '{' && next_char == '}') || (prev_char == '(' && next_char == ')')
-		"return ""\<CR>\<Esc>0\<Tab>"
-		return "\<CR>\<Tab>\<CR>"
-	else
-		return "\<CR>"
-	endif
+    if (prev_char == '{' && next_char == '}') || (prev_char == '(' && next_char == ')')
+        "return ""\<CR>\<Esc>0\<Tab>"
+        return "\<CR>\<Tab>\<CR>"
+    else
+        return "\<CR>"
+    endif
  endfunction
 
-
-
-
-
- let g:airline_powerline_fonts=1
-
-
 call plug#begin('~/.vim/plugged')
-Plug 'preservim/NERDTree'
-Plug 'morhetz/gruvbox'
-
+""Plug 'morhetz/gruvbox'
 call plug#end()
 
-let g:gruvbox_contrast_dark='hard'
-colorscheme gruvbox
+""let g:gruvbox_contrast_dark='hard'
+""colorscheme gruvbox 
+""set background=dark
+
+" for 42 HEADER the default <F1> doesn't work on kitty
+noremap <C-h> :Stdheader<CR>
