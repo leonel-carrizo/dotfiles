@@ -22,11 +22,11 @@ syntax on
 filetype indent plugin on
 
 " Set shift width to 4 spaces.
-set shiftwidth=8
+" set shiftwidth=8
 
 " Set tab width to 4 columns.
-set tabstop=8
-set cindent
+" set tabstop=8
+"set cindent
 
 " Use space characters instead of tabs.
 "set expandtab
@@ -74,10 +74,25 @@ set laststatus=2                  " Show the status line all the time
 
 set title                         " Set the terminal's title
 
+let mapleader = ","
+
+" Sets hidden editing
+"set list lcs=tab:<>
+set listchars=eol:↓,space:·,trail:●,tab:→⇥⇥,extends:>,precedes:<
+:highlight SpecialKey ctermfg=DarkGray
+:highlight NonText ctermfg=DarkGray
+" mapping for set list
+noremap <F5> :set list!<CR>
+inoremap <F5> <C-o>:set list!<CR>
+cnoremap <F5> <C-c>:set list!<CR>
+
 " saving
 inoremap <C-S> <C-O>:update<CR>
 noremap <C-S> :update<CR>
 vnoremap <C-S> <C-C>:update<CR>
+
+" close
+nnoremap <C-x> :wq<CR>
 
 "close the parentesis
 inoremap ( ()<left>
@@ -95,8 +110,7 @@ inoremap ' ''<left>
     let next_char = getline('.')[col]
 
     if (prev_char == '{' && next_char == '}') || (prev_char == '(' && next_char == ')')
-        "return ""\<CR>\<Esc>0\<Tab>"
-        return "\<CR>\<Tab>\<CR>"
+        return "\<CR>\<Esc>O"
     else
         return "\<CR>"
     endif
