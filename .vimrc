@@ -1,22 +1,30 @@
-"  _  _____          _                 _
+"  _:q
+"  _____          _                 _
 " | ||___ /   ___   | | __ _ __  _ __ (_) ____ ___
 " | |  |_ \  / _ \  | |/ /| '__|| '__|| ||_  // _ \
 " | | ___) || (_) | |   < | |   | |   | | / /| (_) |
 " |_||____/  \___/  |_|\_\|_|   |_|   |_|/___|\___/
 " 
 "
+let mapleader=","
 set encoding=utf-8
 let &t_ut=''  " To render properly background of the color scheme
 
 " Add line numbers
 set number
+set relativenumber
 " Toggle relative line numbers and regular line numbers.
 nnoremap <leader>rn :set relativenumber!<CR>
 inoremap <leader>rn <C-o>:set relativenumber!<CR>
 
 " Show cursor position.
-set ruler                         
-set relativenumber
+" set cursorline
+"
+" See file name
+"set title
+set laststatus=2
+set statusline=%t\ %r%m%h%w%=\ %{&filetype}%=\ l-%c\ %L-lines\ (%p%%)
+set ruler
 
 " Disable compatibility with vi which can cause unexpected issues.
 set nocompatible
@@ -32,6 +40,8 @@ filetype plugin indent on
 
 " Set tab width to 4 columns.
 " set tabstop=8
+"
+" identation for C
 set cindent
 
 " Use space characters instead of tabs.
@@ -68,6 +78,7 @@ set showmode
 " Show matching words during a search.
 set showmatch
 
+
 " Use highlighting when doing a search.
 set hlsearch
 
@@ -93,11 +104,32 @@ vnoremap <C-S> <C-C>:update<CR>
 
 " close
 nnoremap <C-x> :x<CR>
+inoremap <C-x> <C-O>:x<CR>
+vnoremap <C-x> <C-C>:x<CR>
 
 "Edit Vim config file in a new tab.
-map <Leader>ev :tabnew $MYVIMRC<CR>
+map <leader>ev :tabnew $MYVIMRC<CR>
 " update config file
-nnoremap <leader>sv :source $MYVIMRC<CR>
+map <leader>sv :source $MYVIMRC<CR>
+
+" open new tab on NTree
+nnoremap <A-t> <Esc>:Tex<CR>
+
+" Ntree- left side toggle
+noremap <A-s> <Esc>:Lex 25<CR>
+
+ "open new tab 
+nnoremap <leader>nt <Esc>:tabe<CR>
+
+" open terminal horizontal
+nnoremap <leader>tr <Esc>:terminal<CR>
+
+" sugestion and compplete
+set complete+=kspell
+set completeopt=menuone,longest
+set shortmess+=c
+set wildmenu
+set wildmode=full
 
 "close the parentesis
 inoremap ( ()<left>
@@ -137,3 +169,5 @@ call plug#end()
 
 " for 42 HEADER the default <F1> doesn't work on kitty
 noremap <C-h> :Stdheader<CR>
+inoremap <C-h> <C-o>:Stdheader<CR>
+vnoremap <C-h> <C-c>:Stdheader<CR>
