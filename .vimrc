@@ -19,12 +19,11 @@ inoremap <leader>rn <C-o>:set relativenumber!<CR>
 
 " Show cursor position.
 " set cursorline
-"
-" See file name
-"set title
+" status line
 set laststatus=2
-set statusline=%t\ %r%m%h%w%=\ %{&filetype}%=\ l-%c\ %L-lines\ (%p%%)
-set ruler
+
+" status line format 
+set statusline=%t\ [%{mode()}]\ %r%m%h%w%=\ %{&filetype}%=\ %l-%c\\|\%L-lines\\|\(%p%%)
 
 " Disable compatibility with vi which can cause unexpected issues.
 set nocompatible
