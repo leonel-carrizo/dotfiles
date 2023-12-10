@@ -1,38 +1,41 @@
+"  _  _____          _                 _
+" | ||___ /   ___   | | __ _ __  _ __ (_) ____ ___
+" | |  |_ \  / _ \  | |/ /| '__|| '__|| ||_  // _ \
+" | | ___) || (_) | |   < | |   | |   | | / /| (_) |
+" |_||____/  \___/  |_|\_\|_|   |_|   |_|/___|\___/
+" 
+"
+set encoding=utf-8
+let &t_ut=''  " To render properly background of the color scheme
 
 " Add line numbers
 set number
+" Toggle relative line numbers and regular line numbers.
+nnoremap <leader>rn :set relativenumber!<CR>
+inoremap <leader>rn <C-o>:set relativenumber!<CR>
 
-set ruler                         " Show cursor position.
+" Show cursor position.
+set ruler                         
 set relativenumber
 
 " Disable compatibility with vi which can cause unexpected issues.
 set nocompatible
 
-" Enable type file detection. Vim will be able to try to detect the type of file in use.
-filetype on
-
-" Enable plugins and load plugin for the detected file type.
-filetype plugin on
-
-" Load an indent file for the detected file type.
-filetype indent on
-
 " Turn syntax highlighting on.
 syntax on
-filetype indent plugin on
+
+" Enable type file detection. Vim will be able to try to detect the type of file in use.
+filetype plugin indent on
 
 " Set shift width to 4 spaces.
 " set shiftwidth=8
 
 " Set tab width to 4 columns.
 " set tabstop=8
-"set cindent
+set cindent
 
 " Use space characters instead of tabs.
 "set expandtab
-
-" Do not save backup files.
-set nobackup
 
 " Do not let cursor scroll below or above N number of lines when scrolling.
 set scrolloff=10
@@ -45,6 +48,9 @@ set mouse=a
 
 " While searching though a file incrementally highlight matching characters as you type.
 set incsearch
+
+" clear highlight after a search
+set nohlsearch    
 
 " Ignore capital letters during search.
 set ignorecase
@@ -68,16 +74,10 @@ set hlsearch
 " Set the commands to save in history default number is 20.
 set history=1000
 
-set wildmode=list:longest         " Complete files like a shell.
-
-set laststatus=2                  " Show the status line all the time
-
-set title                         " Set the terminal's title
-
-let mapleader = ","
+" new line with comment if the last wast commented
+set fo+=ro
 
 " Sets hidden editing
-"set list lcs=tab:<>
 set listchars=eol:↓,space:·,trail:●,tab:→⇥⇥,extends:>,precedes:<
 :highlight SpecialKey ctermfg=DarkGray
 :highlight NonText ctermfg=DarkGray
@@ -92,7 +92,12 @@ noremap <C-S> :update<CR>
 vnoremap <C-S> <C-C>:update<CR>
 
 " close
-nnoremap <C-x> :wq<CR>
+nnoremap <C-x> :x<CR>
+
+"Edit Vim config file in a new tab.
+map <Leader>ev :tabnew $MYVIMRC<CR>
+" update config file
+nnoremap <leader>sv :source $MYVIMRC<CR>
 
 "close the parentesis
 inoremap ( ()<left>
@@ -101,6 +106,12 @@ inoremap { {}<left>
 inoremap < <><left>
 inoremap " ""<left>
 inoremap ' ''<left>
+
+" Keymap for using hjkl in insert mode
+inoremap <C-h> <Left>
+inoremap <C-j> <Down>
+inoremap <C-k> <Up>
+inoremap <C-l> <Right>
 
 "Enter in the midle of [] {}
   inoremap <expr> <CR> CheckBraces()
