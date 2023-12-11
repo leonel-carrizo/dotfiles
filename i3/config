@@ -18,7 +18,7 @@ exec --no-startup-id dex --autostart --environment i3
 # bindsym $mod+x exec --no-startup-id i3lock -e -f --image ~/Pictures/wallpaper/wallpaper-4.png --tiling
 bindsym $mod+x exec --no-startup-id betterlockscreen -l --off 30 --span
 bindsym Ctrl+Mod4+l exec --no-startup-id wlogout
-bindsym XF86PowerOff exec --no-startup-id wlogout
+#bindsym XF86PowerOff exec --no-startup-id wlogout
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
