@@ -169,6 +169,6 @@ call plug#end()
 " for 42 HEADER the default <F1> doesn't work on kitty
 let g:user42 = 'lcarrizo'
 let g:mail42 = 'lcarrizo@student.42london.com'
-noremap <C-h> :Stdheader<CR>
-inoremap <C-h> <C-o>:Stdheader<CR>
-vnoremap <C-h> <C-c>:Stdheader<CR>
+" noremap <C-h> :Stdheader<CR>
+" inoremap <C-h> <C-o>:Stdheader<CR>
+" vnoremap <C-h> <C-c>:Stdheader<CR>

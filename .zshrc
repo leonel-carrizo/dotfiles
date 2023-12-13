@@ -63,6 +63,7 @@ alias vi='nvim'
 alias norm="norminette"
 alias comp="cc -Wall -Werror -Wextra"
 alias cl="clear"
+alias gitbk="git add . && git commit -am 'backup all' && git push"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
