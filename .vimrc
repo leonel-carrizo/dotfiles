@@ -7,7 +7,7 @@
 "                                                                             "
 "------------------------------------------------------------------------------
 
-let mapleader=","
+""let mapleader="\"
 set encoding=utf-8
 let &t_ut=''  " To render properly background of the color scheme
 
@@ -55,13 +55,13 @@ set scrolloff=10
 set mouse=a
 
 " Do not wrap lines. Allow long lines to extend as far as the line goes.
-set nowrap
+"set nowrap
 
 " While searching incrementally highlight matching characters as you type.
 set incsearch
 
 " clear highlight after a search
-nnoremap <silent> <Leader><Space> :nohlsearch<CR> 
+nnoremap <silent> <Leader>. :nohl<CR> 
 
 " Ignore capital letters during search.
 set ignorecase
@@ -85,8 +85,15 @@ set hlsearch
 " Set the commands to save in history default number is 20.
 set history=1000
 
+" ------------------------------ comments --------------------------------------
 " new line with comment if the last wast commented
 set fo+=ro
+
+" For Commentary Pluging
+noremap <leader>/ :Commentary<cr>
+inoremap <leader>/ :Commentary<cr>
+autocmd FileType c setlocal commentstring=//\ %s
+" ------------------------------------------------------------------------------
 
 "--------------- Show when a line is longer than 81 chars --------------------
 augroup highlight_long_lines
@@ -119,6 +126,7 @@ nnoremap <C-x> :x<CR>
 inoremap <C-x> <C-O>:x<CR>
 vnoremap <C-x> <C-C>:x<CR>
 
+" ----------------------- tabs, terminal and NTree -----------------------------
 "Edit Vim config file in a new tab.
 map <leader>ev :tabnew $MYVIMRC<CR>
 " update config file
@@ -135,6 +143,7 @@ nnoremap <leader>nt <Esc>:tabe<CR>
 
 " open terminal horizontal
 nnoremap <leader>tr <Esc>:terminal<CR>
+" ------------------------------------------------------------------------------
 
 " sugestion and compplete
 set complete+=kspell
@@ -142,6 +151,7 @@ set completeopt=menuone,longest
 set shortmess+=c
 set wildmenu
 set wildmode=full
+
 
 "close the parentesis
 inoremap ( ()<left>
@@ -156,6 +166,7 @@ inoremap <C-h> <Left>
 inoremap <C-j> <Down>
 inoremap <C-k> <Up>
 inoremap <C-l> <Right>
+inoremap <C-;> <End>
 
 "------------------------Enter in the midle of [] {}----------------------------
 inoremap <expr> <CR> CheckBraces()
