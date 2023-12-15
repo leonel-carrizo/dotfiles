@@ -1,11 +1,12 @@
-"  _:q
-"  _____          _                 _
-" | ||___ /   ___   | | __ _ __  _ __ (_) ____ ___
-" | |  |_ \  / _ \  | |/ /| '__|| '__|| ||_  // _ \
-" | | ___) || (_) | |   < | |   | |   | | / /| (_) |
-" |_||____/  \___/  |_|\_\|_|   |_|   |_|/___|\___/
-" 
-"
+"------------------------------------------------------------------------------
+"           _  _____          _                 _                             "
+"          | ||___ /   ___   | | __ _ __  _ __ (_) ____ ___                   "
+"          | |  |_ \  / _ \  | |/ /| '__|| '__|| ||_  // _ \                  "
+"          | | ___) || (_) | |   < | |   | |   | | / /| (_) |                 "
+"          |_||____/  \___/  |_|\_\|_|   |_|   |_|/___|\___/                  "
+"                                                                             "
+"------------------------------------------------------------------------------
+
 let mapleader=","
 set encoding=utf-8
 let &t_ut=''  " To render properly background of the color scheme
@@ -22,8 +23,9 @@ inoremap <leader>rn <C-o>:set relativenumber!<CR>
 " status line
 set laststatus=2
 
-" status line format 
-set statusline=%t\ [%{mode()}]\ %r%m%h%w%=\ %{&filetype}%=\ %l-%c\\|\%L-lines\\|\(%p%%)
+" status line format
+set statusline=%t\ [%{mode()}]\ %r%m%h%w%=\ File:\ %{&filetype}%=\ \
+			\ %l-%c\\|\%L-lines\\|\(%p%%)
 
 " Disable compatibility with vi which can cause unexpected issues.
 set nocompatible
@@ -31,14 +33,14 @@ set nocompatible
 " Turn syntax highlighting on.
 syntax on
 
-" Enable type file detection. Vim will be able to try to detect the type of file in use.
+" Enable type file detection. to try to detect the type of file in use.
 filetype plugin indent on
 
 " Set shift width to 4 spaces.
 " set shiftwidth=8
 
 " Set tab width to 4 columns.
-" set tabstop=8
+ set tabstop=8
 "
 " identation for C
 set cindent
@@ -53,13 +55,13 @@ set scrolloff=10
 set mouse=a
 
 " Do not wrap lines. Allow long lines to extend as far as the line goes.
-" set nowrap
+set nowrap
 
-" While searching though a file incrementally highlight matching characters as you type.
+" While searching incrementally highlight matching characters as you type.
 set incsearch
 
 " clear highlight after a search
-set nohlsearch    
+nnoremap <silent> <Leader><Space> :nohlsearch<CR> 
 
 " Ignore capital letters during search.
 set ignorecase
@@ -77,7 +79,6 @@ set showmode
 " Show matching words during a search.
 set showmatch
 
-
 " Use highlighting when doing a search.
 set hlsearch
 
@@ -87,14 +88,26 @@ set history=1000
 " new line with comment if the last wast commented
 set fo+=ro
 
-" Sets hidden editing
-set listchars=eol:↓,space:·,trail:●,tab:→⇥⇥,extends:>,precedes:<
-:highlight SpecialKey ctermfg=DarkGray
-:highlight NonText ctermfg=DarkGray
+"--------------- Show when a line is longer than 81 chars --------------------
+augroup highlight_long_lines
+    autocmd!
+    autocmd BufEnter * match LongLine /\%>80v.\+/ "All files
+"autocmd BufEnter,BufWritePost *.c,*.h match LongLine /\%>80v.\+/  "Only C files
+    hi LongLine ctermbg=red guibg=red ctermfg=yellow
+augroup END
+"-------------------------------------------------------------------------------
+
+"--------------------- Sets hidden editing -------------------------------------
+set list
+"set listchars=eol:↓,space:·,trail:●,tab:→⇥⇥→➤,extends:>,precedes:<
+set listchars=eol:↓,space:·,trail:●,tab:――\ ,extends:>,precedes:<
+highlight SpecialKey ctermfg=DarkGray
+highlight NonText ctermfg=DarkGray
 " mapping for set list
 noremap <F5> :set list!<CR>
 inoremap <F5> <C-o>:set list!<CR>
 cnoremap <F5> <C-c>:set list!<CR>
+"------------------------------------------------------------------------------
 
 " saving
 inoremap <C-S> <C-O>:update<CR>
@@ -138,26 +151,27 @@ inoremap < <><left>
 inoremap " ""<left>
 inoremap ' ''<left>
 
-" Keymap for using hjkl in insert mode
+" Keymap for using hjkl in INSERT mode
 inoremap <C-h> <Left>
 inoremap <C-j> <Down>
 inoremap <C-k> <Up>
 inoremap <C-l> <Right>
 
-"Enter in the midle of [] {}
-  inoremap <expr> <CR> CheckBraces()
-  function! CheckBraces()
+"------------------------Enter in the midle of [] {}----------------------------
+inoremap <expr> <CR> CheckBraces()
+
+function! CheckBraces()
     let col = col('.') - 1
     let prev_char = getline('.')[col - 1]
     let next_char = getline('.')[col]
-
-    if (prev_char == '{' && next_char == '}') || (prev_char == '(' && next_char == ')')
+    if ( (prev_char == '{' && next_char == '}')
+	\ || (prev_char == '(' && next_char == ')') )
         return "\<CR>\<Esc>O"
     else
         return "\<CR>"
     endif
- endfunction
-
+endfunction
+"-------------------------------------------------------------------------------
 call plug#begin('~/.vim/plugged')
 ""Plug 'morhetz/gruvbox'
 call plug#end()
@@ -166,7 +180,7 @@ call plug#end()
 ""colorscheme gruvbox 
 ""set background=dark
 
-" for 42 HEADER the default <F1> doesn't work on kitty
+"-------------- for 42 HEADER | default mapping <F1> --------------------------
 let g:user42 = 'lcarrizo'
 let g:mail42 = 'lcarrizo@student.42london.com'
 " noremap <C-h> :Stdheader<CR>
