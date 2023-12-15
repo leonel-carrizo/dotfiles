@@ -144,6 +144,8 @@ nnoremap <leader>nt <Esc>:tabe<CR>
 
 " open terminal horizontal
 nnoremap <leader>tr <Esc>:terminal<CR>
+
+" let netrw_browse_split = 2
 " ------------------------------------------------------------------------------
 
 " sugestion and compplete

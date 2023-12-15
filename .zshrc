@@ -64,6 +64,8 @@ alias norm="norminette"
 alias comp="cc -Wall -Werror -Wextra"
 alias cl="clear"
 alias gitbk="git add . && git commit -am 'backup all' && git push"
+alias gits="git status"
+alias rg="ranger"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
