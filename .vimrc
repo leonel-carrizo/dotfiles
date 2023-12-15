@@ -85,7 +85,7 @@ set hlsearch
 " Set the commands to save in history default number is 20.
 set history=1000
 
-" ------------------------------ comments --------------------------------------
+" ----------------------------- comments ---------------------------------------
 " new line with comment if the last wast commented
 set fo+=ro
 
@@ -95,11 +95,12 @@ inoremap <leader>/ :Commentary<cr>
 autocmd FileType c setlocal commentstring=//\ %s
 " ------------------------------------------------------------------------------
 
-"--------------- Show when a line is longer than 81 chars --------------------
+"----------------- Show when a line is longer than 81 chars --------------------
 augroup highlight_long_lines
     autocmd!
-    autocmd BufEnter * match LongLine /\%>80v.\+/ "All files
-"autocmd BufEnter,BufWritePost *.c,*.h match LongLine /\%>80v.\+/  "Only C files
+    autocmd BufEnter,BufWritePost *.{c,h,cpp,hpp,sh,vim,py,css,js,jsx,vimrc,
+	\zshrc,bashrc,php,java,html,rb,go,swift,ts,ps1,json,yaml,yml,lua}
+	\ match LongLine /\%>80v.\+/
     hi LongLine ctermbg=red guibg=red ctermfg=yellow
 augroup END
 "-------------------------------------------------------------------------------
