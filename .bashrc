@@ -21,3 +21,5 @@ alias ls='ls -F --color=auto --show-control-chars'
 alias ll='ls -l'
 alias vi="nvim"
 alias myip="curl http://ipecho.net/plain; echo"
+
+PATH=~/.console-ninja/.bin:$PATH

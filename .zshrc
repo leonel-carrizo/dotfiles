@@ -41,7 +41,6 @@ zstyle ':completion:*' menu select=long
 zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
 zstyle ':completion:*' use-compctl false
 zstyle ':completion:*' verbose true
-
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
@@ -66,6 +65,7 @@ alias cl="clear"
 alias gitbk="git add . && git commit -am 'backup all' && git push"
 alias gits="git status"
 alias rg="ranger"
+alias gdbc="gcc -Wall -Werror -Wextra -g"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -102,5 +102,5 @@ bindkey "^[[F" end-of-line
 bindkey "^[[3~" delete-char
 bindkey "^[[1;3C" forward-word
 bindkey "^[[1;3D" backward-word
-source ~/Templates/powerlevel10k/powerlevel10k.zsh-theme
+source ~/.config/powerlevel10k/powerlevel10k.zsh-theme
 

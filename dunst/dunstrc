@@ -17,7 +17,7 @@
     #
     # If this option is set to mouse or keyboard, the monitor option
     # will be ignored.
-    follow = mouse
+    follow = none
 
     ### Geometry ###
 
@@ -198,12 +198,12 @@
 
     # Recursive icon lookup. You can set a single theme, instead of having to
     # define all lookup paths.
-    # enable_recursive_icon_lookup = true
+    enable_recursive_icon_lookup = true
 
     # Set icon theme (only used for recursive icon lookup)
     # icon_theme = Adwaita
     # You can also set multiple icon themes, with the leftmost one being used first.
-    # icon_theme = "Adwaita, breeze"
+    icon_theme = "Adwaita, breeze"
 
     # Align icons left/right/top/off
     icon_position = left
@@ -419,10 +419,10 @@
 #    summary = "*script*"
 #    script = dunst_test.sh
 
-#[ignore]
+[ignore]
 #    # This notification will not be displayed
-#    summary = "foobar"
-#    skip_display = true
+    summary = "spotify"
+    skip_display = true
 
 #[history-ignore]
 #    # This notification will not be saved in history

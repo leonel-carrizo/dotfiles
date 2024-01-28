@@ -52,10 +52,10 @@ set cindent
 set scrolloff=10
 
 " Set Mouse support
-set mouse=a
+" set mouse=a
 
 " Do not wrap lines. Allow long lines to extend as far as the line goes.
-"set nowrap
+set nowrap
 
 " While searching incrementally highlight matching characters as you type.
 set incsearch
