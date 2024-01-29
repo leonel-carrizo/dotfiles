@@ -99,10 +99,6 @@ autocmd FileType c setlocal commentstring=//\ %s
 
 let g:highlight_long_lines_enabled = 0
 
-" mapping for set list and check lines lenght
-noremap <F5> :call ToggleHighlightLongLines()<CR>:set list!<CR>
-inoremap <F5> :call ToggleHighlightLongLines()<CR>:set list!<CR>
-cnoremap <F5> :call ToggleHighlightLongLines()<CR>:set list!<CR>
 
 function! ToggleHighlightLongLines()
     if g:highlight_long_lines_enabled
@@ -112,8 +108,8 @@ function! ToggleHighlightLongLines()
         echo "Check lines deactivate"
     else
         augroup highlight_long_lines
-            autocmd
-            autocm BufEnter,BufWritePost *.{c,h,cpp,hpp,sh,vim,py,css,js,jsx,vimrc
+            autocmd!
+            autocmd BufEnter,BufWritePost *.{c,h,cpp,hpp,sh,vim,py,css,js,jsx,vimrc,
                 \zshrc,bashrc,php,java,html,rb,go,swift,ts,ps1,json,yaml,yml,lua}
                 \ match LongLine /\%>80v.\+/
             hi LongLine ctermbg=red guibg=red ctermfg=yellow
@@ -126,14 +122,19 @@ endfunction
 "-------------------------------------------------------------------------------
 
 "------------------------------ Sets hidden editing ----------------------------
-set list
+" set list
 "set listchars=eol:↓,space:·,trail:●,tab:→⇥⇥→➤,extends:>,precedes:<
 set listchars=eol:↓,space:·,trail:●,tab:――\ ,extends:>,precedes:<
 highlight SpecialKey ctermfg=DarkGray
 highlight NonText ctermfg=DarkGray
-" noremap <F5> :set list!<CR>
-" inoremap <F5> <C-o>:set list!<CR>
-" cnoremap <F5> <C-c>:set list!<CR>
+noremap <F5> :set list!<CR>:call ToggleHighlightLongLines()<CR>
+inoremap <F5> <C-o>:set list!<CR>:call ToggleHighlightLongLines()<CR>
+cnoremap <F5> <C-c>:set list!<CR>:call ToggleHighlightLongLines()<CR>
+" mapping for set list and check lines lenght
+" noremap <F5> :call ToggleHighlightLongLines()<CR>:set list!<CR>
+" inoremap <F5> :call ToggleHighlightLongLines()<CR>:set list!<CR>
+" cnoremap <F5> :call ToggleHighlightLongLines()<CR>:set list!<CR>
+
 "------------------------------------------------------------------------------
 
 " saving
