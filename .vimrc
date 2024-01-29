@@ -96,25 +96,44 @@ autocmd FileType c setlocal commentstring=//\ %s
 " ------------------------------------------------------------------------------
 
 "----------------- Show when a line is longer than 81 chars --------------------
-augroup highlight_long_lines
-    autocmd!
-    autocmd BufEnter,BufWritePost *.{c,h,cpp,hpp,sh,vim,py,css,js,jsx,vimrc,
-	\zshrc,bashrc,php,java,html,rb,go,swift,ts,ps1,json,yaml,yml,lua}
-	\ match LongLine /\%>80v.\+/
-    hi LongLine ctermbg=red guibg=red ctermfg=yellow
-augroup END
+
+let g:highlight_long_lines_enabled = 0
+
+" mapping for set list and check lines lenght
+noremap <F5> :call ToggleHighlightLongLines()<CR>:set list!<CR>
+inoremap <F5> :call ToggleHighlightLongLines()<CR>:set list!<CR>
+cnoremap <F5> :call ToggleHighlightLongLines()<CR>:set list!<CR>
+
+function! ToggleHighlightLongLines()
+    if g:highlight_long_lines_enabled
+        augroup! highlight_long_lines
+        hi clear LongLine
+        let g:highlight_long_lines_enabled = 0
+        echo "Check lines deactivate"
+    else
+        augroup highlight_long_lines
+            autocmd
+            autocm BufEnter,BufWritePost *.{c,h,cpp,hpp,sh,vim,py,css,js,jsx,vimrc
+                \zshrc,bashrc,php,java,html,rb,go,swift,ts,ps1,json,yaml,yml,lua}
+                \ match LongLine /\%>80v.\+/
+            hi LongLine ctermbg=red guibg=red ctermfg=yellow
+        augroup END
+        let g:highlight_long_lines_enabled = 1
+        echo "Check lines activate"
+    endif
+endfunction
+
 "-------------------------------------------------------------------------------
 
-"--------------------- Sets hidden editing -------------------------------------
+"------------------------------ Sets hidden editing ----------------------------
 set list
 "set listchars=eol:↓,space:·,trail:●,tab:→⇥⇥→➤,extends:>,precedes:<
 set listchars=eol:↓,space:·,trail:●,tab:――\ ,extends:>,precedes:<
 highlight SpecialKey ctermfg=DarkGray
 highlight NonText ctermfg=DarkGray
-" mapping for set list
-noremap <F5> :set list!<CR>
-inoremap <F5> <C-o>:set list!<CR>
-cnoremap <F5> <C-c>:set list!<CR>
+" noremap <F5> :set list!<CR>
+" inoremap <F5> <C-o>:set list!<CR>
+" cnoremap <F5> <C-c>:set list!<CR>
 "------------------------------------------------------------------------------
 
 " saving
