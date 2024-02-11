@@ -1,5 +1,5 @@
 ###################################################################################
-# neofetch
+pfetch
 # Fix the Java Problem
 export _JAVA_AWT_WM_NONREPARENTING=1
 
@@ -62,7 +62,7 @@ alias vi='nvim'
 alias norm="norminette"
 alias comp="cc -Wall -Werror -Wextra"
 alias cl="clear"
-alias gitbk="git add . && git commit -am 'backup all' && git push"
+alias gitbk="git add . && git commit -am 'backup' && git push"
 alias gits="git status"
 alias rg="ranger"
 alias gdbc="gcc -Wall -Werror -Wextra -g"
