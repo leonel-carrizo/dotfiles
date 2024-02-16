@@ -104,3 +104,4 @@ bindkey "^[[1;3C" forward-word
 bindkey "^[[1;3D" backward-word
 source ~/.config/powerlevel10k/powerlevel10k.zsh-theme
 
+export PATH="$HOME/.local/bin:$PATH"
