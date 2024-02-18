@@ -58,6 +58,26 @@ floating_modifier $mod
 # or left-clicking anywhere into the window while holding the floating modifier.
 tiling_drag modifier titlebar
 
+# move floating window with key
+bindsym $mod+F7 mode "move" focus floating
+mode "move"{
+	bindsym $mod+Tab focus right
+
+	bindsym Left move left
+	bindsym Down move down
+	bindsym Up move up
+	bindsym Right move right
+
+	bindsym h move left
+	bindsym j move down
+	bindsym k move up
+	bindsym l move right
+
+	#back to normal
+	bindsym Escape mode "default"
+	bindsym Return mode "default"
+}
+
 # start a terminal
 #bindsym $mod+Return exec i3-sensible-terminal
 # bindsym $mod+Return exec alacritty
