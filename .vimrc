@@ -52,7 +52,7 @@ set cindent
 set scrolloff=10
 
 " Set Mouse support
-" set mouse=a
+set mouse=r
 
 " Do not wrap lines. Allow long lines to extend as far as the line goes.
 set nowrap
