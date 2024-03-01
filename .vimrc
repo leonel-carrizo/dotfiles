@@ -12,8 +12,10 @@ set encoding=utf-8
 let &t_ut=''  " To render properly background of the color scheme
 
 " Add line numbers
-set number
-set relativenumber
+"set number
+nnoremap <leader>nn :set number!<CR>
+inoremap <leader>nn :set <C-o>:set number!<CR>
+ 
 " Toggle relative line numbers and regular line numbers.
 nnoremap <leader>rn :set relativenumber!<CR>
 inoremap <leader>rn <C-o>:set relativenumber!<CR>
@@ -147,19 +149,37 @@ nnoremap <C-x> :x<CR>
 inoremap <C-x> <C-O>:x<CR>
 vnoremap <C-x> <C-C>:x<CR>
 
-" ----------------------- tabs, terminal and NTree -----------------------------
+" ----------------------- NETRW, TABS, TERMINAL  -----------------------------
+
 "Edit Vim config file in a new tab.
 map <leader>ev :tabnew $MYVIMRC<CR>
 " update config file
 map <leader>sv :source $MYVIMRC<CR>
 
-" open new tab on NTree
-nnoremap <A-t> <Esc>:Tex<CR>
+" Netrw with
+let g:netrw_winsize= 25
 
-" Ntree- left side toggle
-noremap <A-s> <Esc>:Lex 25<CR>
+" netrw stile with details 
+let g:netrw_liststyle=3
 
- "open new tab 
+" function to open and close Lexplore
+function! ToggleExplorer()
+    " Verify if explorer is opened
+    if exists("g:explorer_is_open") && g:explorer_is_open == 1
+        " if opened close it
+        Lex
+        let g:explorer_is_open = 0
+    else
+        " if close it, open it
+        Lex 25
+        let g:explorer_is_open = 1
+    endif
+endfunction
+
+" open new tab on netrw
+nnoremap <leader>ll :call ToggleExplorer()<CR>
+
+"open new tab 
 nnoremap <leader>nt <Esc>:tabe<CR>
 
 " open terminal horizontal
