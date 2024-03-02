@@ -150,10 +150,7 @@ inoremap <C-x> <C-O>:x<CR>
 vnoremap <C-x> <C-C>:x<CR>
 
 " ----------------------- NETRW, TABS, TERMINAL  -----------------------------
-<<<<<<< HEAD
 
-=======
->>>>>>> 3e4c79d (backup)
 "Edit Vim config file in a new tab.
 map <leader>ev :tabnew $MYVIMRC<CR>
 " update config file
