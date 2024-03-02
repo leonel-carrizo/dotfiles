@@ -256,7 +256,7 @@ bar {
         status_command i3status 
     mode hide
     hidden_state hide
-    modifier Mod1
+    modifier Mod1+Mod4
 
     colors {
         background #2E3440
@@ -268,7 +268,7 @@ bar {
         urgent_workspace #eb709b #eb709b #ffffff
     }
 }
-bindsym Mod1+Control+space bar mode toggle
+bindsym Ctrl+Mod1+space bar mode toggle
 
 #onedark-graphite-theme
 # class                 border  backgr. text    indicator child_border
