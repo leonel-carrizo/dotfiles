@@ -1,21 +1,99 @@
 #!/bin/bash
+#----------------------------------------------------------------------------#
+#           _  _____          _                 _                            # 
+#          | ||___ /   ___   | | __ _ __  _ __ (_) ____ ___                  # 
+#          | |  |_ \  / _ \  | |/ /| '__|| '__|| ||_  // _ \                 # 
+#          | | ___) || (_) | |   < | |   | |   | | / /| (_) |                # 
+#          |_||____/  \___/  |_|\_\|_|   |_|   |_|/___|\___/                 # 
+#                                                                            # 
+#----------------------------------------------------------------------------#
 
-git add .
+# Function to check if there are changes to commit
+check_changes() {
+  local staged_changes=$(git diff --cached --name-only)
+  if [[ -n "$staged_changes" ]]; then
+    read -p "There are staged changes. Do you want to commit them? (y/n): " commit_choice
+    if [[ $commit_choice == "y" ]]; then
+      return 0  # Continue with the script
+    else
+      echo -e "Skipping commit operation.\n"
+      exit 1
+    fi
+  else
+    echo -e "No changes to be committed.\n"
+    exit 1
+  fi
+}
 
-if [[ -z $(git diff --cached) ]]; then
-  echo "No changes to be commited."
+# Function to handle errors
+handle_error() {
+  echo -e "Error: $1"
   exit 1
-fi
+}
 
-echo "commit message:"
+# Function to ask if the user wants to push changes
+ask_push() {
+  read -p "You have committed changes. Do you want to push them? (y/n): " push_choice
+  if [[ $push_choice == "y" ]]; then
+    echo -e "Pushing committed changes to remote repository...\n"
+    git push || handle_error "Failed to push changes to remote repository."
+  else
+    echo -e -e "Skipping push operation.\n"
+  fi
+}
+
+# Function to perform git pull
+git_pull() {
+  read -p "Your branch is behind remote. Do you want to pull changes from remote repository? (y/n): " pull_choice
+  if [[ $pull_choice == "y" ]]; then
+    echo -e "Pulling changes from remote repository...\n"
+    git pull || handle_error "Failed to pull changes from remote repository."
+  else
+    echo -e "Skipping pull operation.\n"
+  fi
+}
+
+# Function to check for unpushed commits
+check_unpushed_commits() {
+  local unpushed_commits=$(git status | grep "Your branch is ahead of" | wc -l)
+  if [[ $unpushed_commits -gt 0 ]]; then
+    ask_push
+  fi
+}
+
+# Function to check for untracked files
+check_untracked_files() {
+  local untracked_files_count=$(git status | grep "not staged for commit" | wc -l)
+  if [[ $untracked_files_count -gt 0 ]]; then
+    read -p "There are untracked files. Do you want to add them to staging area? (y/n): " add_choice
+    if [[ $add_choice == "y" ]]; then
+      echo -e "Adding untracked files to staging area...\n"
+      git add .
+    else
+      echo -e "Skipping adding untracked files to staging area.\n"
+    fi
+  fi
+}
+
+####### Main script ###########
+git status >/dev/null 2>&1 || handle_error "This is not a git repository."
+
+git status -uno | grep "Your branch is behind" >/dev/null && git_pull
+
+# Check for uncommitted changes
+check_unpushed_commits
+
+check_untracked_files
+
+check_changes
+
+echo -e "Enter commit message:"
 read commit_message
 
-git commit -m "$commit_message"
+git commit -m "$commit_message" || handle_error "Failed to commit changes."
 
-if [ $? -ne 0 ]; then
-  echo "Error while commit."
-  exit 1
-fi
+ask_push 
+#git push || handle_error "Failed to push changes to remote repository."
 
-git push
+echo -e "Changes successfully committed and pushed.\n"
 
