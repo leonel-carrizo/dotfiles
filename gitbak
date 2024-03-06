@@ -13,15 +13,19 @@ check_changes() {
   local staged_changes=$(git diff --cached --name-only)
   if [[ -n "$staged_changes" ]]; then
     read -p "There are staged changes. Do you want to commit them? (y/n): " commit_choice
-    if [[ $commit_choice == "y" ]]; then
-      return 0  # Continue with the script
-    else
-      echo -e "Skipping commit operation.\n"
-      exit 1
-    fi
-  else
-    echo -e "No changes to be committed.\n"
-    exit 1
+    case "$commit_choice" in
+      y|Y)
+        return 0  # Continue with the script
+        ;;
+      n|N)
+        echo -e "Skipping commit operation.\n"
+        exit 1
+        ;;
+      *)
+       echo -e "Please enter 'y' for Yes or 'n' for No.\n"
+       check_changes
+       ;;
+    esac
   fi
 }
 
@@ -34,23 +38,37 @@ handle_error() {
 # Function to ask if the user wants to push changes
 ask_push() {
   read -p "You have committed changes. Do you want to push them? (y/n): " push_choice
-  if [[ $push_choice == "y" ]]; then
-    echo -e "Pushing committed changes to remote repository...\n"
-    git push || handle_error "Failed to push changes to remote repository."
-  else
-    echo -e -e "Skipping push operation.\n"
-  fi
+  case "$push_choice" in
+    y|Y)
+      echo -e "Pushing committed changes to remote repository...\n"
+      git push || handle_error "Failed to push changes to remote repository."
+      ;;
+    n|N)
+      echo -e "Skipping push operation.\n"
+      ;;
+    *)
+      echo -e "Please enter 'y' for Yes or 'n' for No.\n"
+      ask_push
+      ;;
+  esac
 }
 
 # Function to perform git pull
 git_pull() {
   read -p "Your branch is behind remote. Do you want to pull changes from remote repository? (y/n): " pull_choice
-  if [[ $pull_choice == "y" ]]; then
-    echo -e "Pulling changes from remote repository...\n"
-    git pull || handle_error "Failed to pull changes from remote repository."
-  else
-    echo -e "Skipping pull operation.\n"
-  fi
+  case "$pull_choice" in
+    y|Y)
+      echo -e "Pulling changes from remote repository...\n"
+      git pull || handle_error "Failed to pull changes from remote repository."
+      ;;
+    n|N)
+      echo -e "Skipping pull operation.\n"
+      ;;
+    *)
+      echo -e "Please enter 'y' for Yes or 'n' for No.\n"
+      git_pull
+      ;;
+  esac
 }
 
 # Function to check for unpushed commits
@@ -63,15 +81,23 @@ check_unpushed_commits() {
 
 # Function to check for untracked files
 check_untracked_files() {
-  local untracked_files_count=$(git status | grep "not staged for commit" | wc -l)
-  if [[ $untracked_files_count -gt 0 ]]; then
+  local unstaged_files_count=$(git status | grep "not staged for commit" | wc -l)
+  local untracked_files_count=$(git status | grep "Untracked" | wc -l)
+  if [[ $unstaged_files_count -gt 0 || $untracked_files_count -gt 0 ]]; then
     read -p "There are untracked files. Do you want to add them to staging area? (y/n): " add_choice
-    if [[ $add_choice == "y" ]]; then
-      echo -e "Adding untracked files to staging area...\n"
-      git add .
-    else
-      echo -e "Skipping adding untracked files to staging area.\n"
-    fi
+    case "$add_choice" in
+      y|Y)
+        echo -e "Adding untracked files to staging area...\n"
+        git add .
+        ;;
+      n|N)
+        echo -e "Skipping adding untracked files to staging area.\n"
+        ;;
+      *)
+        echo -e "Please enter 'y' for Yes or 'n' for No.\n"
+        check_untracked_files
+	;;
+    esac
   fi
 }
 
@@ -90,10 +116,12 @@ check_changes
 echo -e "Enter commit message:"
 read commit_message
 
-git commit -m "$commit_message" || handle_error "Failed to commit changes."
+echo -e "Enter commit description, press 'Enter' to skip:"
+read commit_description
+
+git commit -m "$commit_message" -m "$commit_description" || handle_error "Failed to commit changes."
 
 ask_push 
-#git push || handle_error "Failed to push changes to remote repository."
 
 echo -e "Changes successfully committed and pushed.\n"
 
