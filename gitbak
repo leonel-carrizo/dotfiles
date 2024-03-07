@@ -10,12 +10,19 @@
 
 # Function to check if there are changes to commit
 check_changes() {
-  local staged_changes=$(git diff --cached --name-only)
-  if [[ -n "$staged_changes" ]]; then
+  local staged_changes=$(git status | grep "nothing to commit, working tree clean" | wc -l)
+  if [[ $staged_changes  == 1 ]]; then
+    echo -e "No changes to be commited.\n"
+    exit 1
+  elif [[ staged_changes -le 0 ]]; then
     read -p "There are staged changes. Do you want to commit them? (y/n): " commit_choice
     case "$commit_choice" in
       y|Y)
-        return 0  # Continue with the script
+	echo -e "Enter commit message:"
+        read commit_message
+        echo -e "Enter commit description, press 'Enter' to skip:"
+	read commit_description
+	git commit -m "$commit_message" -m "$commit_description" || handle_error "Failed to commit changes."
         ;;
       n|N)
         echo -e "Skipping commit operation.\n"
@@ -81,7 +88,7 @@ check_unpushed_commits() {
 
 # Function to check for untracked files
 check_untracked_files() {
-  local unstaged_files_count=$(git status | grep "not staged for commit" | wc -l)
+  local unstaged_files_count=$(git status | grep "Changes not staged for commit" | wc -l)
   local untracked_files_count=$(git status | grep "Untracked" | wc -l)
   if [[ $unstaged_files_count -gt 0 || $untracked_files_count -gt 0 ]]; then
     read -p "There are untracked files. Do you want to add them to staging area? (y/n): " add_choice
@@ -113,15 +120,7 @@ check_untracked_files
 
 check_changes
 
-echo -e "Enter commit message:"
-read commit_message
-
-echo -e "Enter commit description, press 'Enter' to skip:"
-read commit_description
-
-git commit -m "$commit_message" -m "$commit_description" || handle_error "Failed to commit changes."
-
-ask_push 
+check_unpushed_commits
 
 echo -e "Changes successfully committed and pushed.\n"
 
