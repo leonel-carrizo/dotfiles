@@ -26,7 +26,8 @@ check_changes() {
         ;;
       n|N)
         echo -e "Skipping commit operation.\n"
-        exit 1
+	return 0;
+        #exit 1
         ;;
       *)
        echo -e "Please enter 'y' for Yes or 'n' for No.\n"
@@ -49,6 +50,7 @@ ask_push() {
     y|Y)
       echo -e "Pushing committed changes to remote repository...\n"
       git push || handle_error "Failed to push changes to remote repository."
+      echo -e "Changes successfully committed and pushed.\n"
       ;;
     n|N)
       echo -e "Skipping push operation.\n"
@@ -109,6 +111,7 @@ check_untracked_files() {
 }
 
 ####### Main script ###########
+clear
 git status >/dev/null 2>&1 || handle_error "This is not a git repository."
 
 git status -uno | grep "Your branch is behind" >/dev/null && git_pull
@@ -122,5 +125,4 @@ check_changes
 
 check_unpushed_commits
 
-echo -e "Changes successfully committed and pushed.\n"
 
