@@ -50,6 +50,7 @@ ask_push() {
     y|Y)
       echo -e "Pushing committed changes to remote repository...\n"
       git push || handle_error "Failed to push changes to remote repository."
+      echo -e "\n"
       echo -e "Changes successfully committed and pushed.\n"
       ;;
     n|N)
