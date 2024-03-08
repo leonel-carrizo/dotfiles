@@ -7,12 +7,15 @@
 "                                                                             "
 "------------------------------------------------------------------------------
 
+" remember the last position in the last files
+source $VIMRUNTIME/vimrc_example.vim
+
 ""let mapleader="\"
 set encoding=utf-8
 let &t_ut=''  " To render properly background of the color scheme
 
 " Add line numbers
-"set number
+set number
 nnoremap <leader>nn :set number!<CR>
 inoremap <leader>nn :set <C-o>:set number!<CR>
  
