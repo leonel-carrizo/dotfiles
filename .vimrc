@@ -203,8 +203,8 @@ inoremap ( ()<left>
 inoremap [ []<left>
 inoremap { {}<left>
 inoremap < <><left>
-inoremap " ""<left>
-inoremap ' ''<left>
+"inoremap " ""<left>
+"inoremap ' ''<left>
 
 " Keymap for using hjkl in INSERT mode
 inoremap <C-h> <Left>

@@ -10,12 +10,14 @@
 
 # Function to check if there are changes to commit
 check_changes() {
-  local staged_changes=$(git status | grep "nothing to commit, working tree clean" | wc -l)
-  if [[ $staged_changes  == 1 ]]; then
+  local tree_clean=$(git status | grep "nothing to commit, working tree clean" | wc -l)
+  local staged_changes=$(git status | grep "Changes to be committed" | wc -l)
+  if [[ $tree_clean == 1 ]]; then
     echo -e "No changes to be commited.\n"
     exit 1
-  elif [[ staged_changes -le 0 ]]; then
-    read -p "There are staged changes. Do you want to commit them? (y/n): " commit_choice
+  elif [[ staged_changes -eq 1 ]]; then
+    git status | sed -n '/Changes to be committed:/,/Changes not staged for commit:/p' | sed '2d; $d'
+    read -p "The changes above are in the stage. Do you want to commit them? (y/n): " commit_choice
     case "$commit_choice" in
       y|Y)
 	echo -e "Enter commit message:"
@@ -93,15 +95,20 @@ check_unpushed_commits() {
 check_untracked_files() {
   local unstaged_files_count=$(git status | grep "Changes not staged for commit" | wc -l)
   local untracked_files_count=$(git status | grep "Untracked" | wc -l)
-  if [[ $unstaged_files_count -gt 0 || $untracked_files_count -gt 0 ]]; then
+  if [[ $untracked_files_count -gt 0 ]]; then
+    git status | sed -n '/Untracked files:/,$p' | sed '2d'
     read -p "There are untracked files. Do you want to add them to staging area? (y/n): " add_choice
+  elif [[ $unstaged_files_count -gt 0 ]]; then
+    git status --short | grep "M"
+    read -p "There are unstaged changes. Do you want to add them to staging area? (y/n): " add_choice
     case "$add_choice" in
       y|Y)
-        echo -e "Adding untracked files to staging area...\n"
+        echo -e "Adding changed/untracked files to staging area...\n"
         git add .
         ;;
       n|N)
-        echo -e "Skipping adding untracked files to staging area.\n"
+        echo -e "Skipping adding changes to staging area.\n"
+	return 0;
         ;;
       *)
         echo -e "Please enter 'y' for Yes or 'n' for No.\n"
@@ -126,4 +133,4 @@ check_changes
 
 check_unpushed_commits
 
-
+echo -e "Finish\n"
