@@ -52,11 +52,11 @@ PATH=/root/.local/bin:/snap/bin:/usr/sandbox/:/usr/local/bin:/usr/bin:/bin:/usr/
 
 # Manual aliases
 alias ll='lsd -lh --group-dirs=first'
+alias lll='lsd -1 */**'
 alias la='lsd -a --group-dirs=first'
 alias l='lsd --group-dirs=first'
 alias lla='lsd -lha --group-dirs=first'
 alias ls='lsd --group-dirs=first'
-#alias cat='bat'
 alias myip="curl http://ipecho.net/plain; echo"
 alias vi='nvim'
 alias norm="norminette"
@@ -105,3 +105,5 @@ bindkey "^[[1;3D" backward-word
 source ~/.config/powerlevel10k/powerlevel10k.zsh-theme
 
 export PATH="$HOME/.local/bin:$PATH"
+
+PATH=~/.console-ninja/.bin:$PATH
