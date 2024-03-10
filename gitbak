@@ -39,7 +39,7 @@ check_changes()
 				;;
 			n|N)
 				echo -e "Skipping commit operation...\n"
-				sleep 0.2
+				sleep 0.3
 				return 0;
 				;;
 			*)
@@ -60,11 +60,11 @@ ask_push()
 			git push || handle_error "Failed to push changes to remote repository."
 			echo -e "\n"
 			echo -e "Changes successfully pushed.\n\n"
-			sleep 0.1
+			sleep 0.2
 			;;
 		n|N)
 			echo -e "Skipping push operation...\n"
-			sleep 0.2
+			sleep 0.3
 			;;
 		*)
 			echo -e "Please enter 'y' for Yes or 'n' for No.\n"
@@ -85,7 +85,7 @@ git_pull()
 			;;
 		n|N)
 			echo -e "Skipping pull operation...\n\n"
-			sleep 0.2
+			sleep 0.3
 			;;
 		*)
 			echo -e "Please enter 'y' for Yes or 'n' for No.\n"
@@ -116,11 +116,11 @@ check_untracked_files()
 			y|Y|"")
 				echo -e "Adding UNTRACKED files to staging area...\n\n"
 				git add .
-				sleep 0.1
+				sleep 0.2
 				;;
 			n|N)
 				echo -e "Skipping adding untracked files to staging area...\n\n"
-				sleep 0.2
+				sleep 0.3
 				return 0
 				;;
 			*)
@@ -143,11 +143,11 @@ check_unstaged_files()
 			y|Y|"")
 				echo -e "Adding UNSTAGED changes to staging area...\n\n"
 				git add .
-				sleep 0.1
+				sleep 0.2
 				;;
 			n|N)
 				echo -e "Skipping adding unstaged changes to staging area...\n"
-				sleep 0.2
+				sleep 0.3
 				return 0
 				;;
 			*)
@@ -168,7 +168,7 @@ check_pull_needed()
 			;;
 		n|N)
 			echo -e "Skipping checking the remote repository...\n"
-			sleep 0.2
+			sleep 0.3
 			return
 			;;
 		*)
@@ -184,11 +184,11 @@ check_pull_needed()
 		case "$response" in
 			y|Y|"")
 				git pull
-				sleep 0.1
+				sleep 0.2
 				;;
 			 n|N)
 				echo -e "Skipping 'git pull'...\n"
-				sleep 0.2
+				sleep 0.3
 				return
 				;;
 			*)
