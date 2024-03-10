@@ -43,7 +43,7 @@ check_changes()
 				return 0;
 				;;
 			*)
-				echo -e "Please enter 'y' for Yes or 'n' for No.\n"
+				echo -e "Please enter 'y/Y/Enter' for Yes or 'n/N' for No.\n"
 				check_changes
 				;;
 		esac
@@ -60,14 +60,14 @@ ask_push()
 			git push || handle_error "Failed to push changes to remote repository."
 			echo -e "\n"
 			echo -e "Changes successfully pushed.\n\n"
-			sleep 0.2
+			sleep 0.5
 			;;
 		n|N)
 			echo -e "Skipping push operation...\n"
-			sleep 0.3
+			sleep 0.5
 			;;
 		*)
-			echo -e "Please enter 'y' for Yes or 'n' for No.\n"
+			echo -e "Please press 'y/Y/Enter' for Yes or 'n/N' for No.\n"
 			ask_push
 			;;
 	esac
@@ -81,14 +81,14 @@ git_pull()
 		y|Y|"")
 			echo -e "Pulling changes from remote repository...\n\n"
 			git pull || handle_error "Failed to pull changes from remote repository."
-			sleep 0.2
+			sleep 0.4
 			;;
 		n|N)
 			echo -e "Skipping pull operation...\n\n"
-			sleep 0.3
+			sleep 0.5
 			;;
 		*)
-			echo -e "Please enter 'y' for Yes or 'n' for No.\n"
+			echo -e "Please enter 'y/Y/Enter' for Yes or 'n/N' for No.\n"
 			git_pull
 			;;
 	esac
@@ -111,20 +111,19 @@ check_untracked_files()
 		echo -e "There are untracked files:\n"
 		git status | sed -n '/Untracked files:/,$p' | sed '5d' | sed '2d'
 		read -p "Do you want to add them to staging area?: (y/n)" add_choice
-		echo -e "entre aqui\n"
 		case "$add_choice" in
 			y|Y|"")
 				echo -e "Adding UNTRACKED files to staging area...\n\n"
 				git add .
-				sleep 0.2
+				sleep 0.4
 				;;
 			n|N)
 				echo -e "Skipping adding untracked files to staging area...\n\n"
-				sleep 0.3
+				sleep 0.5
 				return 0
 				;;
 			*)
-				echo -e "Please enter 'y' for Yes or 'n' for No.\n"
+				echo -e "Please press 'y/Y/Enter' for Yes or 'n/N' for No.\n"
 				check_untracked_files
 				;;
 		esac
@@ -143,15 +142,15 @@ check_unstaged_files()
 			y|Y|"")
 				echo -e "Adding UNSTAGED changes to staging area...\n\n"
 				git add .
-				sleep 0.2
+				sleep 0.4
 				;;
 			n|N)
 				echo -e "Skipping adding unstaged changes to staging area...\n"
-				sleep 0.3
+				sleep 0.5
 				return 0
 				;;
 			*)
-				echo -e "Please enter 'y' for Yes or 'n' for No.\n"
+				echo -e "Please enter 'y/Y/Enter' for Yes or 'n/N' for No.\n"
 				check_unstaged_files
 				;;
 		esac
@@ -168,7 +167,7 @@ check_pull_needed()
 			;;
 		n|N)
 			echo -e "Skipping checking the remote repository...\n"
-			sleep 0.3
+			sleep 0.5
 			return
 			;;
 		*)
@@ -184,11 +183,11 @@ check_pull_needed()
 		case "$response" in
 			y|Y|"")
 				git pull
-				sleep 0.2
+				sleep 0.4
 				;;
 			 n|N)
 				echo -e "Skipping 'git pull'...\n"
-				sleep 0.3
+				sleep 0.5
 				return
 				;;
 			*)
