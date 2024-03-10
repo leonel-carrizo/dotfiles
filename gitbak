@@ -1,136 +1,231 @@
 #!/bin/bash
 #----------------------------------------------------------------------------#
-#           _  _____          _                 _                            # 
-#          | ||___ /   ___   | | __ _ __  _ __ (_) ____ ___                  # 
-#          | |  |_ \  / _ \  | |/ /| '__|| '__|| ||_  // _ \                 # 
-#          | | ___) || (_) | |   < | |   | |   | | / /| (_) |                # 
-#          |_||____/  \___/  |_|\_\|_|   |_|   |_|/___|\___/                 # 
-#                                                                            # 
+#           _  _____          _                 _                            #
+#          | ||___ /   ___   | | __ _ __  _ __ (_) ____ ___                  #
+#          | |  |_ \  / _ \  | |/ /| '__|| '__|| ||_  // _ \                 #
+#          | | ___) || (_) | |   < | |   | |   | | / /| (_) |                #
+#          |_||____/  \___/  |_|\_\|_|   |_|   |_|/___|\___/                 #
+#                                                                            #
+#----------------------------------------------------------------------------#
+#  by: Leonel Carrizo (2024).                                                #
+#      This script makes it easy to back up versioned projects with Git,     #
+#      asking the user for confirmations to help you save time by not        #
+#      having to type all the commands                                       #
 #----------------------------------------------------------------------------#
 
-# Function to check if there are changes to commit
-check_changes() {
-  local tree_clean=$(git status | grep "nothing to commit, working tree clean" | wc -l)
-  local staged_changes=$(git status | grep "Changes to be committed" | wc -l)
-  if [[ $tree_clean == 1 ]]; then
-    echo -e "No changes to be commited.\n"
-    exit 1
-  elif [[ staged_changes -eq 1 ]]; then
-    git status | sed -n '/Changes to be committed:/,/Changes not staged for commit:/p' | sed '2d; $d'
-    read -p "The changes above are in the stage. Do you want to commit them? (y/n): " commit_choice
-    case "$commit_choice" in
-      y|Y)
-	echo -e "Enter commit message:"
-        read commit_message
-        echo -e "Enter commit description, press 'Enter' to skip:"
-	read commit_description
-	git commit -m "$commit_message" -m "$commit_description" || handle_error "Failed to commit changes."
-        ;;
-      n|N)
-        echo -e "Skipping commit operation.\n"
-	return 0;
-        #exit 1
-        ;;
-      *)
-       echo -e "Please enter 'y' for Yes or 'n' for No.\n"
-       check_changes
-       ;;
-    esac
-  fi
+handle_error()
+{
+	echo -e "Error:	$1\n"
+       	exit 1
 }
 
-# Function to handle errors
-handle_error() {
-  echo -e "Error: $1"
-  exit 1
+# check if there are changes to commit
+check_changes()
+{
+	local tree_clean=$(git status | grep "nothing to commit, working tree clean" | wc -l)
+	local staged_changes=$(git status | grep "Changes to be committed" | wc -l)
+	if [[ $tree_clean -eq 1 ]]; then
+		echo -e "No changes to be commited.\n\n"
+		return
+	elif [[ staged_changes -eq 1 ]]; then
+		git status | sed -n '/Changes to be committed:/,/Changes not staged for commit:/p' | sed '2d; $d'
+		read -p "Do you want to commit them? (y/n): " commit_res
+		case "$commit_res" in
+			y|Y|"")
+				read -p $'Enter commit message:\n' commit_mes
+				read -p $'Enter commit description or press "Enter" to skip:\n' commit_des
+				git commit -m "$commit_mes" -m "$commit_des" || handle_error "Failed to commit changes."
+				ask_push
+				;;
+			n|N)
+				echo -e "Skipping commit operation...\n"
+				sleep 0.2
+				return 0;
+				;;
+			*)
+				echo -e "Please enter 'y' for Yes or 'n' for No.\n"
+				check_changes
+				;;
+		esac
+	fi
 }
 
 # Function to ask if the user wants to push changes
-ask_push() {
-  read -p "You have committed changes. Do you want to push them? (y/n): " push_choice
-  case "$push_choice" in
-    y|Y)
-      echo -e "Pushing committed changes to remote repository...\n"
-      git push || handle_error "Failed to push changes to remote repository."
-      echo -e "\n"
-      echo -e "Changes successfully committed and pushed.\n"
-      ;;
-    n|N)
-      echo -e "Skipping push operation.\n"
-      ;;
-    *)
-      echo -e "Please enter 'y' for Yes or 'n' for No.\n"
-      ask_push
-      ;;
-  esac
+ask_push()
+{
+	read -p "You have committed changes. Do you want to push them? (y/n): " push_choice
+	case "$push_choice" in
+		y|Y|"")
+			echo -e "Pushing committed changes to remote repository...\n"
+			git push || handle_error "Failed to push changes to remote repository."
+			echo -e "\n"
+			echo -e "Changes successfully pushed.\n\n"
+			sleep 0.1
+			;;
+		n|N)
+			echo -e "Skipping push operation...\n"
+			sleep 0.2
+			;;
+		*)
+			echo -e "Please enter 'y' for Yes or 'n' for No.\n"
+			ask_push
+			;;
+	esac
 }
 
-# Function to perform git pull
-git_pull() {
-  read -p "Your branch is behind remote. Do you want to pull changes from remote repository? (y/n): " pull_choice
-  case "$pull_choice" in
-    y|Y)
-      echo -e "Pulling changes from remote repository...\n"
-      git pull || handle_error "Failed to pull changes from remote repository."
-      ;;
-    n|N)
-      echo -e "Skipping pull operation.\n"
-      ;;
-    *)
-      echo -e "Please enter 'y' for Yes or 'n' for No.\n"
-      git_pull
-      ;;
-  esac
+# perform git pull
+git_pull()
+{
+	read -p "Your branch is behind remote. Do you want to pull changes from remote repository? (y/n): " pull_choice
+	case "$pull_choice" in
+		y|Y|"")
+			echo -e "Pulling changes from remote repository...\n\n"
+			git pull || handle_error "Failed to pull changes from remote repository."
+			sleep 0.2
+			;;
+		n|N)
+			echo -e "Skipping pull operation...\n\n"
+			sleep 0.2
+			;;
+		*)
+			echo -e "Please enter 'y' for Yes or 'n' for No.\n"
+			git_pull
+			;;
+	esac
 }
 
-# Function to check for unpushed commits
-check_unpushed_commits() {
-  local unpushed_commits=$(git status | grep "Your branch is ahead of" | wc -l)
-  if [[ $unpushed_commits -gt 0 ]]; then
-    ask_push
-  fi
+# check for unpushed commits
+check_unpushed_commits()
+{
+	local unpushed_commits=$(git status | grep "Your branch is ahead of" | wc -l)
+	if [[ $unpushed_commits -gt 0 ]]; then
+		ask_push
+	fi
 }
 
-# Function to check for untracked files
-check_untracked_files() {
-  local unstaged_files_count=$(git status | grep "Changes not staged for commit" | wc -l)
-  local untracked_files_count=$(git status | grep "Untracked" | wc -l)
-  if [[ $untracked_files_count -gt 0 ]]; then
-    git status | sed -n '/Untracked files:/,$p' | sed '2d'
-    read -p "There are untracked files. Do you want to add them to staging area? (y/n): " add_choice
-  elif [[ $unstaged_files_count -gt 0 ]]; then
-    git status --short | grep "M"
-    read -p "There are unstaged changes. Do you want to add them to staging area? (y/n): " add_choice
-    case "$add_choice" in
-      y|Y)
-        echo -e "Adding changed/untracked files to staging area...\n"
-        git add .
-        ;;
-      n|N)
-        echo -e "Skipping adding changes to staging area.\n"
-	return 0;
-        ;;
-      *)
-        echo -e "Please enter 'y' for Yes or 'n' for No.\n"
-        check_untracked_files
-	;;
-    esac
-  fi
+check_untracked_files()
+{
+	local untracked_files_count=$(git status | grep "Untracked" | wc -l)
+
+	if [[ $untracked_files_count -gt 0 ]]; then
+		echo -e "There are untracked files:\n"
+		git status | sed -n '/Untracked files:/,$p' | sed '5d' | sed '2d'
+		read -p "Do you want to add them to staging area?: (y/n)" add_choice
+		echo -e "entre aqui\n"
+		case "$add_choice" in
+			y|Y|"")
+				echo -e "Adding UNTRACKED files to staging area...\n\n"
+				git add .
+				sleep 0.1
+				;;
+			n|N)
+				echo -e "Skipping adding untracked files to staging area...\n\n"
+				sleep 0.2
+				return 0
+				;;
+			*)
+				echo -e "Please enter 'y' for Yes or 'n' for No.\n"
+				check_untracked_files
+				;;
+		esac
+	fi
+}
+
+check_unstaged_files()
+{
+	local unstaged_files_count=$(git status | grep "Changes not staged for commit" | wc -l)
+
+	if [[ $unstaged_files_count -gt 0 ]]; then
+		echo -e "There are unstaged changes:\n"
+		git status --short | grep "M"
+		read -p "Do you want to add them to staging area? (y/n): " add_choice
+		case "$add_choice" in
+			y|Y|"")
+				echo -e "Adding UNSTAGED changes to staging area...\n\n"
+				git add .
+				sleep 0.1
+				;;
+			n|N)
+				echo -e "Skipping adding unstaged changes to staging area...\n"
+				sleep 0.2
+				return 0
+				;;
+			*)
+				echo -e "Please enter 'y' for Yes or 'n' for No.\n"
+				check_unstaged_files
+				;;
+		esac
+	fi
+}
+
+check_pull_needed()
+{
+	read -p "Do you want to check the remote repository? (y/n): " check_remote
+	case "$check_remote" in
+		y|Y|"")
+			echo -e "Fetching remote repository ...\n"
+			git fetch
+			;;
+		n|N)
+			echo -e "Skipping checking the remote repository...\n"
+			sleep 0.2
+			return
+			;;
+		*)
+			echo -e "Please press 'y/Y/Enter' for YES or 'N/n' for skip \n"
+			check_pull_needed
+			;;
+	esac
+	 status_output=$(git status)
+
+	if echo "$status_output" | grep -q "Your branch is behind 'origin/main' by 1 commit, and can be fast-forwarded."; then
+		echo "Your branch is behind 'origin/main'."
+		read -p "Do you want to do 'git pull' now? (y/n): " response
+		case "$response" in
+			y|Y|"")
+				git pull
+				sleep 0.1
+				;;
+			 n|N)
+				echo -e "Skipping 'git pull'...\n"
+				sleep 0.2
+				return
+				;;
+			*)
+				echo -e "Skipping 'git pull'...\n"
+				;;
+		esac
+	else
+		echo -e "Your branch is up to date, skeeping 'git pull'.\n"
+		sleep 0.2
+	fi
 }
 
 ####### Main script ###########
 clear
+
+echo "  _____                    ____ _ _     "
+echo " | ____|__ _ ___ _   _    / ___(_) |_   "
+echo " |  _| / _\` / __| | | |  | |  _| | __|  "
+echo " | |__| (_| \__ \ |_| |  | |_| | | |_   "
+echo " |_____\__,_|___/\__, |   \____|_|\__|  "
+echo "                 |___/                  "
+echo "                                        "
+echo "        By Leonel Carrizo (2024)        "
+echo -e "__________________________________________\n"
+
 git status >/dev/null 2>&1 || handle_error "This is not a git repository."
 
-git status -uno | grep "Your branch is behind" >/dev/null && git_pull
+check_pull_needed
 
-# Check for uncommitted changes
 check_unpushed_commits
 
 check_untracked_files
 
+check_unstaged_files
+
 check_changes
 
-check_unpushed_commits
-
-echo -e "Finish\n"
+echo -e "<<<<<<<<<<< FINAL STATUS >>>>>>>>>>>\n\n"
+git status
+echo -e "\n\n<<<<<<<<<<<<<<< END >>>>>>>>>>>>>>>\n"
