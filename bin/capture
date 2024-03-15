@@ -1,0 +1,4 @@
+#!/bin/bash
+# screen capture selection
+scrot -s -f 'screenshot_%Y-%m-%d-%H-%M-%S.png' && 
+mv screenshot*.png /home/l3o/Pictures/captures/

@@ -1,0 +1,8 @@
+#!/bin/bash
+# change random wallpaper
+
+PATH_WALLPAPERS=~/Pictures/wallpaper
+
+IMAGE=$(ls $PATH_WALLPAPERS/* | shuf -n 1)
+
+feh --no-fehbg --bg-fill "$IMAGE"
