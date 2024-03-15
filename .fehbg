@@ -1,2 +1,2 @@
-#!/bin/bash
-feh --bg-fill ~/Pictures/wallpaper/nordwall3.png
+#!/bin/sh
+feh --no-fehbg --bg-fill '/home/l3o/Pictures/wallpaper/nature.jpg' 
