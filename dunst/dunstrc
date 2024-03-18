@@ -24,22 +24,22 @@
     # dynamic width from 0 to 300
     # width = (0, 300)
     # constant width of 300
-    width = 300
+    width = (0, 300)
 
     # The maximum height of a single notification, excluding the frame.
-    height = 300
+    height = 210
 
     # Position the notification in the top right corner
     origin = top-right
 
     # Offset from the origin
-    offset = 10x50
+    offset = 15x40
 
     # Scale factor. It is auto-detected if value is 0.
     scale = 0
 
     # Maximum number of notification (0 means no limit)
-    notification_limit = 20
+    notification_limit = 10
 
     ### Progress bar ###
 
@@ -123,7 +123,7 @@
 
     ### Text ###
 
-    font = Monospace 8
+    font = Monospace 10
 
     # The spacing between lines.  If the height is smaller than the
     # font height, it will get raised to the font height.
@@ -163,7 +163,7 @@
     #   %n  progress value if set without any extra characters
     #   %%  Literal %
     # Markup is allowed
-    format = "<b>%s</b>\n%b"
+    format = "<b>%s</b>\n%b\n%n"
 
     # Alignment of message text.
     # Possible values are "left", "center" and "right".
@@ -203,7 +203,7 @@
     # Set icon theme (only used for recursive icon lookup)
     # icon_theme = Adwaita
     # You can also set multiple icon themes, with the leftmost one being used first.
-    icon_theme = "Adwaita, breeze"
+    icon_theme = "Tela-circle-grey-dark, Adwaita"
 
     # Align icons left/right/top/off
     icon_position = left
@@ -218,7 +218,7 @@
 
     # Paths to default icons (only neccesary when not using recursive icon lookup)
     # icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/
-    icon_path = /usr/share/icons
+    icon_path = /usr/share/icons/
     
 
     ### History ###
@@ -280,7 +280,7 @@
     # By enabling this setting dunst will not be able to detect when a monitor
     # is connected or disconnected which might break follow mode if the screen
     # layout changes.
-    force_xinerama = false
+    force_xinerama = true
 
     ### mouse
 

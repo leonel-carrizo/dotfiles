@@ -16,7 +16,7 @@ exec --no-startup-id dex --autostart --environment i3
 # screen before suspend. Use loginctl lock-session to lock your screen.
 # exec --no-startup-id xss-lock --transfer-sleep-lock -- betterlockscreen -l --nofork
 # bindsym $mod+x exec --no-startup-id i3lock -e -f --image ~/Pictures/wallpaper/wallpaper-4.png --tiling
-bindsym $mod+x exec --no-startup-id betterlockscreen -l --off 30 --span
+bindsym $mod+x exec --no-startup-id betterlockscreen -l --off 20 --span --show-layout 
 bindsym Ctrl+Mod4+l exec --no-startup-id wlogout
 #bindsym XF86PowerOff exec --no-startup-id wlogout
 
@@ -33,8 +33,8 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ to
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 ### BRIGHTNESS ###
-bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +5% && $refresh_i3status
-bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%- && $refresh_i3status
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +5%
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
 
 ### MUSIC ###
 # for laptop thinkPad L14 #
@@ -151,7 +151,7 @@ bindsym $mod+e layout toggle split
 bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+bindsym $mod+Ctrl+space focus mode_toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
@@ -203,9 +203,11 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 
 ### RELOAD SCREEN layout ###
 # When conect 2 screens 
-bindsym $mod+Ctrl+F9 exec --no-startup-id ~/.screenlayout/2-screens.sh
+bindsym $mod+Ctrl+F8 exec --no-startup-id ~/.screenlayout/1-screens.sh
 # When there is just one screen connected
-bindsym $mod+Ctrl+F10 exec --no-startup-id ~/.screenlayout/1-screens.sh
+bindsym $mod+Ctrl+F9 exec --no-startup-id ~/.screenlayout/2-screens.sh
+#when 3 screen are connected 
+bindsym $mod+Ctrl+F10 exec --no-startup-id ~/.screenlayout/3-screens.sh
 
 ###### MOVE FOCUSED WORKSPACE BETWEEN MONITORS ######
 bindsym $mod+Ctrl+period move workspace to output right
@@ -268,7 +270,7 @@ bar {
         urgent_workspace #eb709b #eb709b #ffffff
     }
 }
-bindsym Ctrl+Mod1+space bar mode toggle
+bindsym Mod1+Mod4+t bar mode toggle
 
 #onedark-graphite-theme
 # class                 border  backgr. text    indicator child_border
@@ -289,7 +291,7 @@ gaps inner 5px
 #
 #
 ###### TOGGLE KEYBOARD LAYOUT ######
-bindsym Mod1+F9 exec --no-startup-id ~/.local/bin/kb-layout
+bindsym $mod+space  exec --no-startup-id ~/.local/bin/kb-layout
 
 ###### CALCULATOR FLOATING MODE #######
 for_window [class="gnome-calculator"] floating enable
@@ -297,4 +299,11 @@ for_window [class="gnome-calculator"] resize set 500 350
 ###### PAVUCONTROL FLOATING MODE #######
 for_window [class="Pavucontrol"] floating enable
 for_window [class="Pavucontrol"] resize set 750 500
+###### BLUEMAN-MANAGER FLOATING MODE #######
+for_window [class="Blueman-manager"] floating enable
+for_window [class="Blueman-manager"] resize set 750 500
+###### Lxappearance FLOATING MODE #######
+for_window [class="Lxappearance"] floating enable
+for_window [class="Lxappearance"] resize set 750 500
+
 

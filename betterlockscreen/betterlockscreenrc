@@ -1,4 +1,7 @@
+# Docs: https://github.com/betterlockscreen/betterlockscreen?tab=readme-ov-file#configuration
 # ~/.config/betterlockscreenrc
+# Update the background running:
+# 	betterlockscreen -
 
 # default options
 display_on=0
@@ -13,9 +16,9 @@ wallpaper_cmd="feh --bg-fill"
 quiet=false
 
 # default theme
-loginbox=00000100
+loginbox=00000090
 loginshadow=00000000
-locktext="Type password to unlock..."
+locktext="Type password ..."
 font="sans-serif"
 ringcolor=ffffffff
 insidecolor=00000000
@@ -28,11 +31,11 @@ timecolor=ffffffff
 time_format="%H:%M:%S"
 greetercolor=ffffffff
 layoutcolor=ffffffff
-keyhlcolor=d23c3dff
+keyhlcolor=596AFFff
 bshlcolor=d23c3dff
 veriftext="Verifying..."
 verifcolor=ffffffff
-wrongtext="Failure!"
+wrongtext="Wrong Password!"
 wrongcolor=d23c3dff
 modifcolor=d23c3dff
 bgcolor=000000ff

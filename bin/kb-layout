@@ -1,3 +1,46 @@
 #!/bin/bash
+#----------------------------------------------------------------------------#
+#           _  _____          _                 _                            #
+#          | ||___ /   ___   | | __ _ __  _ __ (_) ____ ___                  #
+#          | |  |_ \  / _ \  | |/ /| '__|| '__|| ||_  // _ \                 #
+#          | | ___) || (_) | |   < | |   | |   | | / /| (_) |                #
+#          |_||____/  \___/  |_|\_\|_|   |_|   |_|/___|\___/                 #
+#                                                                            #
+#----------------------------------------------------------------------------#
+#  by: Leonel Carrizo (2024).                                                #
+#      This script help to change bwteen keyboards layouts                   #
+#      It can be used by set a shortcut in your WM or program for            #
+#      Managing shortcuts.                                                   #
+#----------------------------------------------------------------------------#
 
-(setxkbmap -query | grep -q "layout:\s\+us") && setxkbmap gb || setxkbmap us
+# (setxkbmap -query | grep -q "layout:\s\+us") && setxkbmap gb || setxkbmap us
+#
+layouts=("gb" "us" "es")
+
+current_layout=$(setxkbmap -query | grep layout | awk '{print $2}')
+
+next_layout=""
+for ((i=0; i<${#layouts[@]}; i++)); do
+    if [ "${layouts[$i]}" = "$current_layout" ]; then
+        next_index=$((($i + 1) % ${#layouts[@]}))
+        next_layout="${layouts[$next_index]}"
+        break
+    fi
+done
+
+echo "$next_layout"
+
+if [ -z "$next_layout" ]; then
+    # Si next_layout sigue vacío, establecemos un diseño predeterminado
+    next_layout="${layouts[1]}"
+fi
+echo "$next_layout"
+
+setxkbmap "$next_layout"
+
+icon_path="$HOME/.local/share/icons/kb-layout/${next_layout}.png"
+next_layout=$(echo "$next_layout" | tr '[:lower:]' '[:upper:]')
+
+notification_text="Keyboard: $next_layout"
+dunstify -i "$icon_path" "$notification_text"
+
