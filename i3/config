@@ -3,7 +3,7 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:HackNerdFont 11
+font pango:HackNerdFont 12
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
@@ -16,8 +16,8 @@ exec --no-startup-id dex --autostart --environment i3
 # screen before suspend. Use loginctl lock-session to lock your screen.
 # exec --no-startup-id xss-lock --transfer-sleep-lock -- betterlockscreen -l --nofork
 # bindsym $mod+x exec --no-startup-id i3lock -e -f --image ~/Pictures/wallpaper/wallpaper-4.png --tiling
-bindsym $mod+x exec --no-startup-id betterlockscreen -l --off 20 --span --show-layout 
-bindsym Ctrl+Mod4+l exec --no-startup-id wlogout
+bindsym $mod+x exec --no-startup-id betterlockscreen -l --off 120 --span --show-layout 
+bindsym Ctrl+Mod4+l exec --no-startup-id wlogout -n
 #bindsym XF86PowerOff exec --no-startup-id wlogout
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
@@ -86,9 +86,12 @@ bindsym $mod+Return exec kitty
 ### SCREENSHOT ###
 bindsym --release Print exec --no-startup-id ~/.local/bin/capture
 
-# start a borwser
+# start a browser
 bindsym $mod+n exec firefox
 bindsym $mod+b exec brave
+
+# open a browser file
+bindsym $mod+t exec thunar
 
 #kill focused window
 bindsym Mod1+q kill
@@ -213,6 +216,10 @@ bindsym $mod+Ctrl+F10 exec --no-startup-id ~/.screenlayout/3-screens.sh
 bindsym $mod+Ctrl+period move workspace to output right
 bindsym $mod+Ctrl+comma move workspace to output left
 
+#### UPDATE LOCKSCREEN WALLPAPER #####
+# Just update how many screen are conected
+bindsym --release $mod+Shift+l exec --no-startup-id betterlockscreen -u ~/Pictures/wallpaper/tron-legacy01.jpg
+
 #### RANDOM WALLPAPER ###
 bindsym $mod+Ctrl+F11 exec --no-startup-id ~/.local/bin/wprandom
 
@@ -221,7 +228,7 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -254,17 +261,18 @@ bindsym $mod+r mode "resize"
 # finds out, if available)
 bar {
 	tray_output primary
-  position top
-        status_command i3status 
-    mode hide
-    hidden_state hide
-    modifier Mod1+Mod4
+	position top
+	status_command i3status 
+	mode hide
+	hidden_state hide
+	modifier Mod1+Mod4
+	font pango:HackNerdFont 13
 
     colors {
         background #2E3440
-        statusline #ECEFF4
+        statusline #268bd2
         separator #E1140A
-        focused_workspace #ECEFF4 #ECEFF4 #000000
+        focused_workspace #268bd2 #268bd2 #000000
         active_workspace #333333 #333333 #888888
         inactive_workspace #CECECE #333333 #f1f1f1
         urgent_workspace #eb709b #eb709b #ffffff
@@ -274,7 +282,7 @@ bindsym Mod1+Mod4+t bar mode toggle
 
 #onedark-graphite-theme
 # class                 border  backgr. text    indicator child_border
-client.focused          #ECEFF4 #2E3440 #E5E9F0 #ECEFF4   #ECEFF4
+client.focused          #268bd2 #2E3440 #E5E9F0 #268bd2   #268bd2
 client.focused_inactive #4C566A #5f676a #ffffff #434C5E   #434C5E
 client.unfocused        #333333 #222222 #888888 #292d2e   #222222
 client.urgent           #cc241d #900000 #ffffff #cc241d   #cc241d

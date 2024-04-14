@@ -2,36 +2,36 @@
     "label" : "lock",
     "action" : "sleep 1; betterlockscreen -l --off 30 --span --show-layout
 ",
-    "text" : "Lock",
+    "text" : "Lock (l)",
     "keybind" : "l"
 }
 {
     "label" : "hibernate",
     "action" : "sleep 1; systemctl hibernate",
-    "text" : "Hibernate",
+    "text" : "Hibernate (h)",
     "keybind" : "h"
 }
 {
     "label" : "logout",
     "action" : "i3-msg exit",
-    "text" : "Logout",
+    "text" : "Logout (e)",
     "keybind" : "e"
 }
 {
     "label" : "shutdown",
     "action" : "sleep 1; systemctl poweroff",
-    "text" : "Shutdown",
+    "text" : "Shutdown (s)",
     "keybind" : "s"
 }
 {
     "label" : "suspend",
     "action" : "sleep 1; systemctl suspend",
-    "text" : "Suspend",
+    "text" : "Suspend (u)",
     "keybind" : "u"
 }
 {
     "label" : "reboot",
     "action" : "sleep 1; systemctl reboot",
-    "text" : "Reboot",
+    "text" : "Reboot (r)",
     "keybind" : "r"
 }

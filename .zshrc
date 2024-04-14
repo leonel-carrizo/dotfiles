@@ -15,9 +15,6 @@ prompt adam1
 
 setopt histignorealldups sharehistory
 
-# Use emacs keybindings even if our EDITOR is set to vi
-bindkey -e
-
 # Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
 HISTSIZE=1000
 SAVEHIST=1000
@@ -52,7 +49,7 @@ PATH=/root/.local/bin:/snap/bin:/usr/sandbox/:/usr/local/bin:/usr/bin:/bin:/usr/
 
 # Manual aliases
 alias ll='lsd -lh --group-dirs=first'
-alias lll='lsd -1 */**'
+alias lll='lsd */**/*'
 alias la='lsd -a --group-dirs=first'
 alias l='lsd --group-dirs=first'
 alias lla='lsd -lha --group-dirs=first'
@@ -62,7 +59,7 @@ alias vi='nvim'
 alias norm="norminette"
 alias comp="cc -Wall -Werror -Wextra"
 alias cl="clear"
-alias gitbk="git add . && git commit -am 'backup' && git push"
+alias gitb="lazy_git"
 alias gits="git status"
 alias rg="ranger"
 alias gdbc="gcc -Wall -Werror -Wextra -g"
@@ -84,6 +81,7 @@ function man() {
     LESS_TERMCAP_so=$'\e[01;44;33m' \
     LESS_TERMCAP_ue=$'\e[0m' \
     LESS_TERMCAP_us=$'\e[01;32m' \
+    LESS_TERMCAP_gb=$'\e[01;32m' \
     man "$@"
 }
 
@@ -93,10 +91,6 @@ function man() {
     shred -zun -v $1
   }
 
-# Finalize Powerlevel10k instant prompt. Should stay at the bottom of ~/.zshrc.
-(( ! ${+functions[p10k-instant-prompt-finalize]} )) || p10k-instant-prompt-finalize
-
-
 bindkey "^[[H" beginning-of-line
 bindkey "^[[F" end-of-line
 bindkey "^[[3~" delete-char
@@ -105,5 +99,13 @@ bindkey "^[[1;3D" backward-word
 source ~/.config/powerlevel10k/powerlevel10k.zsh-theme
 
 export PATH="$HOME/.local/bin:$PATH"
+export TERMINAL=xterm-kitty
+export MANPAGER="less -R --use-color -Dd+r -Du+b"
+export MANROFFOPT="-c"
+export LESS='-R --use-color -Dd+r$Du+b$'
 
 PATH=~/.console-ninja/.bin:$PATH
+
+# Finalize Powerlevel10k instant prompt. Should stay at the bottom of ~/.zshrc.
+(( ! ${+functions[p10k-instant-prompt-finalize]} )) || p10k-instant-prompt-finalize
+
