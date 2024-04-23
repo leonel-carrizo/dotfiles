@@ -10,6 +10,9 @@
 " remember the last position in the last files
 source $VIMRUNTIME/vimrc_example.vim
 
+" Disable compatibility with vi which can cause unexpected issues.
+set nocompatible
+
 ""let mapleader="\"
 set encoding=utf-8
 let &t_ut=''  " To render properly background of the color scheme
@@ -23,8 +26,18 @@ inoremap <leader>nn :set <C-o>:set number!<CR>
 nnoremap <leader>rn :set relativenumber!<CR>
 inoremap <leader>rn <C-o>:set relativenumber!<CR>
 
+" Turn syntax highlighting on.
+syntax on
+
+" clear highlight after a search
+nnoremap <silent> <Leader>. :nohl<CR> 
+
 " Show cursor position.
-" set cursorline
+set cursorline
+set culopt=number
+hi CursorLineNr cterm=bold ctermfg=LightGrey
+hi LineNr ctermfg=DarkGrey
+
 " status line
 set laststatus=2
 
@@ -32,12 +45,7 @@ set laststatus=2
 set statusline=%t\ [%{mode()}]\ %r%m%h%w%=\ File:\ %{&filetype}%=\ \
 			\ %l-%c\\|\%L-lines\\|\(%p%%)
 
-" Disable compatibility with vi which can cause unexpected issues.
-set nocompatible
-
-" Turn syntax highlighting on.
-syntax on
-
+" ----------- INDENTATION ------------
 " Enable type file detection. to try to detect the type of file in use.
 filetype plugin indent on
 
@@ -54,19 +62,16 @@ set cindent
 "set expandtab
 
 " Do not let cursor scroll below or above N number of lines when scrolling.
-set scrolloff=10
+set scrolloff=5
 
 " Set Mouse support
-set mouse=r
+set mouse=a
 
 " Do not wrap lines. Allow long lines to extend as far as the line goes.
 set nowrap
 
 " While searching incrementally highlight matching characters as you type.
 set incsearch
-
-" clear highlight after a search
-nnoremap <silent> <Leader>. :nohl<CR> 
 
 " Ignore capital letters during search.
 set ignorecase
