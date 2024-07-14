@@ -13,7 +13,14 @@ source $VIMRUNTIME/vimrc_example.vim
 " Disable compatibility with vi which can cause unexpected issues.
 set nocompatible
 
-""let mapleader="\"
+" spell checking
+" set spell
+
+let mapleader="\<Space>"
+set timeoutlen=300
+autocmd InsertEnter * set timeoutlen=0
+autocmd InsertLeave * set timeoutlen=300
+
 set encoding=utf-8
 let &t_ut=''  " To render properly background of the color scheme
 
@@ -99,6 +106,9 @@ set history=1000
 " new line with comment if the last wast commented
 set fo+=ro
 
+" Comments color
+hi Comment term=bold ctermfg=DarkGrey guifg=#80a0ff gui=bold
+
 " For Commentary Pluging
 noremap <leader>/ :Commentary<cr>
 inoremap <leader>/ :Commentary<cr>
@@ -153,19 +163,19 @@ noremap <C-S> :update<CR>
 vnoremap <C-S> <C-C>:update<CR>
 
 " close
-nnoremap <C-x> :x<CR>
-inoremap <C-x> <C-O>:x<CR>
-vnoremap <C-x> <C-C>:x<CR>
+nnoremap <C-Q> :x<CR>
+inoremap <C-Q> <C-O>:x<CR>
+vnoremap <C-Q> <C-C>:x<CR>
 
 " ----------------------- NETRW, TABS, TERMINAL  -----------------------------
 
 "Edit Vim config file in a new tab.
-map <leader>ev :tabnew $MYVIMRC<CR>
+map <leader>ro :tabnew $MYVIMRC<CR>
 " update config file
-map <leader>sv :source $MYVIMRC<CR>
+map <leader>rg :source $MYVIMRC<CR>
 
 " Netrw with
-let g:netrw_winsize= 25
+let g:netrw_winsize = 20
 
 " netrw stile with details 
 let g:netrw_liststyle=3
@@ -179,15 +189,15 @@ function! ToggleExplorer()
         let g:explorer_is_open = 0
     else
         " if close it, open it
-        Lex 25
+        Lex
         let g:explorer_is_open = 1
     endif
 endfunction
 
 " open new tab on netrw
-nnoremap <leader>ll :call ToggleExplorer()<CR>
+nnoremap <leader>e :call ToggleExplorer()<CR>
 
-nnoremap <leader>nt <Esc>:tabe<CR>
+nnoremap <leader>t <Esc>:tabe<CR>:Lex<CR>
 
 " open terminal horizontal
 nnoremap <leader>tr <Esc>:terminal<CR>
@@ -216,7 +226,9 @@ inoremap <C-h> <Left>
 inoremap <C-j> <Down>
 inoremap <C-k> <Up>
 inoremap <C-l> <Right>
-inoremap <C-;> <End>
+inoremap <C-o> <End>
+inoremap <C-u> <Home>
+inoremap <C-c> <Delete>
 
 "------------------------Enter in the midle of [] {}----------------------------
 inoremap <expr> <CR> CheckBraces()

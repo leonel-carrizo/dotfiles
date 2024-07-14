@@ -218,7 +218,7 @@ bindsym $mod+Ctrl+comma move workspace to output left
 
 #### UPDATE LOCKSCREEN WALLPAPER #####
 # Just update how many screen are conected
-bindsym --release $mod+Shift+l exec --no-startup-id betterlockscreen -u ~/Pictures/wallpaper/tron-legacy01.jpg
+bindsym --release $mod+Ctrl+Shift+l exec --no-startup-id betterlockscreen -u $USER/Pictures/wallpaper/tron-legacy01.jpg
 
 #### RANDOM WALLPAPER ###
 bindsym $mod+Ctrl+F11 exec --no-startup-id ~/.local/bin/wprandom
@@ -266,19 +266,19 @@ bar {
 	mode hide
 	hidden_state hide
 	modifier Mod1+Mod4
-	font pango:HackNerdFont 13
+	font pango:HackNerdFont 12
 
-    colors {
-        background #2E3440
-        statusline #268bd2
-        separator #E1140A
-        focused_workspace #268bd2 #268bd2 #000000
-        active_workspace #333333 #333333 #888888
-        inactive_workspace #CECECE #333333 #f1f1f1
-        urgent_workspace #eb709b #eb709b #ffffff
-    }
+	colors {
+		background #2E3440
+		statusline #268bd2
+		separator #E1140A
+		focused_workspace #268bd2 #268bd2 #000000
+		active_workspace #333333 #333333 #888888
+		inactive_workspace #CECECE #333333 #f1f1f1
+		urgent_workspace #eb709b #eb709b #ffffff
+	}
 }
-bindsym Mod1+Mod4+t bar mode toggle
+bindsym Mod1+Mod4+space bar mode toggle
 
 #onedark-graphite-theme
 # class                 border  backgr. text    indicator child_border
@@ -291,11 +291,20 @@ client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 client.background       #3B4252
 
 ######## HIDE TITLE BAR ########
-for_window [class="^.*"] border pixel 5
+for_window [class="^.*"] border pixel 1
+
+####### Don’t focus window upon opening #######
+# no_focus [all]
+
+# ##### NORMAL TITLE BAR #######
+# for_window [class="^.*"] border normal
+for_window [title="so_long game"] border normal
+title_align center
+# for_window [all] title_window_icon padding 5px
 
 ######## GAPS ########
-gaps inner 5px
-# gaps outer 1px
+gaps inner 0px
+gaps outer 0px
 #
 #
 ###### TOGGLE KEYBOARD LAYOUT ######
@@ -305,13 +314,11 @@ bindsym $mod+space  exec --no-startup-id ~/.local/bin/kb-layout
 for_window [class="gnome-calculator"] floating enable
 for_window [class="gnome-calculator"] resize set 500 350
 ###### PAVUCONTROL FLOATING MODE #######
-for_window [class="Pavucontrol"] floating enable
-for_window [class="Pavucontrol"] resize set 750 500
+for_window [class="pavucontrol" title="Volume Control"] floating enable
+for_window [class="pavucontrol" title="Volume control"] resize set 750 500
 ###### BLUEMAN-MANAGER FLOATING MODE #######
 for_window [class="Blueman-manager"] floating enable
 for_window [class="Blueman-manager"] resize set 750 500
 ###### Lxappearance FLOATING MODE #######
 for_window [class="Lxappearance"] floating enable
 for_window [class="Lxappearance"] resize set 750 500
-
-
