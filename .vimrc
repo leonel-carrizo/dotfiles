@@ -56,12 +56,11 @@ set statusline=%t\ [%{mode()}]\ %r%m%h%w%=\ File:\ %{&filetype}%=\ \
 " Enable type file detection. to try to detect the type of file in use.
 filetype plugin indent on
 
-" Set shift width to 4 spaces.
-" set shiftwidth=8
-
 " Set tab width to 4 columns.
- set tabstop=8
-"
+set shiftwidth=4
+set tabstop=4
+set noexpandtab
+
 " identation for C
 set cindent
 
