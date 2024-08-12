@@ -1,0 +1,164 @@
+#### i3blocks config file ####
+## List of valid properties:##
+# align # color # command # full_text
+# instance # interval # label
+# min_width # name # separator
+# separator_block_width # short_text
+# signal # urgent
+
+### Global properties ###
+# Change $SCRIPT_DIR to the location of your scripts!
+command=$SCRIPT_DIR/$BLOCK_NAME
+separator=false
+separator_block_width=-1
+markup=pango
+align=center
+border=#2E3440
+border_top=3
+border_left=0
+border_right=0
+border_bottom=3
+##### SEPARATOR ######
+full_text=
+border_right=1
+min_width=13
+
+##### WINDOS FOCUSE ######
+## A lot of  ram memory
+#[i3-focusedwindow/i3-focusedwindow]
+#interval=persist
+#min_width=500
+#align=center
+#color=#EAEDF2
+# background=#2E3440
+
+##### SEPARATOR ######
+[separator]
+background=#2E3440
+color=#4C566A1
+
+##### check arch linux updates ######
+[arch-update/pacman-upgrade]
+interval=10800
+LABEL=󰮯
+BASE_COLOR=#1096CD
+UPDATE_COLOR=#E1BC29
+background=#4C566A1
+min_width=55
+#AUR_YAY=True
+#QUIET=True
+#WATCH=^linux.* ^pacman.*
+
+##### SEPARATOR ######
+[separator]
+background=#4C566A1
+color=#D5A17E
+
+##### Disk usage ROOT ######
+[disk/disk]
+label= 
+DIR=/root
+interval=30
+ALERT_LOW=20
+min_width=95
+background=#D5A17E
+color=#2E3440
+align=right
+
+[open-home]
+full_text=| 
+command=i3-msg -q "exec thunar $HOME"
+min_width=38
+background=#D5A17E
+color=#2E3440
+
+##### Disk usage HOME ######
+[disk/disk]
+#label=
+DIR=/home
+interval=30
+ALERT_LOW=10
+background=#D5A17E
+color=#2E3440
+min_width=85
+align=left
+
+##### SEPARATOR ######
+[separator]
+background=#D5A17E
+color=#D8DEE9
+
+##### SYSTEM MONITOR ######
+[system-monitor]
+full_text= 
+command=i3-msg -q "exec gnome-system-monitor"
+min_width=30
+background=#D8DEE9
+color=#2E3440
+
+##### RAM USAGE #####
+[memory/memory]
+#label=  
+separator=true
+interval=5
+background=#D8DEE9
+color=#2E3440
+min_width=160
+
+##### SEPARATOR ######
+[separator]
+background=#D8DEE9
+color=#3B4252
+
+##### CPU USAGE ######
+[cpu_usage2]
+command=$SCRIPT_DIR/cpu_usage2/cpu_usage2
+label=󰻠 
+interval=persist
+background=#3B4252
+color=#F0F0F0
+min_width=100
+
+##### SEPARATOR ######
+[separator]
+background=#3B4252
+color=#D54D25
+
+##### CALENDAR POP UP ######
+[calendar]
+command=$SCRIPT_DIR/calendar/calendar
+interval=30
+LABEL= 
+DATEFMT=+%d-%m-%Y·%H:%M
+background=#D54D25
+min_width=200
+color=#EAEDF2
+# SHORTFMT=+%H:%M:%S
+# HEIGHT=500
+# WIDTH=220
+
+##### SEPARATOR ######
+[separator]
+background=#D54D25
+color=#5D5E76
+
+##### KEYBOARD LAYOUT ######
+[key_layout/key_layout]
+label=󰌓
+background=#5D5E76
+color=#EAEDF2
+min_width=50
+interval=5
+
+##### SEPARATOR ######
+[separator]
+background=#5D5E76
+color=#0A1A9C
+
+##### POP UP LOGOUT, LOCK, RESET, SHUTDOWN ######
+[logout]
+full_text=
+command=i3-msg -q "exec wlogout -n > /dev/null"
+min_width=53
+background=#0A1A9C
+color=#D54D25
