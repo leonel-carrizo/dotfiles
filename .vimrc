@@ -17,9 +17,9 @@ set nocompatible
 " set spell
 
 let mapleader="\<Space>"
-set timeoutlen=300
+set timeoutlen=250
 autocmd InsertEnter * set timeoutlen=0
-autocmd InsertLeave * set timeoutlen=300
+autocmd InsertLeave * set timeoutlen=250
 
 set encoding=utf-8
 let &t_ut=''  " To render properly background of the color scheme
@@ -128,7 +128,7 @@ function! ToggleHighlightLongLines()
     else
         augroup highlight_long_lines
             autocmd!
-            autocmd BufEnter,BufWritePost *.{c,h,cpp,hpp,sh,vim,py,css,js,jsx,vimrc,
+            autocmd BufEnter,BufWritePost,TextChangedP *.{c,h,cpp,hpp,sh,vim,py,css,js,jsx,vimrc,
                 \zshrc,bashrc,php,java,html,rb,go,swift,ts,ps1,json,yaml,yml,lua}
                 \ match LongLine /\%>80v.\+/
             hi LongLine ctermbg=red guibg=red ctermfg=yellow
