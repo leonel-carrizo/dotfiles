@@ -1,0 +1,4 @@
+#!/bin/bash
+## UPDATE LOCKSCREEN WALLPAPER ##
+# Just update how many screen are connected and add wallpaper to all of them #
+betterlockscreen -u $USER/Picture/wallpaper/tron-legacy01.jpg

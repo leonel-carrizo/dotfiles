@@ -7,12 +7,13 @@
 # If the above line is not correctly displayed, fix your editor first!
 
 general {
+	output_format = "none"
         colors = true
-        interval = 5
         color_good = "#81a1c1" # Light green
         color_degraded = "#fafe7c" # Light yellow
         color_bad = "#ff7770" # Light redA
-        separator = ""
+        interval = 1
+        separator = "⏽"
 }
 
 #order += "ipv6"
@@ -37,7 +38,7 @@ ethernet _first_ {
 }
 
 battery 0 {
-        format = " %status %percentage |"
+        format = " %status %percentage"
         hide_seconds = true
         integer_battery_capacity = true
         last_full_capacity = true
@@ -48,11 +49,14 @@ battery 0 {
 }
 
 disk "/" {
-        format = "󰣇 %used /  %total |"
+        format = "  %used "
+	prefix_type = custom
 }
 
 disk "/home" {
-        format = "󰠦 %used /  %total |"
+        format = " 󰋞 %used "
+	prefix_type = custom
+        # format = "󰠦 %used 󰿟  %total"
 }
 
 
@@ -61,15 +65,16 @@ load {
 }
 
 memory {
-        format = "󰍛 %used / %available |"
-        threshold_degraded = "1G"
-        format_degraded = "MEMORY < %available"
+        format = "  %used "
+        # format = "󰍛 %used / %available"
+        threshold_degraded = "10%"
+        format_degraded = "MEMORY LOW: %free"
 }
 
 cpu_usage {
-  format = "󰚩 %usage |"
+  format = " 󰍛 %usage "
 }
 
 tztime local {
-        format = "  %d-%m-%Y %H:%M "
+        format = "  %d-%m-%Y %H:%M  "
 }

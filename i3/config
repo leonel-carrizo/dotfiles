@@ -5,51 +5,15 @@ set $mod Mod4
 # is used in the bar {} block below.
 font pango:HackNerdFont 12
 
-# Start XDG autostart .desktop files using dex. See also
-# https://wiki.archlinux.org/index.php/XDG_Autostart
+#### AUTOSTART ####
+# Start XDG autostart .desktop files using dex.
 exec --no-startup-id dex --autostart --environment i3
 
-# The combination of xss-lock, nm-applet and pactl is a popular choice, so
-# they are included here as an example. Modify as you see fit.
-
-# xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
-# screen before suspend. Use loginctl lock-session to lock your screen.
-# exec --no-startup-id xss-lock --transfer-sleep-lock -- betterlockscreen -l --nofork
-# bindsym $mod+x exec --no-startup-id i3lock -e -f --image ~/Pictures/wallpaper/wallpaper-4.png --tiling
-bindsym $mod+x exec --no-startup-id betterlockscreen -l --off 120 --span --show-layout 
-bindsym Ctrl+Mod4+l exec --no-startup-id wlogout -n
-#bindsym XF86PowerOff exec --no-startup-id wlogout
-
-# NetworkManager is the most popular way to manage wireless networks on Linux,
-# and nm-applet is a desktop environment-independent system tray GUI for it.
+#  nm-applet for NetworkManager
 exec --no-startup-id nm-applet
-exec --no-startup-id pa-applet
 
-# Use pactl to adjust volume in PulseAudio.
-set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +2%
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -2%
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
-
-### BRIGHTNESS ###
-bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +5%
-bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
-
-### MUSIC ###
-# for laptop thinkPad L14 #
-bindsym XF86Messenger exec --no-startup-id playerctl play-pause
-bindsym XF86Go exec --no-startup-id playerctl previous
-bindsym --release Cancel exec --no-startup-id playerctl next
-# for external keyboard and headsets #
-bindsym XF86AudioPlay exec --no-startup-id playerctl play
-bindsym XF86AudioPause exec --no-startup-id playerctl pause
-bindsym XF86AudioStop exec --no-startup-id playerctl stop
-bindsym XF86AudioNext exec --no-startup-id playerctl next
-bindsym XF86AudioPrev exec --no-startup-id playerctl previous
-
-#### CALCULATOR ######]
-bindsym XF86Calculator exec --no-startup-id gnome-calculator
+### volumen bar tray for pulse audio and pipewire on X11 ###
+exec --no-startup-id pasystray --notify=sink
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -61,56 +25,22 @@ tiling_drag modifier titlebar
 # move floating window with key
 bindsym $mod+F7 mode "move" focus floating
 mode "move"{
-	bindsym $mod+Tab focus right
+		bindsym $mod+Tab focus right
 
-	bindsym Left move left
-	bindsym Down move down
-	bindsym Up move up
-	bindsym Right move right
+		bindsym Left move left
+		bindsym Down move down
+		bindsym Up move up
+		bindsym Right move right
 
-	bindsym h move left
-	bindsym j move down
-	bindsym k move up
-	bindsym l move right
+		bindsym h move left
+		bindsym j move down
+		bindsym k move up
+		bindsym l move right
 
-	#back to normal
-	bindsym Escape mode "default"
-	bindsym Return mode "default"
+		#back to normal
+		bindsym Escape mode "default"
+		bindsym Return mode "default"
 }
-
-# start a terminal
-#bindsym $mod+Return exec i3-sensible-terminal
-# bindsym $mod+Return exec alacritty
-bindsym $mod+Return exec kitty
-
-### SCREENSHOT ###
-bindsym --release Print exec --no-startup-id ~/.local/bin/capture
-
-# start a browser
-bindsym $mod+n exec firefox
-bindsym $mod+b exec brave
-
-# open a browser file
-bindsym $mod+t exec thunar
-
-#kill focused window
-bindsym Mod1+q kill
-
-# start bemenu (a program launcher)
-bindsym --release Alt_R exec --no-startup-id bemenu-run -l 10 -wifcs -W 0.26 -p 'Apps' --fixed-height -M 10 \
---cw 3 -B 3 --bdr '#D8DEE9' -R 15 -H 40 --scrollbar 'autohide' --fn 'Hack Nerd Font Bold 16' \
---tf '#3B4252' --nb '#ffffff00' --hb '#ffffff10' --ab '#ffffff00' --tb '#D8DEE9' --scf '#3b4353' \
---scb '#ffffff10' --fb '#d8dee9' --hf '#77b6ea' --cf '#3b4252' --ch 25 --ff '#3b4353' -P ''
-
-bindsym --release ISO_Level3_Shift exec --no-startup-id bemenu-run -l 10 -wifcs -W 0.26 -p 'Apps' --fixed-height -M 10 \
---cw 3 -B 3 --bdr '#D8DEE9' -R 15 -H 40 --scrollbar 'autohide' --fn 'Hack Nerd Font Bold 16' \
---tf '#3B4252' --nb '#ffffff00' --hb '#ffffff10' --ab '#ffffff00' --tb '#D8DEE9' --scf '#3b4353' \
---scb '#ffffff10' --fb '#d8dee9' --hf '#77b6ea' --cf '#3b4252' --ch 25 --ff '#3b4353' -P ''
-# A more modern dmenu replacement is rofi:
-# bindcode $mod+40 exec "rofi -modi drun,run -show drun"
-# There also is i3-dmenu-desktop which only displays applications shipping a
-# .desktop file. It is a wrapper around dmenu, so you need that installed.
-# bindcode $mod+40 exec --no-startup-id i3-dmenu-desktop
 
 # change focus
 bindsym $mod+h focus left
@@ -187,10 +117,6 @@ bindsym $mod+8 workspace number $ws8
 bindsym $mod+9 workspace number $ws9
 bindsym $mod+0 workspace number $ws10
 
-###### TOGGLE BETWEEN WORKSPACE ########
-bindsym $mod+Ctrl+Right workspace next
-bindsym $mod+Ctrl+Left workspace prev
-
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1
 bindsym $mod+Shift+2 move container to workspace number $ws2
@@ -203,6 +129,118 @@ bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 
+# reload the configuration file
+bindsym $mod+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Close your session.' -B 'Yes, exit i3' 'i3-msg exit'"
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym j resize shrink width 5 px or 5 ppt
+        bindsym k resize grow height 5 px or 5 ppt
+        bindsym l resize shrink height 5 px or 5 ppt
+        bindsym semicolon resize grow width 5 px or 5 ppt
+
+        # same bgs, but for the arrow keys
+        bindsym Left resize shrink width 5 px or 5 ppt
+        bindsym Down resize grow height 5 px or 5 ppt
+        bindsym Up resize shrink height 5 px or 5 ppt
+        bindsym Righ2 resize grow width 5 px or 5 ppt
+
+        # back to normal: Enter or Escape or $mod+r
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+bindsym $mod+r mode "resize"
+
+# Start i3bar to display a workspace bar
+bar {
+		tray_output primary
+		tray_padding 4
+		position top
+		# status_command i3status
+		status_command SCRIPT_DIR=$HOME/.config/i3blocks/scripts i3blocks
+		#mode hide
+		hidden_state hide
+		modifier Mod1+Mod4
+		font pango:HackNerdFont 13
+		padding 0px 0px
+		colors {
+			background #2E3440
+			# statusline #3B4252
+			statusline #ffffff
+			focused_workspace #268bd2 #268bd2 #000000
+			inactive_workspace #333333 #333333 #888888
+			active_workspace #CECECE #333333 #f1f1f1
+			urgent_workspace #eb709b #eb709b #ffffff
+			# separator #268bd2
+		}
+	# separator_symbol " "
+}
+bindsym Mod1+Mod4+space bar mode toggle
+
+######## GAPS ########
+gaps inner 0px
+gaps outer 0px
+#
+
+####### Don’t focus window upon opening #######
+# no_focus [all]
+
+#onedark-graphite-theme
+# class                 border  backgr. text    indicator child_border
+client.focused          #268bd2 #2E3440 #E5E9F0 #268bd2   #268bd2
+client.focused_inactive #4C566A #5f676a #ffffff #434C5E   #434C5E
+client.unfocused        #333333 #222222 #888888 #292d2e   #222222
+client.urgent           #cc241d #900000 #ffffff #cc241d   #cc241d
+client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+client.background       #3B4252
+
+######## HIDE TITLE BAR ########
+for_window [class="^.*"] border pixel 1
+
+# ##### NORMAL TITLE BAR #######
+# for_window [class="^.*"] border normal
+for_window [title="so_long game"] border normal
+title_align center
+# for_window [all] title_window_icon padding 5px
+
+###### CALCULATOR FLOATING MODE #######
+for_window [class="gnome-calculator"] floating enable
+for_window [class="gnome-calculator"] resize set 500 350
+###### PAVUCONTROL FLOATING MODE #######
+for_window [class="pavucontrol" title="Volume Control"] floating enable
+for_window [class="pavucontrol" title="Volume control"] resize set 750 500
+###### BLUEMAN-MANAGER FLOATING MODE #######
+for_window [class="Blueman-manager"] floating enable
+for_window [class="Blueman-manager"] resize set 750 500
+###### Lxappearance FLOATING MODE #######
+for_window [class="Lxappearance"] floating enable
+for_window [class="Lxappearance"] resize set 750 500
+##### Calendar i3block FLOATING MODE ######
+for_window [class="Yad"] floating enable
+
+##### Kitty-update-system i3block FLOATING MODE ######
+for_window [title="updating system"] floating enable
+for_window [title="updating system"] resize set 750 500
+
+###########################################################
+#
+#### MY OWN SHORTCUTS ###
+#
+##########################################################
+#
+###### TOGGLE KEYBOARD LAYOUT ######
+bindsym $mod+space  exec --no-startup-id ~/.local/bin/kb-layout
 
 ### RELOAD SCREEN layout ###
 # When conect 2 screens 
@@ -218,107 +256,68 @@ bindsym $mod+Ctrl+comma move workspace to output left
 
 #### UPDATE LOCKSCREEN WALLPAPER #####
 # Just update how many screen are conected
-bindsym --release $mod+Ctrl+Shift+l exec --no-startup-id betterlockscreen -u $USER/Pictures/wallpaper/tron-legacy01.jpg
+bindsym $mod+Ctrl+Shift+l exec --no-startup-id ~/.local/bin/update_lockscreenbg
 
 #### RANDOM WALLPAPER ###
 bindsym $mod+Ctrl+F11 exec --no-startup-id ~/.local/bin/wprandom
 
-# reload the configuration file
-bindsym $mod+Shift+c reload
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
-# exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+### LOCKSCREEN ###
+bindsym $mod+x exec --no-startup-id betterlockscreen -l --off 120 --span --show-layout
+bindsym Ctrl+Mod4+l exec --no-startup-id wlogout -n
 
-# resize window (you can also use the mouse for that)
-mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
+# Use pactl to adjust volume in PulseAudio.
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +2%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -2%
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 5 px or 5 ppt
-        bindsym k resize grow height 5 px or 5 ppt
-        bindsym l resize shrink height 5 px or 5 ppt
-        bindsym semicolon resize grow width 5 px or 5 ppt
+### BRIGHTNESS ###
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +5%
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
 
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 5 px or 5 ppt
-        bindsym Down resize grow height 5 px or 5 ppt
-        bindsym Up resize shrink height 5 px or 5 ppt
-        bindsym Right resize grow width 5 px or 5 ppt
+### MUSIC ###
+# for laptop thinkPad L14 #
+bindsym XF86Messenger exec --no-startup-id playerctl play-pause
+bindsym XF86Go exec --no-startup-id playerctl previous
+bindsym --release Cancel exec --no-startup-id playerctl next
+# for external keyboard and headsets #
+bindsym XF86AudioPlay exec --no-startup-id playerctl play
+bindsym XF86AudioPause exec --no-startup-id playerctl pause
+bindsym XF86AudioStop exec --no-startup-id playerctl stop
+bindsym XF86AudioNext exec --no-startup-id playerctl next
+bindsym XF86AudioPrev exec --no-startup-id playerctl previous
 
-        # back to normal: Enter or Escape or $mod+r
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-        bindsym $mod+r mode "default"
-}
+#### CALCULATOR ######]
+bindsym XF86Calculator exec --no-startup-id gnome-calculator
 
-bindsym $mod+r mode "resize"
+# start a terminal
+bindsym $mod+Return exec kitty
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
-bar {
-	tray_output primary
-	position top
-	status_command i3status 
-	mode hide
-	hidden_state hide
-	modifier Mod1+Mod4
-	font pango:HackNerdFont 12
+### SCREENSHOT ###
+bindsym --release Print exec --no-startup-id ~/.local/bin/capture
 
-	colors {
-		background #2E3440
-		statusline #268bd2
-		separator #E1140A
-		focused_workspace #268bd2 #268bd2 #000000
-		active_workspace #333333 #333333 #888888
-		inactive_workspace #CECECE #333333 #f1f1f1
-		urgent_workspace #eb709b #eb709b #ffffff
-	}
-}
-bindsym Mod1+Mod4+space bar mode toggle
+# start a browser
+bindsym $mod+n exec firefox
+bindsym $mod+b exec brave
 
-#onedark-graphite-theme
-# class                 border  backgr. text    indicator child_border
-client.focused          #268bd2 #2E3440 #E5E9F0 #268bd2   #268bd2
-client.focused_inactive #4C566A #5f676a #ffffff #434C5E   #434C5E
-client.unfocused        #333333 #222222 #888888 #292d2e   #222222
-client.urgent           #cc241d #900000 #ffffff #cc241d   #cc241d
-client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+# open a browser file
+bindsym $mod+t exec thunar
 
-client.background       #3B4252
+#kill focused window
+bindsym Mod1+q kill
 
-######## HIDE TITLE BAR ########
-for_window [class="^.*"] border pixel 1
+###### TOGGLE BETWEEN WORKSPACE ########
+bindsym $mod+Ctrl+Right workspace next
+bindsym $mod+Ctrl+Left workspace prev
 
-####### Don’t focus window upon opening #######
-# no_focus [all]
+# start bemenu (a program launcher)
+bindsym --release Alt_R exec --no-startup-id bemenu-run -l 10 -wifcs -W 0.26 -p 'Apps' --fixed-height -M 10 \
+--cw 3 -B 3 --bdr '#D8DEE9' -R 15 -H 40 --scrollbar 'autohide' --fn 'Hack Nerd Font Bold 16' \
+--tf '#3B4252' --nb '#ffffff00' --hb '#ffffff10' --ab '#ffffff00' --tb '#D8DEE9' --scf '#3b4353' \
+--scb '#ffffff10' --fb '#d8dee9' --hf '#77b6ea' --cf '#3b4252' --ch 25 --ff '#3b4353' -P ''
 
-# ##### NORMAL TITLE BAR #######
-# for_window [class="^.*"] border normal
-for_window [title="so_long game"] border normal
-title_align center
-# for_window [all] title_window_icon padding 5px
-
-######## GAPS ########
-gaps inner 0px
-gaps outer 0px
-#
-#
-###### TOGGLE KEYBOARD LAYOUT ######
-bindsym $mod+space  exec --no-startup-id ~/.local/bin/kb-layout
-
-###### CALCULATOR FLOATING MODE #######
-for_window [class="gnome-calculator"] floating enable
-for_window [class="gnome-calculator"] resize set 500 350
-###### PAVUCONTROL FLOATING MODE #######
-for_window [class="pavucontrol" title="Volume Control"] floating enable
-for_window [class="pavucontrol" title="Volume control"] resize set 750 500
-###### BLUEMAN-MANAGER FLOATING MODE #######
-for_window [class="Blueman-manager"] floating enable
-for_window [class="Blueman-manager"] resize set 750 500
-###### Lxappearance FLOATING MODE #######
-for_window [class="Lxappearance"] floating enable
-for_window [class="Lxappearance"] resize set 750 500
+bindsym --release ISO_Level3_Shift exec --no-startup-id bemenu-run -l 10 -wifcs -W 0.26 -p 'Apps' --fixed-height -M 10 \
+--cw 3 -B 3 --bdr '#D8DEE9' -R 15 -H 40 --scrollbar 'autohide' --fn 'Hack Nerd Font Bold 16' \
+--tf '#3B4252' --nb '#ffffff00' --hb '#ffffff10' --ab '#ffffff00' --tb '#D8DEE9' --scf '#3b4353' \
+--scb '#ffffff10' --fb '#d8dee9' --hf '#77b6ea' --cf '#3b4252' --ch 25 --ff '#3b4353' -P ''
