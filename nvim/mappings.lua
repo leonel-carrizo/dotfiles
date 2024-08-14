@@ -15,3 +15,7 @@ map("i", "<C-x>", "<C-o>x", { desc = "delete on insert mode" })
 map({ "n", "i", "v" }, "<F5>", function()
 	require("configs.norm_check").ToggleNormCheck()
 end, { desc = "show spaces and long lines in  C" })
+
+map({ "n", "t" }, "<A-t>", function()
+  require("nvchad.term").toggle { pos = "sp", id = "htoggleTerm" }
+end, { desc = "terminal new horizontal term" })
