@@ -39,7 +39,7 @@ map({ "n", "t" }, "<A-o>", function ()
 	}
 end, { desc = "Open Htop on toggle float term." })
 -- LazyGit
-map({"n", "t"}, "<leader>lg", "<cmd>LazyGit<cr>", {desc = "LazyGit" })
+map("n", "<leader>lg", "<cmd>LazyGit<cr>", {desc = "LazyGit" })
 
 -- formating files
 map("n", "<leader>fm", function()
