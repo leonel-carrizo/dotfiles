@@ -86,7 +86,7 @@ if update_count > 0:
         args.updates_available_color = '#d62828'
     if (button == '3' and update_count > 0):
         try:
-            output = subprocess.run(['kitty', '-e', '--title', '"updating system"', 'yay', '-Syu'])
+            output = subprocess.run(['kitty', '-e', '--title', '"updating system"', 'yay', '-Syu', '--noconfirm'])
             update_count = len(get_updates())
             if update_count == 0:
                     print(message2.format(args.base_color, ' ', ''))
