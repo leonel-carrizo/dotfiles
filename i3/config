@@ -231,7 +231,7 @@ for_window [class="Yad"] floating enable
 
 ##### Kitty-update-system i3block FLOATING MODE ######
 for_window [title="updating system"] floating enable
-for_window [title="updating system"] resize set 750 500
+for_window [title="updating system"] resize set 750 500, move position center
 
 ###########################################################
 #
@@ -293,6 +293,9 @@ bindsym XF86Calculator exec --no-startup-id gnome-calculator
 
 # start a terminal
 bindsym $mod+Return exec kitty
+bindsym Control+Mod4+Return exec --no-startup-id kitty --class=floating_terminal
+for_window [class="floating_terminal"] floating enable
+for_window [class="floating_terminal"] resize set 1040 750, move position center
 
 ### SCREENSHOT ###
 bindsym --release Print exec --no-startup-id ~/.local/bin/capture
