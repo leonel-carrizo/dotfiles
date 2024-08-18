@@ -23,4 +23,11 @@ alias vi="nvim"
 alias myip="curl http://ipecho.net/plain; echo"
 alias comp="cc -Wall -Werror -Wextra"
 
+export PATH="$HOME/.local/bin:$PATH"
+export TERMINAL=xterm-kitty
+export MANPAGER="less -R --use-color -Dd+r -Du+b"
+export PAGER="less -R --use-color -Dd+r -Du+b"
+export MANROFFOPT="-c"
+export LESS='-R --use-color -Dd+r$Du+b$'
+
 PATH=~/.console-ninja/.bin:$PATH
