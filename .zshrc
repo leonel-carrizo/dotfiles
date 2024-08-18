@@ -101,6 +101,7 @@ source ~/.config/powerlevel10k/powerlevel10k.zsh-theme
 export PATH="$HOME/.local/bin:$PATH"
 export TERMINAL=xterm-kitty
 export MANPAGER="less -R --use-color -Dd+r -Du+b"
+export PAGER="less -R --use-color -Dd+r -Du+b"
 export MANROFFOPT="-c"
 export LESS='-R --use-color -Dd+r$Du+b$'
 
