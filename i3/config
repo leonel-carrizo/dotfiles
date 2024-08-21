@@ -300,8 +300,10 @@ for_window [class="floating_terminal"] resize set 1040 750, move position center
 ### SCREENSHOT ###
 bindsym --release Print exec --no-startup-id ~/.local/bin/capture
 
+# open neovim 
+bindsym $mod+n exec kitty -e nvim
+
 # start a browser
-bindsym $mod+n exec firefox
 bindsym $mod+b exec brave
 
 # open a browser file
@@ -309,6 +311,9 @@ bindsym $mod+t exec thunar
 
 #kill focused window
 bindsym Mod1+q kill
+
+# updating packages pacman/yay
+bindsym $mod+Ctrl+u exec --no-startup-id ~/.local/bin/sysupdate
 
 ###### TOGGLE BETWEEN WORKSPACE ########
 bindsym $mod+Ctrl+Right workspace next
