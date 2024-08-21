@@ -40,6 +40,7 @@ color=#4C566A1
 ##### check arch linux updates ######
 [arch-update/pacman-upgrade]
 interval=10800
+signal=10
 LABEL=󰮯
 BASE_COLOR=#1096CD
 UPDATE_COLOR=#E1BC29
@@ -113,11 +114,11 @@ color=#3B4252
 ##### CPU USAGE ######
 [cpu_usage2]
 command=$SCRIPT_DIR/cpu_usage2/cpu_usage2
-label=󰻠 
+label=󰻠
 interval=persist
 background=#3B4252
 color=#F0F0F0
-min_width=100
+min_width=90
 
 ##### SEPARATOR ######
 [separator]
@@ -148,7 +149,8 @@ label=󰌓
 background=#5D5E76
 color=#EAEDF2
 min_width=50
-interval=5
+interval=once
+signal=11
 
 ##### SEPARATOR ######
 [separator]
@@ -159,6 +161,6 @@ color=#0A1A9C
 [logout]
 full_text=
 command=i3-msg -q "exec wlogout -n > /dev/null"
-min_width=53
+min_width=35
 background=#0A1A9C
 color=#D54D25
