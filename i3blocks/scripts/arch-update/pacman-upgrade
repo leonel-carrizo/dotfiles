@@ -100,7 +100,7 @@ if update_count > 0:
 elif not args.quiet:
     if update_count < 0:
         print(message2.format('yellow', '', ''))
-    else:
+    elif update_count == 0:
         print(message2.format(args.base_color, ' ', ''))
 
 
