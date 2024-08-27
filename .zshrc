@@ -44,8 +44,6 @@ zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
 
-# Manual configuration
-PATH=/root/.local/bin:/snap/bin:/usr/sandbox/:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/usr/share/games:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/home/l3o/.local/bin
 
 # Manual aliases
 alias ll='lsd -lh --group-dirs=first'
@@ -55,13 +53,13 @@ alias l='lsd --group-dirs=first'
 alias lla='lsd -lha --group-dirs=first'
 alias ls='lsd --group-dirs=first'
 alias myip="curl http://ipecho.net/plain; echo"
-alias vi='nvim'
+alias nv='nvim'
 alias norm="norminette"
 alias comp="cc -Wall -Werror -Wextra"
 alias cl="clear"
 alias gitb="lazy_git"
 alias gits="git status"
-alias rg="ranger"
+alias rgr="ranger"
 alias gdbc="gcc -Wall -Werror -Wextra -g"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -98,15 +96,25 @@ bindkey "^[[1;3C" forward-word
 bindkey "^[[1;3D" backward-word
 source ~/.config/powerlevel10k/powerlevel10k.zsh-theme
 
-export PATH="$HOME/.local/bin:$PATH"
 export TERMINAL=xterm-kitty
 export MANPAGER="less -R --use-color -Dd+r -Du+b"
 export PAGER="less -R --use-color -Dd+r -Du+b"
 export MANROFFOPT="-c"
 export LESS='-R --use-color -Dd+r$Du+b$'
 
-PATH=~/.console-ninja/.bin:$PATH
 
 # Finalize Powerlevel10k instant prompt. Should stay at the bottom of ~/.zshrc.
 (( ! ${+functions[p10k-instant-prompt-finalize]} )) || p10k-instant-prompt-finalize
 
+# Manual configuration
+PATH=/root/.local/bin:$PATH
+PATH=/snap/bin:/usr/sandbox/:$PATH
+PATH=/usr/share/games:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:$PATH
+PATH=/usr/local/games:/usr/games:$PATH
+PATH=/home/l3o/.local/bin/:/home/l3o/.cargo/bin/:/home/l3o/.luarocks:$PATH
+PATH=~/.console-ninja/.bin:$PATH
+PATH="/home/l3o/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/home/l3o/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/home/l3o/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/home/l3o/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/home/l3o/perl5"; export PERL_MM_OPT;
