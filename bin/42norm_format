@@ -1,0 +1,74 @@
+#!/bin/bash
+
+# Función para verificar si se proporcionó un archivo como parámetro
+function check_if_file_provided {
+    if [ -z "$1" ]; then
+        echo "Error: No se proporcionó un archivo."
+        echo "Uso: $0 <ruta_al_archivo.c>"
+        exit 1
+    fi
+}
+
+# Función para verificar si el archivo existe
+function check_if_file_exists {
+    if [ ! -f "$1" ]; then
+        echo "Error: El archivo '$1' no existe."
+        exit 1
+    fi
+} 
+
+# Función para aplicar clang-format
+function apply_clang_format {
+    local SOURCE_FILE="$1"
+
+    # Verificar si el archivo .clang-format existe
+    if [ -f ".clang-format" ]; then
+        # Usar clang-format con el archivo de configuración existente
+        clang-format -i "$SOURCE_FILE"
+    else
+        # Aplicar configuraciones predefinidas si no existe .clang-format
+        clang-format -i -style="{ \
+					BasedOnStyle: Microsoft, \
+					UseTab: Always, \
+					TabWidth: 4, \
+					IndentWidth: 4, \
+					BreakBeforeBraces: Attach, \
+					ColumnLimit: 120, \
+					AllowShortFunctionsOnASingleLine: Empty}" \
+            "$SOURCE_FILE"
+    fi
+}
+
+# Función para reemplazar espacio entre tipo de función y nombre con un tab
+function replace_spaces_with_tabs {
+    local SOURCE_FILE="$1"
+
+    # Reemplazar el espacio entre el tipo de función y el nombre con un tab
+    sed -i -E 's/(static|const|unsigned|int|char|void|long|float|double|short)([ \t]+\*)([a-zA-Z_][a-zA-Z0-9_]*)/\1\t*\3/g' "$SOURCE_FILE"
+    sed -i -E 's/(static|const|unsigned|int|char|void|long|float|double|short)([ \t]+)([a-zA-Z_][a-zA-Z0-9_]*)/\1\t\3/g' "$SOURCE_FILE"
+}
+
+# Función principal para formatear el código
+function format_code {
+    local SOURCE_FILE="$1"
+
+    # Llamar a la función que aplica clang-format
+    apply_clang_format "$SOURCE_FILE"
+
+    # Llamar a la función que reemplaza espacios con tabs
+    replace_spaces_with_tabs "$SOURCE_FILE"
+
+    echo "Formateo completado para $SOURCE_FILE"
+}
+
+# Inicio del script
+
+# Verificar si se proporcionó un archivo como parámetro
+check_if_file_provided "$1"
+
+# Verificar si el archivo existe
+check_if_file_exists "$1"
+
+# Formatear el código
+format_code "$1"
+
