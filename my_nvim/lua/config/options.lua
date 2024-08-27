@@ -5,6 +5,8 @@ local opt = vim.opt
 -- disable some default providers
 g.loaded_ruby_provider = 0
 g.toggle_theme_icon = "   "
+g.user42 = 'lcarrizo'
+g.mail42 = 'lcarrizo@student.42london.com'
 
 o.mouse = "a"
 -- o.clipboard = "unnamedplus"
