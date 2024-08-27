@@ -114,11 +114,11 @@ color=#3B4252
 ##### CPU USAGE ######
 [cpu_usage2]
 command=$SCRIPT_DIR/cpu_usage2/cpu_usage2
-label=󰻠
+label=󰻠 
 interval=persist
 background=#3B4252
 color=#F0F0F0
-min_width=90
+min_width=100%
 
 ##### SEPARATOR ######
 [separator]
