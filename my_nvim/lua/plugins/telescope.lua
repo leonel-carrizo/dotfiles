@@ -87,6 +87,7 @@ return {
 		{ "<leader>fo", "<cmd>Telescope oldfiles<CR>", desc = "telescope find oldfiles" },
 		{ "<leader>gc", "<cmd>Telescope git_commits<CR>", desc = "telescope git commits" },
 		{ "<leader>gt", "<cmd>Telescope git_status<CR>", desc = "telescope git status" },
+		{ "<leader>fd", "<cmd>Telescope diagnostics<CR>", desc = "telescope show diagnostics signs" },
 		{
 			"<leader>fa",
 			"<cmd>Telescope find_files follow=true no_ignore=true hidden=true<CR>",
