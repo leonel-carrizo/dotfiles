@@ -81,3 +81,7 @@ end, { desc = "buffer goto prev" })
 map("n", "<leader>x", function()
   require("local.tabufline").close_buffer()
 end, { desc = "buffer close" })
+
+map("n","<leader>rm", function ()
+	require("utils.lsprenamer").rename()
+end, {desc = "Rename word under cursor."})
