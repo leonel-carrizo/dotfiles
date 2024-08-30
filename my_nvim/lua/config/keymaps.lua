@@ -78,7 +78,7 @@ map("n", "<S-tab>", function()
   require("local.tabufline").prev()
 end, { desc = "buffer goto prev" })
 
-map("n", "<leader>x", function()
+map("n", "<leader>bq", function()
   require("local.tabufline").close_buffer()
 end, { desc = "buffer close" })
 
