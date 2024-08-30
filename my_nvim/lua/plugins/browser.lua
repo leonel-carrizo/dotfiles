@@ -106,7 +106,7 @@ return {
 			config = function(_, opts)
 				-- update sources after rename.
 			  local function on_move(data)
-				local conf = require("config.neo-tree-config")
+				local conf = require("utils.lsprenamer")
 				conf.on_rename(data.source, data.destination)
 			  end
 			  local events = require("neo-tree.events")
