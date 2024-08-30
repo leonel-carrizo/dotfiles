@@ -21,7 +21,7 @@ M.on_attach = function(_, bufnr)
 	map("n", "<leader>D", vim.lsp.buf.type_definition, opts "Go to type definition")
 
 	map("n", "<leader>ra", function()
-		require "utils.lsprenamer" ()
+		require("utils.lsprenamer").rename()
 	end, opts "NvRenamer")
 
 	map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts "Code action")
@@ -55,7 +55,7 @@ M.capabilities.textDocument.completion.completionItem = {
 	},
 }
 
-M.defaults = function()
+local diagnostic_config = function ()
 	local x = vim.diagnostic.severity
 	vim.diagnostic.config {
 		virtual_text = { prefix = "" },
@@ -63,6 +63,10 @@ M.defaults = function()
 		underline = true,
 		float = { border = "single" },
 	}
+end
+
+M.defaults = function()
+	diagnostic_config()
 
 	require("lspconfig").lua_ls.setup {
 		on_attach = M.on_attach,

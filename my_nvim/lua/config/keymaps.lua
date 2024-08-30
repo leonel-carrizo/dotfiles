@@ -4,7 +4,7 @@ local map = vim.keymap.set
 map("n", "<Esc>", "<cmd>noh<CR>", { desc = "General Clear highlights" })
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map({"i", "v", "t"}, "jk", "<ESC>", { desc = "going fast to normal mode" })
-map({ "n", "i", "v", "t" }, "<C-q>", "<cmd> q <cr>", { desc = "Fast Closing." })
+map({ "n", "i", "v", }, "<C-q>", "<cmd>q<cr>", { desc = "Fast Closing." })
 map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>", { desc = "Saving on any mode" })
 map("i", "<C-x>", "<C-o>x", { desc = "delete on insert mode" })
 map("v", "<C-c>", '"+Y', { desc = "Copy to clipboard" })
@@ -50,51 +50,6 @@ map({ "n", "i", "v" }, "<F5>", function()
 	require("utils.norm_check").ToggleNormCheck()
 end, { desc = "show spaces and long lines in  C" })
 
--- TERMINALS
-map("t", "<C-x>", "<C-\\><C-N>", { desc = "terminal escape terminal mode" })
-
-	-- toggleable
-map({ "n", "t" }, "<A-v>", function()
-	require("local.term").toggle { pos = "vsp", id = "vtoggleTerm" }
-end, { desc = "terminal toggleable vertical term" })
-
-map({ "n", "t" }, "<A-h>", function()
-	require("local.term").toggle { pos = "sp", id = "htoggleTerm" }
-end, { desc = "terminal new horizontal term" })
-	-- flaot toggleable
-map({ "n", "t" }, "<A-i>", function()
-	require("local.term").toggle({ pos = "float", id = "floatTerm" })
-end, { desc = "Float Toggle Terminal." })
-
-map({ "n", "t" }, "<A-o>", function()
-	require("local.term").toggle({
-		pos = "float",
-		float_opts = {
-			relative = "editor",
-			style = "minimal",
-			row = 0.05,
-			col = 0.10,
-			width = 0.8,
-			height = 0.8,
-			border = "rounded",
-		},
-		cmd = "htop",
-		id = "floatTermHtop",
-		external = true,
-		clear_cmd = true,
-	})
-end, { desc = "Open Htop on toggle float term." })
-
-	-- Attached
-map("n", "<leader>h", function()
-	require("local.term").new({ pos = "sp" })
-end, { desc = "terminal new horizontal term" })
-
-map("n", "<leader>v", function()
-	require("local.term").new { pos = "vsp" }
-  end, { desc = "terminal new vertical window" })
-
-
 -- formating files
 map("n", "<leader>fm", function()
 	require("conform").format({ lsp_fallback = true })
@@ -102,8 +57,8 @@ map("n", "<leader>fm", function()
 end, { desc = "General Format file" })
 
 -- nvimtree
-map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "nvimtree toggle window" })
-map("n", "<C-n>", "<cmd>NvimTreeFocus<CR>", { desc = "nvimtree focus window" })
+-- map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "nvimtree toggle window" })
+-- map("n", "<C-n>", "<cmd>NvimTreeFocus<CR>", { desc = "nvimtree focus window" })
 
 -- whichkey
 map("n", "<leader>wK", "<cmd>WhichKey <CR>", { desc = "whichkey all keymaps" })
@@ -111,3 +66,18 @@ map("n", "<leader>wK", "<cmd>WhichKey <CR>", { desc = "whichkey all keymaps" })
 map("n", "<leader>wk", function()
   vim.cmd("WhichKey " .. vim.fn.input "WhichKey: ")
 end, { desc = "whichkey query lookup" })
+
+-- tabufline
+map("n", "<leader>b", "<cmd>enew<CR>", { desc = "buffer new" })
+
+map("n", "<tab>", function()
+  require("local.tabufline").next()
+end, { desc = "buffer goto next" })
+
+map("n", "<S-tab>", function()
+  require("local.tabufline").prev()
+end, { desc = "buffer goto prev" })
+
+map("n", "<leader>x", function()
+  require("local.tabufline").close_buffer()
+end, { desc = "buffer close" })
