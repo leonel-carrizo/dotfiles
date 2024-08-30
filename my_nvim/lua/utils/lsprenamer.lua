@@ -1,11 +1,8 @@
--- Credit to: Sidhanth Rathod https://github.com/siduck
--- taken from https://github.com/NvChad/NvChad/
--- NvChad/NvChad is licensed under the GNU General Public License v3.0
-
+local M = {}
 local map = vim.keymap.set
 
 local function apply(curr, win)
-  local newName = vim.trim(vim.fn.getline ".")
+  local newName = vim.trim(vim.fn.getline("."))
   vim.api.nvim_win_close(win, true)
 
   if #newName > 0 and newName ~= curr then
@@ -16,8 +13,8 @@ local function apply(curr, win)
   end
 end
 
-return function()
-  local currName = vim.fn.expand "<cword>" .. " "
+function M.rename()
+  local currName = vim.fn.expand("<cword>") .. " "
 
   local win = require("plenary.popup").create(currName, {
     title = "Renamer",
@@ -33,8 +30,8 @@ return function()
     col = "cursor-1",
   })
 
-  vim.cmd "normal A"
-  vim.cmd "startinsert"
+  vim.cmd("normal A")
+  vim.cmd("startinsert")
 
   map({ "i", "n" }, "<Esc>", "<cmd>q<CR>", { buffer = 0 })
 
@@ -44,3 +41,36 @@ return function()
   end, { buffer = 0 })
 end
 
+---@param from string
+---@param to string
+---@param rename? fun()
+function M.on_rename(from, to, rename)
+	local changes = {
+		files = { {
+			oldUri = vim.uri_from_fname(from),
+			newUri = vim.uri_from_fname(to),
+		} }
+	}
+
+	local clients = M.get_clients()
+	for _, client in ipairs(clients) do
+		if client.supports_method("workspace/willRenameFiles") then
+			local resp = client.request_sync("workspace/willRenameFiles", changes, 1000, 0)
+			if resp and resp.result ~= nil then
+				vim.lsp.util.apply_workspace_edit(resp.result, client.offset_encoding)
+			end
+		end
+	end
+
+	if rename then
+		rename()
+	end
+
+	for _, client in ipairs(clients) do
+		if client.supports_method("workspace/didRenameFiles") then
+			client.notify("workspace/didRenameFiles", changes)
+		end
+	end
+end
+
+return M
