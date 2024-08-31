@@ -6,14 +6,14 @@ local opt = vim.opt
 ------------------------------ Global Options --------------------------------
 g.loaded_ruby_provider = 0
 g.toggle_theme_icon = "   "
-g.user42 = 'lcarrizo'
-g.mail42 = 'lcarrizo@student.42london.com'
+g.user42 = "lcarrizo"
+g.mail42 = "lcarrizo@student.42london.com"
 
 ------------------------------ User Interface --------------------------------
 o.mouse = "a"
 o.termguicolors = true
 o.cursorline = true
-o.cursorlineopt = 'both' -- Enable cursorline
+o.cursorlineopt = "both" -- Enable cursorline
 o.signcolumn = "yes"
 o.splitbelow = true
 o.splitright = true
@@ -36,7 +36,7 @@ o.ttimeoutlen = 0
 o.updatetime = 250
 o.swapfile = false
 o.backup = false
-o.undodir = os.getenv("HOME") .. "/.vim/undodir"
+o.undodir = os.getenv "HOME" .. "/.vim/undodir"
 o.undofile = true
 
 ------------------------------ Clipboard -------------------------------------
@@ -48,14 +48,13 @@ o.clipboard = "unnamedplus"
 
 ------------------------------ Hidden Editing Characters ---------------------
 opt.listchars = {
-    eol = "↓",
-    space = "·",
-    trail = "●",
-    tab = "―― ",
-    extends = ">",
-    precedes = "<"
+	eol = "↓",
+	space = "·",
+	trail = "●",
+	tab = "―― ",
+	extends = ">",
+	precedes = "<",
 }
 opt.fillchars = { eob = " " }
 opt.whichwrap:append "<>[]hl"
 opt.shortmess:append "sI" -- Disable nvim intro
-

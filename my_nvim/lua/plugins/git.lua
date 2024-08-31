@@ -28,19 +28,19 @@ return {
 		end,
 		config = function()
 			require("gitsigns").setup()
-		end
+		end,
 	},
 	{
 		"kdheepak/lazygit.nvim",
 		cmd = {
 			"LazyGit",
 			"LazyGitConfig", -- Open the configuration file
-			"LazyGitCurrentFile", -- start a floating window 
+			"LazyGitCurrentFile", -- start a floating window
 			"LazyGitFilter", -- Open project commits in floating window.
-			"LazyGitFilterCurrentFile", -- Open buffer commits 
+			"LazyGitFilterCurrentFile", -- Open buffer commits
 		},
 		keys = {
-			{ "<leader>gl", "<cmd>LazyGit<cr>", desc = "Launch LazyGit" }
+			{ "<leader>gl", "<cmd>LazyGit<cr>", desc = "Launch LazyGit" },
 		},
 		-- optional for floting window border decoration
 		dependencies = {
@@ -48,11 +48,10 @@ return {
 		},
 		config = function()
 			vim.g.lazygit_floating_window_winblend = 0
-			vim.cmd("highlight! clear LazyGitBorder")
-			vim.cmd("highlight! clear LazyGitFloat")
-			vim.cmd("highlight! link LazyGitBorder NotifyINFOTitle")
-			vim.cmd("highlight! link LazyGitFloat Title")
-		end
+			vim.cmd "highlight! clear LazyGitBorder"
+			vim.cmd "highlight! clear LazyGitFloat"
+			vim.cmd "highlight! link LazyGitBorder NotifyINFOTitle"
+			vim.cmd "highlight! link LazyGitFloat Title"
+		end,
 	},
-
 }

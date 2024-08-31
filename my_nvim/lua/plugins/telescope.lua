@@ -1,5 +1,5 @@
-local have_make = vim.fn.executable("make") == 1
-local have_cmake = vim.fn.executable("cmake") == 1
+local have_make = vim.fn.executable "make" == 1
+local have_cmake = vim.fn.executable "cmake" == 1
 
 return {
 	"nvim-telescope/telescope.nvim",
@@ -46,7 +46,7 @@ return {
 	},
 
 	config = function(_, opts)
-		local telescope = require("telescope")
+		local telescope = require "telescope"
 		telescope.setup(opts)
 		-- load extensions
 		for _, ext in ipairs(opts.extensions_list) do
@@ -63,7 +63,7 @@ return {
 			"nvim-telescope/telescope-live-grep-args.nvim",
 			version = "^1.1.0",
 			config = function()
-				require("telescope").load_extension("live_grep_args")
+				require("telescope").load_extension "live_grep_args"
 			end,
 		},
 		{
@@ -73,7 +73,7 @@ return {
 				or "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
 			enabled = have_make or have_cmake,
 			config = function()
-				require("telescope").load_extension("fzf")
+				require("telescope").load_extension "fzf"
 			end,
 		},
 	},
@@ -101,14 +101,14 @@ return {
 		{
 			"<leader>tt",
 			function()
-				require("telescope.builtin").colorscheme({ enable_preview = true })
+				require("telescope.builtin").colorscheme { enable_preview = true }
 			end,
 			desc = "Colorscheme with Preview",
 		},
 		{
 			"<leader>sg",
 			function()
-				local lga_shortcuts = require("telescope-live-grep-args.shortcuts")
+				local lga_shortcuts = require "telescope-live-grep-args.shortcuts"
 				lga_shortcuts.grep_word_under_cursor()
 			end,
 			desc = "Grep word under cursor",
@@ -116,13 +116,13 @@ return {
 		{
 			"<leader>fh",
 			function()
-				local path_util = require("utils.paths_utils")
-				require("telescope.builtin").find_files({
+				local path_util = require "utils.paths_utils"
+				require("telescope.builtin").find_files {
 					follow = true,
 					no_ignore = true,
 					hidden = true,
-					cwd = path_util.root_dir({ home = true }),
-				})
+					cwd = path_util.root_dir { home = true },
+				}
 			end,
 			desc = "Find files in Home Directory",
 		},

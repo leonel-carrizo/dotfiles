@@ -4,16 +4,16 @@
 
 local options = {
 	term = {
-	  winopts = { number = false, relativenumber = false },
-	  sizes = { sp = 0.4, vsp = 0.5, ["bo sp"] = 0.4, ["bo vsp"] = 0.5 },
-	  float = {
-		relative = "editor",
-		row = 0.05,
-		col = 0.10,
-		width = 0.8,
-		height = 0.8,
-		border = "rounded",
-	  },
+		winopts = { number = false, relativenumber = false },
+		sizes = { sp = 0.4, vsp = 0.5, ["bo sp"] = 0.4, ["bo vsp"] = 0.5 },
+		float = {
+			relative = "editor",
+			row = 0.05,
+			col = 0.10,
+			width = 0.8,
+			height = 0.8,
+			border = "rounded",
+		},
 	},
-  }
-  return options
+}
+return options

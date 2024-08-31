@@ -3,12 +3,12 @@
 -- NvChad/NvChad is licensed under the GNU General Public License v3.0
 
 local options = {
-		-- lazyload it when there are 1+ buffers
+	-- lazyload it when there are 1+ buffers
 	tabufline = {
-			enabled = true,
-			lazyload = true,
-			order = { "treeOffset", "buffers", "tabs", "btns" },
-			modules = nil,
+		enabled = true,
+		lazyload = true,
+		order = { "treeOffset", "buffers", "tabs", "btns" },
+		modules = nil,
 	},
 }
 

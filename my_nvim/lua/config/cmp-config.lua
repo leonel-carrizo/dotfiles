@@ -50,10 +50,9 @@ local options = {
 		end,
 	},
 
-
 	formatting = formatting_style,
 
-	mapping = cmp.mapping.preset.insert({
+	mapping = cmp.mapping.preset.insert {
 		["<C-k>"] = cmp.mapping.select_prev_item(),
 		["<C-j>"] = cmp.mapping.select_next_item(),
 		["<C-d>"] = cmp.mapping.scroll_docs(-4),
@@ -85,7 +84,7 @@ local options = {
 				fallback()
 			end
 		end, { "i", "s" }),
-	}),
+	},
 	sources = {
 		{ name = "nvim_lsp" },
 		{ name = "luasnip" },
@@ -94,8 +93,8 @@ local options = {
 		{ name = "path" },
 	},
 	{
-		{ name = 'buffer' },
-	}
+		{ name = "buffer" },
+	},
 }
 
 return options

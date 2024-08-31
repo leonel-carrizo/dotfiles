@@ -1,11 +1,10 @@
-
 return {
 	{
 		"neovim/nvim-lspconfig",
 		-- this fucntion must returns a table, this will applay for all servers
 		-- if this is set, you must change the `config` approach. `config` override this.
 		-- See: http://www.lazyvim.org/plugins/lsp#nvim-lspconfig
-		opts = function ()
+		opts = function()
 			return {}
 		end,
 		config = function()
@@ -14,7 +13,7 @@ return {
 			-- load defaults
 			require("config.lsp-config").defaults()
 
-			local lspopts = require("config.lsp-config")
+			local lspopts = require "config.lsp-config"
 
 			local servers = { "clangd" }
 
@@ -33,7 +32,7 @@ return {
 			--   capabilities = capabilities,
 			-- }
 		end,
-		dependencies = { "williamboman/mason.nvim", },
+		dependencies = { "williamboman/mason.nvim" },
 	},
 
 	{
@@ -43,14 +42,14 @@ return {
 			"williamboman/mason-lspconfig.nvim",
 			envent = "VeryLazy",
 			config = function()
-				require("mason-lspconfig").setup({
+				require("mason-lspconfig").setup {
 					ensure_installed = {
 						"lua_ls",
 						"clangd",
 					},
 					automatic_installation = true,
-				})
-			end
+				}
+			end,
 		},
 		opts = {
 			-- PATH = "skip",
@@ -64,8 +63,8 @@ return {
 			},
 			max_concurrent_installers = 10,
 		},
-		config = function (_, opts)
+		config = function(_, opts)
 			require("mason").setup(opts)
-		end
-	}
+		end,
+	},
 }

@@ -16,7 +16,7 @@ local pos_data = {
 	["bo vsp"] = { resize = "width", area = "columns" },
 }
 
-local nvconfig = require("local.term.termConfig")
+local nvconfig = require "local.term.termConfig"
 local config = nvconfig.term or {}
 
 -- used for initially resizing terms
@@ -64,10 +64,14 @@ M.display = function(opts)
 	opts.win = win
 
 	vim.bo[opts.buf].buflisted = false
-	vim.cmd("startinsert")
+	vim.cmd "startinsert"
 
 	-- resize non floating wins initially + or only when they're toggleable
-	if (opts.pos == "sp" and not vim.g.nvhterm) or (opts.pos == "vsp" and not vim.g.nvvterm) or (opts.pos ~= "float") then
+	if
+		(opts.pos == "sp" and not vim.g.nvhterm)
+		or (opts.pos == "vsp" and not vim.g.nvvterm)
+		or (opts.pos ~= "float")
+	then
 		local pos_type = pos_data[opts.pos]
 		local size = opts.size and opts.size or config.sizes[opts.pos]
 		local new_size = vim.o[pos_type.area] * size
@@ -106,7 +110,7 @@ local function create(opts)
 			on_exit = function()
 				if vim.api.nvim_buf_is_valid(opts.buf) then
 					vim.api.nvim_buf_delete(opts.buf, { force = true })
-					vim.cmd("close") -- avoid see the exit code
+					vim.cmd "close" -- avoid see the exit code
 				end
 			end,
 		})

@@ -55,7 +55,7 @@ M.capabilities.textDocument.completion.completionItem = {
 	},
 }
 
-local diagnostic_config = function ()
+local diagnostic_config = function()
 	local x = vim.diagnostic.severity
 	vim.diagnostic.config {
 		virtual_text = { prefix = "" },
