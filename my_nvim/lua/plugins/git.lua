@@ -40,7 +40,7 @@ return {
 			"LazyGitFilterCurrentFile", -- Open buffer commits 
 		},
 		keys = {
-			{ "<leader>lg", "<cmd>LazyGit<cr>", desc = "Launch LazyGit" }
+			{ "<leader>gl", "<cmd>LazyGit<cr>", desc = "Launch LazyGit" }
 		},
 		-- optional for floting window border decoration
 		dependencies = {
