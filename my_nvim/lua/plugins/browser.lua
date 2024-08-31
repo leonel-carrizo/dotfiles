@@ -130,6 +130,15 @@ return {
 	},
 	-- tabs management
 	{
+		-- basic buffer manager taken form Nvchad
+		dir = "~/.config/nvim/lua/local/tabufline",
+		-- enabled = false,
+		event = "BufReadPre",
+		config = function()
+			require("local.tabufline.lazyload")
+		end,
+	},
+	{
 		"akinsho/bufferline.nvim",
 		enabled = false,
 		event = "VeryLazy",
