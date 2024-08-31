@@ -13,14 +13,6 @@ return {
 			return { override = require("utils.devicons") }
 		end,
 	},
-	-- basic buffer manager taken form Nvchad
-	{
-		dir = "~/.config/nvim/lua/local/tabufline",
-		-- enabled = false,
-		config = function()
-			require("local.tabufline.lazyload")
-		end,
-	},
 	{
 		"goolord/alpha-nvim",
 		event = "VimEnter",
