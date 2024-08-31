@@ -1,83 +1,87 @@
 local map = vim.keymap.set
 
------------------------------- Workspace --------------------------------------
-map("n", "<Esc>", "<cmd>noh<CR>", { desc = "Clear highlights" })
-map("n", ";", ":", { desc = "Enter command mode" })
-map({"i", "v", "t"}, "jk", "<ESC>", { desc = "Quickly go to normal mode" })
-map({ "n", "i", "v" }, "<C-q>", "<cmd>q<cr>", { desc = "Fast close" })
-map({ "n", "i", "v" }, "<C-s>", "<cmd>w<cr>", { desc = "Save in any mode" })
-map("i", "<C-x>", "<C-o>x", { desc = "Delete in insert mode" })
+---- workspace
+map("n", "<Esc>", "<cmd>noh<CR>", { desc = "General Clear highlights" })
+map("n", ";", ":", { desc = "CMD enter command mode" })
+map({"i", "v", "t"}, "jk", "<ESC>", { desc = "going fast to normal mode" })
+map({ "n", "i", "v", }, "<C-q>", "<cmd>q<cr>", { desc = "Fast Closing." })
+map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>", { desc = "Saving on any mode" })
+map("i", "<C-x>", "<C-o>x", { desc = "delete on insert mode" })
 map("v", "<C-c>", '"+y', { desc = "Copy to clipboard" })
-map("n", "<C-c>", "<cmd>%y+<CR>", { desc = "Copy entire file to clipboard" })
+map("n", "<C-c>", "<cmd>%y+<CR>", { desc = "General Copy whole file" })
 
-map("n", "<leader>n", "<cmd>set nu!<CR>", { desc = "Toggle line numbers" })
-map("n", "<leader>rn", "<cmd>set rnu!<CR>", { desc = "Toggle relative numbers" })
+map("n", "<leader>n", "<cmd>set nu!<CR>", { desc = "Toggle line number" })
+map("n", "<leader>rn", "<cmd>set rnu!<CR>", { desc = "Toggle relative number" })
 
------------------------------- Comment ----------------------------------------
-map("n", "<leader>/", "gcc", { desc = "Toggle comment", remap = true })
+-- Comment
+map("n", "<leader>/", "gcc", { desc = "Toggle Comment", remap = true })
 map("v", "<leader>/", "gc", { desc = "Toggle comment", remap = true })
 
------------------------------- Navigation -------------------------------------
-map({"i", "v"}, "<C-b>", "<ESC>^i", { desc = "Move to beginning of line" })
-map({"i", "v"}, "<C-e>", "<End>", { desc = "Move to end of line" })
-map("i", "<C-h>", "<Left>", { desc = "Move left" })
-map("i", "<C-l>", "<Right>", { desc = "Move right" })
-map("i", "<C-j>", "<Down>", { desc = "Move down" })
-map("i", "<C-k>", "<Up>", { desc = "Move up" })
+-- navegation
+map({"i", "v"}, "<C-b>", "<ESC>^i", { desc = "move beginning of line" })
+map({"i", "v"}, "<C-e>", "<End>", { desc = "move end of line" })
+map("i", "<C-h>", "<Left>", { desc = "move left" })
+map("i", "<C-l>", "<Right>", { desc = "move right" })
+map("i", "<C-j>", "<Down>", { desc = "move down" })
+map("i", "<C-k>", "<Up>", { desc = "move up" })
 
-map("n", "<C-h>", "<C-w>h", { desc = "Switch window left" })
-map("n", "<C-Left>", "<C-w>h", { remap = true, desc = "Switch window left" })
-map("n", "<C-l>", "<C-w>l", { desc = "Switch window right" })
-map("n", "<C-Right>", "<C-w>l", { remap = true, desc = "Switch window right" })
-map("n", "<C-j>", "<C-w>j", { desc = "Switch window down" })
-map("n", "<C-k>", "<C-w>k", { desc = "Switch window up" })
+map("n", "<C-h>", "<C-w>h", { desc = "switch window left" })
+map("n", "<C-Left>", "<C-w>h", { remap = true, desc = "switch window left" })
+map("n", "<C-l>", "<C-w>l", { desc = "switch window right" })
+map("n", "<C-Right>", "<C-w>l", { remap = true, desc = "switch window right" })
+map("n", "<C-j>", "<C-w>j", { desc = "switch window down" })
+map("n", "<C-k>", "<C-w>k", { desc = "switch window up" })
 
----------------------------- Preserve Pasted Text -----------------------------
-map("x", "<leader>p", [["_dP]], { desc = "Preserve yanked text after pasting" })
+--preserve the copied text after pasting
+map("x", "<leader>p", [["_dP]])
 
------------------------------- Move Text Blocks -------------------------------
+-- move btext blocks
 map("v", "<C-J>", ":m '>+1<CR>gv=gv", { noremap = true, silent = true, desc = "Move highlighted block down" })
 map("v", "<C-Down>", ":m '>+1<CR>gv=gv", { noremap = true, silent = true, desc = "Move highlighted block down" })
 map("v", "<C-K>", ":m '<-2<CR>gv=gv", { noremap = true, silent = true, desc = "Move highlighted line up" })
 map("v", "<C-Up>", ":m '<-2<CR>gv=gv", { noremap = true, silent = true, desc = "Move highlighted line up" })
 
------------------------------ Quick Replace -----------------------------------
-map("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], { desc = "Quick replace word under cursor" })
+-- for replacing 
+map("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
+	{ desc = "Quick replacing words on editing file."})
 
------------------------------- 42 Norm Check ----------------------------------
+-- kindof linter 42 norm (development on going)
 map({ "n", "i", "v" }, "<F5>", function()
-    require("utils.norm_check").ToggleNormCheck()
-end, { desc = "Toggle display of spaces and long lines in C" })
+	require("utils.norm_check").ToggleNormCheck()
+end, { desc = "show spaces and long lines in  C" })
 
----------------------------- Format Files -------------------------------------
+-- formating files
 map("n", "<leader>fm", function()
-    require("conform").format({ lsp_fallback = true })
-end, { desc = "Format file" })
+	require("conform").format({ lsp_fallback = true })
+		-- print "file formatted!, run: conformInfo for more."
+end, { desc = "General Format file" })
 
------------------------------- WhichKey ---------------------------------------
-map("n", "<leader>wK", "<cmd>WhichKey<CR>", { desc = "Show all keymaps" })
+-- nvimtree
+-- map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "nvimtree toggle window" })
+-- map("n", "<C-n>", "<cmd>NvimTreeFocus<CR>", { desc = "nvimtree focus window" })
+
+-- whichkey
+map("n", "<leader>wK", "<cmd>WhichKey <CR>", { desc = "whichkey all keymaps" })
 
 map("n", "<leader>wk", function()
-    vim.cmd("WhichKey " .. vim.fn.input "WhichKey: ")
-end, { desc = "WhichKey query lookup" })
+  vim.cmd("WhichKey " .. vim.fn.input "WhichKey: ")
+end, { desc = "whichkey query lookup" })
 
------------------------------- Tabufline --------------------------------------
-map("n", "<leader>b", "<cmd>enew<CR>", { desc = "New buffer" })
+-- tabufline
+map("n", "<leader>b", "<cmd>enew<CR>", { desc = "buffer new" })
 
 map("n", "<tab>", function()
-    require("local.tabufline").next()
-end, { desc = "Go to next buffer" })
+  require("local.tabufline").next()
+end, { desc = "buffer goto next" })
 
 map("n", "<S-tab>", function()
-    require("local.tabufline").prev()
-end, { desc = "Go to previous buffer" })
+  require("local.tabufline").prev()
+end, { desc = "buffer goto prev" })
 
 map("n", "<leader>bq", function()
-    require("local.tabufline").close_buffer()
-end, { desc = "Close buffer" })
+  require("local.tabufline").close_buffer()
+end, { desc = "buffer close" })
 
----------------------------- Rename Under Cursor ------------------------------
-map("n", "<leader>rm", function()
-    require("utils.lsprenamer").rename()
-end, { desc = "Rename word under cursor" })
-
+map("n","<leader>rm", function ()
+	require("utils.lsprenamer").rename()
+end, {desc = "Rename word under cursor."})
