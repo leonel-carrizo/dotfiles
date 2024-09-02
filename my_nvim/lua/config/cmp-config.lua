@@ -65,7 +65,7 @@ local options = {
 			select = true,
 		},
 
-		["<Tab>"] = cmp.mapping(function(fallback)
+		["<A-Tab>"] = cmp.mapping(function(fallback)
 			if cmp.visible() then
 				cmp.select_next_item()
 			elseif require("luasnip").expand_or_jumpable() then
