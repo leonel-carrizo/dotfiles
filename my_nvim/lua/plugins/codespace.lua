@@ -5,7 +5,7 @@ return {
 		opts = {
 			formatters_by_ft = {
 				lua = { "stylua" },
-				c = { "42norm_format" },
+				-- c = { "42norm_format" },
 				-- css = { "prettier" },
 				-- html = { "prettier" },
 			},
