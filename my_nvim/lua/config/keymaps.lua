@@ -30,7 +30,15 @@ map("n", "<C-Left>", "<C-w>h", { remap = true, desc = "switch window left" })
 map("n", "<C-l>", "<C-w>l", { desc = "switch window right" })
 map("n", "<C-Right>", "<C-w>l", { remap = true, desc = "switch window right" })
 map("n", "<C-j>", "<C-w>j", { desc = "switch window down" })
+map("n", "<C-Down>", "<C-w>j", { remap = true, desc = "switch window down" })
 map("n", "<C-k>", "<C-w>k", { desc = "switch window up" })
+map("n", "<C-Up>", "<C-w>k", { remap = true, desc = "switch window up" })
+
+-- windows resize
+map("n", "<A-S-Left>", ":vertical resize -2<CR>", { noremap = true, silent = true })
+map("n", "<A-S-Right>", ":vertical resize +2<CR>", { noremap = true, silent = true })
+map("n", "<A-S-Up>", ":resize +2<CR>", { noremap = true, silent = true })
+map("n", "<A-S-Down>", ":resize -2<CR>", { noremap = true, silent = true })
 
 --preserve the copied text after pasting
 map("x", "<leader>p", [["_dP]])
