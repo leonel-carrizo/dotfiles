@@ -64,7 +64,7 @@ return {
 					end,
 					desc = "Explorer NeoTree (cwd)",
 				},
-				{ "<leader>e", "<leader>fe", desc = "Explorer NeoTree (Root Dir)", remap = true },
+				{ "<leader>ee", "<leader>fe", desc = "Explorer NeoTree (Root Dir)", remap = true },
 				{ "<leader>E", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
 				{
 					"<leader>ge",
@@ -80,6 +80,10 @@ return {
 					end,
 					desc = "Buffer Explorer",
 				},
+				{ "<leader>e", function ()
+					require("neo-tree.command").execute({ action = "focus" })
+				end, desc = "Explorer NeoTree focus",
+				}
 			},
 			deactivate = function()
 				vim.cmd [[Neotree close]]
