@@ -47,6 +47,11 @@ local options = {
 			["P"] = { "toggle_preview", config = { use_float = false } },
 		},
 	},
+	git_status = {
+		window = {
+			position = "float",
+		}
+	}
 }
 
 return options
