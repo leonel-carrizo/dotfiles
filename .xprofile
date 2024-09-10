@@ -39,3 +39,6 @@ exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 ### DUNST ###
 # by recomendation of arch wiki
 dunst -conf "~/.config/dunst/dunstrc" &
+
+# charge cursor size
+xrdb ~/.Xresources
