@@ -2,6 +2,19 @@
 -- taken from https://github.com/NvChad/NvChad/
 -- NvChad/NvChad is licensed under the GNU General Public License v3.0
 
+vim.cmd [[
+  highlight link TbBufOn Special         " Para letras buffers activos
+  highlight link TbBufOnClose NormalNC   " Para el botón de cierre en el buffer activo
+  highlight link TbBufOnModified CursorLineNr  " Para Boton buffers activos modificados
+
+  highlight link TbBufOff SignColumn        " Para letras buffers inactivos
+  highlight link TbBufOffClose SignColumn   " Para el botón de cierre en el buffer inactivo
+  highlight link TbBufOffModified SignColumn  " Para Boton buffers inactivos modificados
+
+  highlight link DevIconDefault NormalNC  " Enlazar con el ícono de directorio
+  highlight link DevIconC DevIconCpp
+]]
+
 local M = {}
 local api = vim.api
 local fn = vim.fn
