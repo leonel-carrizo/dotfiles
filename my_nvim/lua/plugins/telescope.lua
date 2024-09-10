@@ -24,6 +24,7 @@ return {
 				n = { ["q"] = require("telescope.actions").close },
 				i = { ["<C-u>"] = false },
 			},
+			initial_mode = "normal",
 		},
 		extensions_list = { "fzf", "live_grep_args" },
 		extensions = {},
@@ -80,8 +81,8 @@ return {
 
 	keys = {
 		{ "<leader>,", "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>", desc = "Switch Buffer" },
-		{ "<leader><space>", "<cmd>Telescope live_grep<cr>", desc = "Telescope live grep (cwd)." },
-		{ "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Telescope list files (cwd), respects .gitignore" },
+		{ "<leader><space>", "<cmd>Telescope find_files<cr>", desc = "Telescope list files (cwd), respects .gitignore" },
+		{ "<leader>ff", "<cmd>Telescope live_grep<cr>", desc = "Telescope live grep (cwd)." },
 		{ "<leader>fz", "<cmd>Telescope current_buffer_fuzzy_find<CR>", desc = "telescope find in current buffer" },
 		{ "<leader>fb", "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>", desc = "Buffers" },
 		{ "<leader>fo", "<cmd>Telescope oldfiles<CR>", desc = "telescope find oldfiles" },
