@@ -100,3 +100,12 @@ autocmd("FileType", {
 		vim.opt_local.buflisted = false
 	end,
 })
+
+-- Autocmd running every time the theme is changed recharge colors
+vim.api.nvim_create_autocmd("ColorScheme", {
+    pattern = "*",
+    callback = function()
+        package.loaded['local.tabufline.utils'] = nil
+        require('local.tabufline.utils')
+    end,
+})
