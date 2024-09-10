@@ -83,6 +83,12 @@ return {
 				{ "<leader>e", function ()
 					require("neo-tree.command").execute({ action = "focus" })
 				end, desc = "Explorer NeoTree focus",
+				},
+				{
+					"<leader>fc", function ()
+						vim.cmd("tabnew")
+						require("neo-tree.command").execute({ action = "focus", dir =  vim.fn.stdpath('config')})
+					end, desc = "Open NeoVim settings files on new tab"
 				}
 			},
 			deactivate = function()
