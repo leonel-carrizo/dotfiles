@@ -60,7 +60,7 @@ return {
 				desc = "Terminal toggleable vertical",
 			},
 			{
-				"<A-h>",
+				"<A-t>",
 				function()
 					require("local.term").toggle {
 						pos = "sp",
