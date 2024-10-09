@@ -64,7 +64,7 @@ end, { desc = "show spaces and long lines in  C" })
 
 -- formating files
 map("n", "<leader>fm", function()
-	require("conform").format { lsp_fallback = true }
+	require("conform").format { lsp_fallback = true, async = false, timeout_ms = 800 }
 	-- print "file formatted!, run: conformInfo for more."
 end, { desc = "General Format file" })
 
@@ -80,7 +80,7 @@ map("n", "<leader>wk", function()
 end, { desc = "whichkey query lookup" })
 
 -- tabufline
-map("n", "<leader>b", "<cmd>enew<CR>", { desc = "buffer new" })
+map("n", "<leader>bb", "<cmd>enew<CR>", { desc = "buffer new" })
 
 map("n", "<tab>", function()
 	require("local.tabufline").next()
@@ -90,7 +90,7 @@ map("n", "<S-tab>", function()
 	require("local.tabufline").prev()
 end, { desc = "buffer goto prev" })
 
-map("n", "<leader>bq", function()
+map("n", "<leader>qq", function()
 	require("local.tabufline").close_buffer()
 end, { desc = "buffer close" })
 
