@@ -1,28 +1,59 @@
 return {
+	-- for formatting files
 	{
 		"stevearc/conform.nvim",
-		-- event = { "BufReadPre", "BufNewFile" }, -- for format on save
+		event = { "BufReadPre", "BufNewFile" }, -- for format on save
 		opts = {
 			formatters_by_ft = {
 				lua = { "stylua" },
 				-- c = { "42norm_format" },
-				-- css = { "prettier" },
-				-- html = { "prettier" },
+				css = { "prettier" },
+				html = { "prettier" },
+				-- javascript = { "prettier", "standardjs" },
+				markdown = { "markdownlint" },
 			},
+			-- customize a formatter
 			formatters = {
-				["42norm_format"] = {
-					inherit = false,
-					command = "42norm_format",
-					args = { vim.fn.expand "%:p" },
-					stdin = false,
-				},
+				-- 	["42norm_format"] = {
+				-- 		inherit = false,
+				-- 		command = "42norm_format",
+				-- 		args = { vim.fn.expand "%:p" },
+				-- 		stdin = false,
+				-- 	},
 			},
-			-- format_on_save = {
-			--   -- These options will be passed to conform.format()
-			--   timeout_ms = 500,
-			--   lsp_fallback = true,
-			-- },
+			format_on_save = {
+				-- These options will be passed to conform.format()
+				timeout_ms = 500,
+				lsp_fallback = true,
+			},
 		},
+	},
+	-- manage linter for languages
+	{
+		"mfussenegger/nvim-lint",
+		event = { "BufReadPre", "BufNewFile" },
+		config = function()
+			local lint = require "lint"
+
+			lint.linters_by_ft = {
+				javascript = { "eslint_d" },
+				typescript = { "standardjs" },
+				javascriptreact = { "standardjs" },
+				typescriptreact = { "standardjs" },
+				markdown = { "markdownlint" },
+			}
+			-- tigger the linters whit autocommand
+			local lint_augorup = vim.api.nvim_create_augroup("lint", { clear = true })
+			vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+				group = lint_augorup,
+				callback = function()
+					lint.try_lint()
+				end,
+			})
+			vim.keymap.set("n", "<leader>l", function()
+				lint.try_lint()
+			end, { desc = "Trigger linting for current file" })
+		end,
 	},
 	{
 		"lukas-reineke/indent-blankline.nvim",
