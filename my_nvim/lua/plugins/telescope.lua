@@ -71,7 +71,8 @@ return {
 			-- https://github.com/nvim-telescope/telescope-live-grep-args.nvim
 			"nvim-telescope/telescope-fzf-native.nvim",
 			build = have_make and "make"
-				or "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+				or
+				"cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
 			enabled = have_make or have_cmake,
 			config = function()
 				require("telescope").load_extension "fzf"
@@ -80,24 +81,24 @@ return {
 	},
 
 	keys = {
-		{ "<leader>,", "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>", desc = "Switch Buffer" },
-		{ "<leader><space>", "<cmd>Telescope find_files<cr>", desc = "Telescope list files (cwd), respects .gitignore" },
-		{ "<leader>ff", "<cmd>Telescope live_grep<cr>", desc = "Telescope live grep (cwd)." },
-		{ "<leader>fz", "<cmd>Telescope current_buffer_fuzzy_find<CR>", desc = "telescope find in current buffer" },
-		{ "<leader>fb", "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>", desc = "Buffers" },
-		{ "<leader>fo", "<cmd>Telescope oldfiles<CR>", desc = "telescope find oldfiles" },
-		{ "<leader>gc", "<cmd>Telescope git_commits<CR>", desc = "telescope git commits" },
-		{ "<leader>gt", "<cmd>Telescope git_status<CR>", desc = "telescope git status" },
-		{ "<leader>fd", "<cmd>Telescope diagnostics<CR>", desc = "telescope show diagnostics signs" },
+		{ "<leader>,",       "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>", desc = "Switch Buffer" },
+		{ "<leader><space>", "<cmd>Telescope find_files<cr>",                               desc = "Telescope list files (cwd), respects .gitignore" },
+		{ "<leader>ff",      "<cmd>Telescope live_grep<cr>",                                desc = "Telescope live grep (cwd)." },
+		{ "<leader>fz",      "<cmd>Telescope current_buffer_fuzzy_find<CR>",                desc = "telescope find in current buffer" },
+		{ "<leader>fb",      "<cmd>Telescope buffers sort_mru=true sort_lastused=true<cr>", desc = "Buffers" },
+		{ "<leader>fo",      "<cmd>Telescope oldfiles<CR>",                                 desc = "telescope find oldfiles" },
+		{ "<leader>gc",      "<cmd>Telescope git_commits<CR>",                              desc = "telescope git commits" },
+		{ "<leader>gt",      "<cmd>Telescope git_status<CR>",                               desc = "telescope git status" },
+		{ "<leader>fd",      "<cmd>Telescope diagnostics<CR>",                              desc = "telescope show diagnostics signs" },
 		{
 			"<leader>fa",
 			"<cmd>Telescope find_files follow=true no_ignore=true hidden=true<CR>",
 			desc = "telescope find all files",
 		},
-		{ "<leader>sH", "<cmd>Telescope help_tags<CR>", desc = "telescope help page" },
-		{ "<leader>so", "<cmd>Telescope vim_options<cr>", desc = "Options" },
-		{ "<leader>sM", "<cmd>Telescope man_pages<cr>", desc = "Man Pages" },
-		{ "<leader>sk", "<cmd>Telescope keymaps<cr>", desc = "Key Maps" },
+		{ "<leader>sH", "<cmd>Telescope help_tags<CR>",       desc = "telescope help page" },
+		{ "<leader>so", "<cmd>Telescope vim_options<cr>",     desc = "Options" },
+		{ "<leader>sM", "<cmd>Telescope man_pages<cr>",       desc = "Man Pages" },
+		{ "<leader>sk", "<cmd>Telescope keymaps<cr>",         desc = "Key Maps" },
 		{ "<leader>s:", "<cmd>Telescope command_history<cr>", desc = "Command History" },
 		{
 			"<leader>tt",
