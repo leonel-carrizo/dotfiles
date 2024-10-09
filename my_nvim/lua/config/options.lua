@@ -4,6 +4,10 @@ local g = vim.g
 local opt = vim.opt
 
 ------------------------------ Global Options --------------------------------
+-- disable some default providcers
+g.loaded_node_provider = 0
+g.loaded_python3_provider = 0
+g.loaded_perl_provider = 0
 g.loaded_ruby_provider = 0
 g.toggle_theme_icon = "   "
 g.user42 = "lcarrizo"
