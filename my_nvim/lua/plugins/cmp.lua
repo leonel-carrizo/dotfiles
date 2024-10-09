@@ -11,6 +11,8 @@ return {
 			"hrsh7th/cmp-cmdline",
 			"saadparwaiz1/cmp_luasnip",
 			"hrsh7th/cmp-nvim-lua",
+			"rafamadriz/friendly-snippets",
+			"saadparwaiz1/cmp_luasnip",
 		},
 		{
 			-- snippet plugin
@@ -40,6 +42,7 @@ return {
 		},
 	},
 	opts = function()
+		require("luasnip.loaders.from_vscode").lazy_load()
 		return require "config.cmp-config"
 	end,
 }
