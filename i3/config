@@ -44,8 +44,8 @@ mode "move"{
 
 # change focus
 bindsym $mod+h focus left
-bindsym $mod+j focus down
-bindsym $mod+k focus up
+bindsym $mod+k focus down
+bindsym $mod+j focus up
 bindsym $mod+l focus right
 
 # alternatively, you can use the cursor keys:
@@ -172,8 +172,8 @@ bar {
 		#mode hide
 		hidden_state hide
 		modifier Mod1+Mod4
-		font pango:HackNerdFont 13
-		padding 0px 0px
+		font pango:HackNerdFont 10
+		padding -1px 0px
 		colors {
 			background #2E3440
 			# statusline #3B4252
@@ -262,8 +262,8 @@ bindsym $mod+Ctrl+Shift+l exec --no-startup-id ~/.local/bin/update_lockscreenbg
 bindsym $mod+Ctrl+F11 exec --no-startup-id ~/.local/bin/wprandom
 
 ### LOCKSCREEN ###
-bindsym $mod+x exec --no-startup-id betterlockscreen -l --off 120 --span --show-layout
-bindsym Ctrl+Mod4+l exec --no-startup-id wlogout -n
+bindsym Ctrl+$mod+x exec --no-startup-id betterlockscreen -l --off 120 --span --show-layout
+bindsym Ctrl+$mod+s exec --no-startup-id wlogout -n
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -329,3 +329,15 @@ bindsym --release ISO_Level3_Shift exec --no-startup-id bemenu-run -l 10 -wifcs 
 --cw 3 -B 3 --bdr '#D8DEE9' -R 15 -H 40 --scrollbar 'autohide' --fn 'Hack Nerd Font Bold 16' \
 --tf '#3B4252' --nb '#ffffff00' --hb '#ffffff10' --ab '#ffffff00' --tb '#D8DEE9' --scf '#3b4353' \
 --scb '#ffffff10' --fb '#d8dee9' --hf '#77b6ea' --cf '#3b4252' --ch 25 --ff '#3b4353' -P ''
+
+# Make the currently focused window a scratchpad
+bindsym $mod+Shift+minus move scratchpad
+
+# Show the first scratchpad window
+bindsym $mod+minus scratchpad show
+
+# focus next workspace
+bindsym $mod+Control+l workspace next
+
+# focus previous workspace
+bindsym $mod+Control+h workspace next
