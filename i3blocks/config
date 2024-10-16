@@ -14,13 +14,13 @@ separator_block_width=-1
 markup=pango
 align=center
 border=#2E3440
-border_top=3
-border_left=0
-border_right=0
-border_bottom=3
+border_top=2
+border_left=-2
+# border_right=0
+border_bottom=2
 ##### SEPARATOR ######
 full_text=
-border_right=1
+border_right=-1
 min_width=13
 
 ##### WINDOS FOCUSE ######
@@ -61,15 +61,15 @@ label=
 DIR=/root
 interval=30
 ALERT_LOW=20
-min_width=95
+min_width=110
 background=#D5A17E
 color=#2E3440
-align=right
+align=center
 
 [open-home]
 full_text=| 
 command=i3-msg -q "exec thunar $HOME"
-min_width=38
+min_width=100%
 background=#D5A17E
 color=#2E3440
 
@@ -81,8 +81,8 @@ interval=30
 ALERT_LOW=10
 background=#D5A17E
 color=#2E3440
-min_width=85
-align=left
+min_width=95
+align=center
 
 ##### SEPARATOR ######
 [separator]
@@ -118,7 +118,7 @@ label=󰻠
 interval=persist
 background=#3B4252
 color=#F0F0F0
-min_width=100%
+min_width=95
 
 ##### SEPARATOR ######
 [separator]
