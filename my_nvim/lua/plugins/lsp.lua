@@ -28,6 +28,7 @@ return {
 				"emmet_ls",
 				"jsonls",
 				"vale_ls",
+				"bashls",
 			}
 
 			for _, lsp in ipairs(servers) do
