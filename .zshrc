@@ -67,6 +67,8 @@ alias gdbc="gcc -Wall -Werror -Wextra -g"
 # Plugins
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+bindkey '^ ' autosuggest-accept
+bindkey '^Ac' autosuggest-clear
 source /usr/share/zsh/plugins/zsh-sudo/sudo.plugin.zsh
 
 # Set 'man' colors
