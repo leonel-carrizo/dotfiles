@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+NoDisplay=true
+Terminal=false
+Name=Autorandr
+Exec=/usr/bin/autorandr --change
+Icon=autorandr
+Comment=Application for automatically load screen layout regarding hardware/udev
+Categories=User
