@@ -52,12 +52,14 @@ o.clipboard = "unnamedplus"
 
 ------------------------------ Hidden Editing Characters ---------------------
 opt.listchars = {
-	eol = "↓",
-	space = "·",
+	eol = "↵",
+	space = "‧",
+	nbsp = "☠",
+	tab = "╾─╼",
 	trail = "●",
-	tab = "―― ",
-	extends = ">",
-	precedes = "<",
+	multispace = "-∘",
+	extends = "⇛",
+	precedes = "⇚",
 }
 opt.fillchars = { eob = " " }
 opt.whichwrap:append "<>[]hl"
