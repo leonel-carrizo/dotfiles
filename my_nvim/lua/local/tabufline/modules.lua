@@ -25,6 +25,7 @@ vim.cmd [[
   endfunction]]
 
 vim.cmd "function! TbNewTab(a,b,c,d) \n tabnew \n endfunction"
+vim.cmd "function! TbNewBuf(a,b,c,d) \n enew \n endfunction"
 vim.cmd "function! TbGotoTab(tabnr,b,c,d) \n execute a:tabnr ..'tabnext' \n endfunction"
 vim.cmd "function! TbCloseAllBufs(a,b,c,d) \n lua require('local.tabufline').closeAllBufs() \n endfunction"
 vim.cmd "function! TbToggle_theme(a,b,c,d) \n lua require('neo-tree.command').execute({toggle = true}) \n endfunction"
@@ -58,7 +59,19 @@ local function available_space()
 end
 
 M.treeOffset = function()
-	return "%#Normal#" .. strep(" ", getNvimTreeWidth())
+	local str = ""
+	-- verificar si el offset es la primera posicion.
+	for _, key in ipairs(config.order) do
+		if key ~= "treeOffset" then
+			str = str .. M[key]()
+		else
+			break
+		end
+	end
+	-- si no es la primera posicion en config.order. calcular el ancho de las anteriores
+	local modules = api.nvim_eval_statusline(str, { use_tabline = true })
+	-- si es la primera devolver el ancho.
+	return "%#Normal#" .. strep(" ", getNvimTreeWidth() - modules.width)
 end
 
 M.buffers = function()
@@ -78,7 +91,7 @@ M.buffers = function()
 		table.insert(buffers, style_buf(nr, i))
 	end
 
-	return table.concat(buffers) .. txt("%=", "Fill") -- buffers + empty space
+	return table.concat(buffers) .. M.btn_new() .. txt("%=", "Fill") -- buffers + empty space
 end
 
 g.TbTabsToggled = 0
@@ -92,20 +105,30 @@ M.tabs = function()
 			result = result .. btn(" " .. nr .. " ", tab_hl, "GotoTab", nr)
 		end
 
-		local new_tabtn = btn("  ", "TabNewBtn", "NewTab")
+		local new_tabtn = btn(" 󰝜 ", "TabNewBtn", "NewTab")
 		local tabstoggleBtn = btn(" 󰅂 ", "TabTitle", "ToggleTabs")
 		local small_btn = btn(" 󰅁 ", "TabTitle", "ToggleTabs")
 
 		return g.TbTabsToggled == 1 and small_btn or new_tabtn .. tabstoggleBtn .. result
 	end
 
-	return ""
+	local new_tabtn = btn(" 󰝜 ", "TabNewBtn", "NewTab")
+	return new_tabtn
 end
 
-M.btns = function()
-	local toggle_theme = btn(g.toggle_theme_icon, "ThemeToggleBtn", "Toggle_theme")
-	local closeAllBufs = btn(" 󰅖 ", "CloseAllBufsBtn", "CloseAllBufs")
-	return toggle_theme .. closeAllBufs
+M.btn_close = function()
+	local closeAllBufs = btn(" 󱎘 ", "CloseAllBufsBtn", "CloseAllBufs")
+	return closeAllBufs
+end
+
+M.btn_files = function ()
+	local files_tree = btn("    ", "BufOn", "Toggle_theme")
+	return files_tree
+end
+
+M.btn_new = function ()
+	local new_file = btn(" 󰎝 ", "NewFile", "NewBuf")
+	return new_file
 end
 
 return function()

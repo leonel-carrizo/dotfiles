@@ -7,7 +7,7 @@ local options = {
 	tabufline = {
 		enabled = true,
 		lazyload = true,
-		order = { "treeOffset", "buffers", "tabs", "btns" },
+		order = { "btn_files", "treeOffset", "buffers", "tabs", "btn_close" },
 		modules = nil,
 	},
 }

@@ -17,8 +17,8 @@ return {
 			local lspopts = require "config.lsp-config"
 
 			local servers = {
-				"lua_ls",
-				-- "clangd",
+				-- "lua_ls",
+				"clangd",
 				-- "eslint",
 				"ts_ls",
 				"rust_analyzer",
@@ -27,16 +27,16 @@ return {
 				"pyright",
 				"emmet_ls",
 				"jsonls",
-				"vale_ls",
 				"bashls",
+				"markdown_oxide",
 			}
 
 			for _, lsp in ipairs(servers) do
 				lspconfig[lsp].setup {
 					on_attach = lspopts.on_attach,
 					on_init = lspopts.on_init,
-					capabilities = lspopts.capabilities,
-					-- capabilities = lsp_capabilities,
+					-- capabilities = lspopts.capabilities,
+					capabilities = lsp_capabilities,
 				}
 			end
 			-- lsp individual for javascript
@@ -50,16 +50,6 @@ return {
 				end,
 				-- on_init = lspopts.on_init,
 				capabilities = lspopts.capabilities,
-			}
-
-			lspconfig.clangd.setup {
-				on_init = lspopts.on_init,
-				on_attach = lspopts.on_attach,
-				capabilities = lspopts.capabilities,
-				cmd = {
-					"clangd",
-					"--offset-encoding=utf-16",
-				}
 			}
 		end,
 		dependencies = { "williamboman/mason.nvim" },
@@ -96,7 +86,7 @@ return {
 					"cssls",
 					"pyright",
 					"emmet_ls",
-					"vale_ls",
+					"markdown_oxide",
 				},
 				automatic_installation = true,
 			}

@@ -39,6 +39,7 @@ M.prev = function()
 	set_buf((curbufIndex == 1 and bufs[#bufs]) or bufs[curbufIndex - 1])
 end
 
+--- Safely closes a file, handling different types of files and situations.
 M.close_buffer = function(bufnr)
 	bufnr = bufnr or cur_buf()
 
@@ -61,7 +62,6 @@ M.close_buffer = function(bufnr)
 		-- handle unlisted
 		elseif not vim.bo.buflisted then
 			local tmpbufnr = vim.t.bufs[1]
-
 			if vim.g.nv_previous_buf and api.nvim_buf_is_valid(vim.g.nv_previous_buf) then
 				tmpbufnr = vim.g.nv_previous_buf
 			end
@@ -69,9 +69,10 @@ M.close_buffer = function(bufnr)
 			vim.cmd("b" .. tmpbufnr .. " | bw" .. bufnr)
 			return
 		else
-			vim.cmd "enew"
+			-- vim.cmd "enew"
+			vim.cmd("confirm q")
+			return
 		end
-
 		if not (bufhidden == "delete") then
 			vim.cmd("confirm bd" .. bufnr)
 		end
@@ -84,7 +85,7 @@ end
 M.closeAllBufs = function(include_cur_buf)
 	local bufs = vim.t.bufs
 
-	if not include_cur_buf then
+	if include_cur_buf ~= nil and not include_cur_buf then
 		table.remove(bufs, buf_index(cur_buf()))
 	end
 

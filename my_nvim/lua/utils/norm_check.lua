@@ -18,7 +18,7 @@ function M.ToggleNormCheck()
 		-- Set the autocommand
 		vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertCharPre" }, {
 			group = "highlight_long_lines",
-			pattern = { "*.c", "*.h" },
+			pattern = { "*.c", "*.h", "*.md" },
 			callback = function()
 				vim.fn.matchadd("LongLine", "\\%>80v.\\+", 11)
 			end,

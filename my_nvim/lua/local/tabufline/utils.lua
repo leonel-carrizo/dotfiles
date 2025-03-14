@@ -13,6 +13,8 @@ vim.cmd [[
 
   highlight link DevIconDefault NormalNC  " Enlazar con el ícono de directorio
   highlight link DevIconC DevIconCpp
+  highlight link DevIconC DevIconCpp
+  highlight TbNewFile guibg=#222500 guifg=#828bb8
 ]]
 
 local M = {}
@@ -49,6 +51,7 @@ local function new_hl(group1, group2)
 	return "%#" .. group1 .. group2 .. "#"
 end
 
+-- Normalize the file name. returns just the file name.
 local function gen_unique_name(oldname, index)
 	for i2, nr2 in ipairs(vim.t.bufs) do
 		if index ~= i2 and filename(buf_name(nr2)) == oldname then
@@ -82,13 +85,14 @@ M.style_buf = function(nr, i)
 	pad = pad <= 0 and 1 or pad
 
 	local maxname_len = 15
+	local sep = M.txt(" ", tbHlName)
 
-	name = string.sub(name, 1, 13) .. (#name > maxname_len and ".." or "")
+	name = string.sub(name, 1, 12) .. (#name > maxname_len and "..." or "")
 	name = M.txt(" " .. name, tbHlName)
 
-	name = strep(" ", pad) .. (icon_hl .. icon .. name) .. strep(" ", pad - 1)
+	name = strep(sep, 1) .. (icon_hl .. icon .. name)
 
-	local close_btn = btn(" 󰅖 ", nil, "KillBuf", nr)
+	local close_btn = btn(" 󰖭 ", nil, "KillBuf", nr)
 	name = btn(name, nil, "GoToBuf", nr)
 
 	-- modified bufs icon or close icon

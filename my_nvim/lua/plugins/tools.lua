@@ -7,7 +7,7 @@ return {
 		lazy = true,
 		keys = {
 			{ "<C-n>", "<C-\\><C-N>", mode = "t", desc = "Terminal scape to normal mode" },
-			{ "<C-x>", "<A-\\>", mode = "t", desc = "Terminal vim mode" },
+			{ "<C-x>", "<C-x><C-v>", mode = "t", desc = "Terminal enter Vim mode" },
 			{
 				"<leader>x",
 				function(bufnr)
@@ -19,21 +19,21 @@ return {
 				desc = "Close Terminal",
 			},
 			{
-				"<leader>h",
+				"<leader>th",
 				function()
 					require("local.term").new { pos = "sp" }
 				end,
 				desc = "New horizontal terminal",
 			},
 			{
-				"<leader>v",
+				"<leader>tv",
 				function()
 					require("local.term").new { pos = "vsp" }
 				end,
 				desc = "New vertical terminal",
 			},
 			{
-				"<A-g>",
+				"<leader>tg",
 				function()
 					require("local.term").toggle {
 						pos = "float",
@@ -50,7 +50,7 @@ return {
 				desc = "Terminal Open Lazygit on toggle float mode",
 			},
 			{
-				"<A-v>",
+				"<leader>ttv",
 				function()
 					require("local.term").toggle {
 						pos = "vsp",
@@ -61,7 +61,7 @@ return {
 				desc = "Terminal toggleable vertical",
 			},
 			{
-				"<A-t>",
+				"<leader>tth",
 				function()
 					require("local.term").toggle {
 						pos = "sp",
@@ -72,7 +72,7 @@ return {
 				desc = "Terminal toggleable horizontal",
 			},
 			{
-				"<A-i>",
+				"<leader>tf",
 				function()
 					require("local.term").toggle {
 						pos = "float",
@@ -111,8 +111,8 @@ return {
 			spec = {
 				{
 					mode = { "n", "v" },
-					{ "<leader>t", group = "Theme", icon = "" },
-					{ "<leader><tab>", group = "tabs" },
+					{ "<leader>t", group = "Terminal", icon = " " },
+					{ "<leader>T", group = "tabs" },
 					{ "<leader>c", group = "code" },
 					{ "<leader>f", group = "file/find" },
 					{ "<leader>g", group = "git" },

@@ -10,7 +10,7 @@ return {
 				css = { "prettier" },
 				html = { "prettier" },
 				-- javascript = { "prettier", "standardjs" },
-				markdown = { "markdownlint" },
+				markdown = { "mdformat" },
 			},
 			-- customize a formatter
 			formatters = {
@@ -42,17 +42,55 @@ return {
 				typescriptreact = { "standardjs" },
 				markdown = { "markdownlint" },
 			}
+
+			-- modify markdown rules
+			local markdownlint = lint.linters.markdownlint
+			markdownlint.args = { "--stdin", "-c", "/Users/leonel/.config/markdownlint/.markdownlint.jsonc", "-" }
+
 			-- tigger the linters whit autocommand
+			local lint_enabled = true -- Inicialmente, el linter está activado
 			local lint_augorup = vim.api.nvim_create_augroup("lint", { clear = true })
-			vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+			vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave", "TextChanged" }, {
 				group = lint_augorup,
 				callback = function()
-					lint.try_lint()
+					if lint_enabled then
+						lint.try_lint()
+					end
 				end,
 			})
-			vim.keymap.set("n", "<leader>l", function()
-				lint.try_lint()
-			end, { desc = "Trigger linting for current file" })
+
+			-- autocommand for markdown Syntax_aware
+			local lint_syntax = false
+			local lint_syntax_group = vim.api.nvim_create_augroup("lint_syntax", { clear = true })
+			vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave", "TextChanged" }, {
+				group = lint_syntax_group,
+				callback = function()
+					if lint_syntax then
+						lint.try_lint "vale"
+					end
+				end,
+			})
+
+			-- keymaps
+			vim.keymap.set("n", "<leader>ll", function()
+				lint_enabled = not lint_enabled
+				if lint_enabled then
+					vim.notify("Linter activated", vim.log.levels.INFO)
+				else
+					vim.diagnostic.reset()
+					vim.notify("Linter deactivated", vim.log.levels.INFO)
+				end
+			end, { desc = "Toggle linting for current file" })
+
+			vim.keymap.set("n", "<leader>lm", function()
+				lint_syntax = not lint_syntax
+				if lint_syntax then
+					vim.notify("Syntax-aware enabled", vim.log.levels.INFO)
+				else
+					vim.diagnostic.reset()
+					vim.notify("Syntan-aware disabled", vim.log.levels.INFO)
+				end
+			end, { desc = "Tigger Syntax-aware linter" })
 		end,
 	},
 	{

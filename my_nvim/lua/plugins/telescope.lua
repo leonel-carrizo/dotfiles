@@ -11,17 +11,18 @@ return {
 			selection_caret = " ",
 			entry_prefix = " ",
 			sorting_strategy = "ascending",
+			layout_strategy = "flex",
 			layout_config = {
-				horizontal = {
-					prompt_position = "bottom",
-					preview_width = 0.55,
-					preview_cutoff = 0,
-				},
+				-- horizontal = {
+				-- 	prompt_position = "bottom",
+				-- 	preview_width = 0.55,
+				-- 	preview_cutoff = 0,
+				-- },
 				width = 0.87,
 				height = 0.80,
 			},
 			mappings = {
-				n = { ["q"] = require("telescope.actions").close },
+				-- n = { ["q"] = require("telescope.actions").close },
 				i = { ["<C-u>"] = false },
 			},
 			initial_mode = "normal",
@@ -101,7 +102,7 @@ return {
 		{ "<leader>sk", "<cmd>Telescope keymaps<cr>",         desc = "Key Maps" },
 		{ "<leader>s:", "<cmd>Telescope command_history<cr>", desc = "Command History" },
 		{
-			"<leader>tt",
+			"<leader>ut",
 			function()
 				require("telescope.builtin").colorscheme { enable_preview = true }
 			end,
@@ -128,5 +129,14 @@ return {
 			end,
 			desc = "Find files in Home Directory",
 		},
+		{
+			"q",
+			function()
+				local current_win = vim.api.nvim_get_current_win()
+				local prompt_bufnr = vim.api.nvim_win_get_buf(current_win)
+				require("telescope.actions").close(prompt_bufnr)
+			end,
+			desc = "Close Telescope",
+		}
 	},
 }

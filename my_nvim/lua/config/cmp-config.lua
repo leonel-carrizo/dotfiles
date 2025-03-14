@@ -59,6 +59,7 @@ local options = {
 		["<C-u>"] = cmp.mapping.scroll_docs(4),
 		["<C-Space>"] = cmp.mapping.complete(),
 		["<C-,>"] = cmp.mapping.close(),
+		["<D-e>"] = cmp.mapping.close(),
 
 		["<CR>"] = cmp.mapping.confirm {
 			behavior = cmp.ConfirmBehavior.Insert,
@@ -90,6 +91,7 @@ local options = {
 		{ name = "luasnip" },
 		{ name = "nvim_lua" },
 		{ name = "path" },
+		{ name = "buffer" },
 	},
 	{
 		{ name = "buffer" },

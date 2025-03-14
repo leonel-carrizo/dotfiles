@@ -4,9 +4,10 @@ local map = vim.keymap.set
 map("n", "<Esc>", "<cmd>noh<CR>", { desc = "General Clear highlights" })
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map({ "i", "v", "t" }, "jk", "<ESC>", { desc = "going fast to normal mode" })
-map({ "n", "i", "v" }, "<C-q>", "<cmd>q<cr>", { desc = "Fast Closing." })
+map({ "n", "i", "v" }, "<C-q>", "<cmd>confirm q<cr>", { desc = "Fast Closing." })
 map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>", { desc = "Saving on any mode" })
 map("i", "<C-x>", "<C-o>x", { desc = "delete on insert mode" })
+map("i", "<C-S-x>", "<Del>", { desc = "delete on insert mode" })
 map("v", "<C-c>", '"+y', { desc = "Copy to clipboard" })
 map("n", "<C-c>", "<cmd>%y+<CR>", { desc = "General Copy whole file" })
 
@@ -98,7 +99,4 @@ map("n", "<leader>rm", function()
 	require("utils.lsprenamer").rename()
 end, { desc = "Rename word under cursor." })
 
--- 42 stdheader
-map("n", "<F1>", function ()
-	vim.cmd "$HOME/.vim/plugin/stdheader.vim"
-end, { desc = "42 stdheader c/make files"})
+map("n", "<leader>Tn", "<cmd>tabnew<CR>", { desc = "Open new empty Tab" })

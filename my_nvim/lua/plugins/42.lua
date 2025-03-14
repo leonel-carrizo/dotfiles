@@ -24,7 +24,7 @@ return {
 				desc = "Toggle Norminette linter on C/CPP files.",
 			},
 		},
-		ft = { "c" },
+		ft = { "c", "cpp" },
 		dependencies = {
 			"jose-elias-alvarez/null-ls.nvim",
 			"nvim-lua/plenary.nvim",
