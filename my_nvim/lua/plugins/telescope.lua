@@ -22,8 +22,11 @@ return {
 				height = 0.80,
 			},
 			mappings = {
-				-- n = { ["q"] = require("telescope.actions").close },
-				i = { ["<C-u>"] = false },
+				n = { ["q"] = "close" },
+				i = {
+					["<C-u>"] = false,
+					["<C-h>"] = "which_key"
+				},
 			},
 			initial_mode = "normal",
 		},
@@ -129,14 +132,5 @@ return {
 			end,
 			desc = "Find files in Home Directory",
 		},
-		{
-			"q",
-			function()
-				local current_win = vim.api.nvim_get_current_win()
-				local prompt_bufnr = vim.api.nvim_win_get_buf(current_win)
-				require("telescope.actions").close(prompt_bufnr)
-			end,
-			desc = "Close Telescope",
-		}
 	},
 }
