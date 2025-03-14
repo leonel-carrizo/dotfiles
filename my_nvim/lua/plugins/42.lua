@@ -1,17 +1,17 @@
 return {
 	-- header 42London
-	{
-		dir = "$HOME/.vim/plugin/stdheader.vim",
-		lazy = true,
-		cmd = "Stdheader",
-		keys = {
-			{ "<F1>", "<cdm>Stdheader<CR>", desc = "42 Header for C Files." },
-		},
-		ft = { "c", "Makefile" },
-		config = function()
-			vim.cmd "source $HOME/.vim/plugin/stdheader.vim"
-		end,
-	},
+	-- {
+	-- 	dir = "$HOME/.vim/plugin/stdheader.vim",
+	-- 	lazy = true,
+	-- 	cmd = "Stdheader",
+	-- 	keys = {
+	-- 		{ "<F1>", "<cdm>Stdheader<CR>", desc = "42 Header for C Files." },
+	-- 	},
+	-- 	ft = { "c", "Makefile" },
+	-- 	config = function()
+	-- 		vim.cmd "source $HOME/.vim/plugin/stdheader.vim"
+	-- 	end,
+	-- },
 	-- linter
 	{
 		"vinicius507/norme.nvim",
@@ -24,7 +24,7 @@ return {
 				desc = "Toggle Norminette linter on C/CPP files.",
 			},
 		},
-		ft = { "c", "cpp" },
+		ft = { "c" },
 		dependencies = {
 			"jose-elias-alvarez/null-ls.nvim",
 			"nvim-lua/plenary.nvim",

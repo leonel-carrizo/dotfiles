@@ -17,8 +17,8 @@ return {
 			local lspopts = require "config.lsp-config"
 
 			local servers = {
-				-- "lua_ls",
-				"clangd",
+				"lua_ls",
+				-- "clangd",
 				-- "eslint",
 				"ts_ls",
 				"rust_analyzer",
@@ -50,6 +50,16 @@ return {
 				end,
 				-- on_init = lspopts.on_init,
 				capabilities = lspopts.capabilities,
+			}
+
+			lspconfig.clangd.setup {
+				on_init = lspopts.on_init,
+				on_attach = lspopts.on_attach,
+				capabilities = lspopts.capabilities,
+				cmd = {
+					"clangd",
+					"--offset-encoding=utf-16",
+				}
 			}
 		end,
 		dependencies = { "williamboman/mason.nvim" },

@@ -6,7 +6,8 @@ return {
 		dir = "~/.config/nvim/lua/local/term",
 		lazy = true,
 		keys = {
-			{ "<C-x>", "<C-\\><C-N>", mode = "t", desc = "Terminal scape to normal mode" },
+			{ "<C-n>", "<C-\\><C-N>", mode = "t", desc = "Terminal scape to normal mode" },
+			{ "<C-x>", "<A-\\>", mode = "t", desc = "Terminal vim mode" },
 			{
 				"<leader>x",
 				function(bufnr)

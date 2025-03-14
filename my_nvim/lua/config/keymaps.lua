@@ -97,3 +97,8 @@ end, { desc = "buffer close" })
 map("n", "<leader>rm", function()
 	require("utils.lsprenamer").rename()
 end, { desc = "Rename word under cursor." })
+
+-- 42 stdheader
+map("n", "<F1>", function ()
+	vim.cmd "$HOME/.vim/plugin/stdheader.vim"
+end, { desc = "42 stdheader c/make files"})
