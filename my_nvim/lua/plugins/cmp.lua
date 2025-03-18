@@ -28,12 +28,24 @@ return {
 		-- autopairing of (){}[] etc
 		{
 			"windwp/nvim-autopairs",
-			opts = {
-				fast_wrap = {},
-				disable_filetype = { "TelescopePrompt", "vim" },
-			},
+			opts = {},
 			config = function(_, opts)
-				require("nvim-autopairs").setup(opts)
+				require("nvim-autopairs").setup {
+					disable_filetype = { "TelescopePrompt", "vim" },
+					fast_wrap = {
+						map = "<D-i>",
+						chars = { "{", "[", "(", '"', "'" },
+						pattern = [=[[%'%"%>%]%)%}%,]]=],
+						end_key = "$",
+						before_key = "h",
+						after_key = "l",
+						cursor_pos_before = true,
+						keys = "qwertyuiopzxcvbnmasdfghjkl",
+						manual_position = true,
+						highlight = "Search",
+						highlight_grey = "Comment",
+					},
+				}
 
 				-- setup cmp for autopairs
 				local cmp_autopairs = require "nvim-autopairs.completion.cmp"
