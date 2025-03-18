@@ -50,7 +50,7 @@ return {
 			-- tigger the linters whit autocommand
 			local lint_enabled = true -- Inicialmente, el linter está activado
 			local lint_augorup = vim.api.nvim_create_augroup("lint", { clear = true })
-			vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave", "TextChanged" }, {
+			vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
 				group = lint_augorup,
 				callback = function()
 					if lint_enabled then
