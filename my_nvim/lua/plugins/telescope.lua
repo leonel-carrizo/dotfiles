@@ -22,7 +22,7 @@ return {
 				height = 0.80,
 			},
 			mappings = {
-				n = { ["q"] = "close" },
+				n = { ["q"] = "close", ["e"] = "select_default" },
 				i = {
 					["<C-u>"] = false,
 					["<C-h>"] = "which_key"
