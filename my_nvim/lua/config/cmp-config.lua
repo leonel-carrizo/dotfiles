@@ -92,9 +92,9 @@ local options = {
 		{ name = "nvim_lua" },
 		{ name = "path" },
 		{ name = "buffer" },
-	},
-	{
-		{ name = "buffer" },
+		{
+			{ name = "buffer" },
+		},
 	},
 }
 
