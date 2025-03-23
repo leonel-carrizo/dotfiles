@@ -28,7 +28,7 @@ vim.cmd "function! TbNewTab(a,b,c,d) \n tabnew \n endfunction"
 vim.cmd "function! TbNewBuf(a,b,c,d) \n enew \n endfunction"
 vim.cmd "function! TbGotoTab(tabnr,b,c,d) \n execute a:tabnr ..'tabnext' \n endfunction"
 vim.cmd "function! TbCloseAllBufs(a,b,c,d) \n lua require('local.tabufline').closeAllBufs() \n endfunction"
-vim.cmd "function! TbToggle_theme(a,b,c,d) \n lua require('neo-tree.command').execute({toggle = true}) \n endfunction"
+vim.cmd "function! TbToggle_theme(a,b,c,d) \n lua require('neo-tree.command').execute({toggle = true, action = 'show' }) \n endfunction"
 vim.cmd "function! TbToggleTabs(a,b,c,d) \n let g:TbTabsToggled = !g:TbTabsToggled | redrawtabline \n endfunction"
 
 -------------------------------------------------------- functions ------------------------------------------------------------
