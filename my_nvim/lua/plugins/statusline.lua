@@ -95,7 +95,7 @@ return {
 					lualine_y = {
 						-- Show commands like 
 						{
-							function() vim.o.showcmdloc = "statusline" return "%S" end,
+							function() vim.o.showcmdloc = "statusline" return " " .. "%S" end,
 							cond = function () return vim.o.showcmd end,
 						},
 						{ "location", separator = "", padding = { left = 0, right = 1 } },
