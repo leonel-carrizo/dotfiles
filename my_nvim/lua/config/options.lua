@@ -64,3 +64,4 @@ opt.listchars = {
 opt.fillchars = { eob = " " }
 opt.whichwrap:append "<>[]hl"
 opt.shortmess:append "sI" -- Disable nvim intro
+opt.conceallevel = 2 -- for obsidian change how to show text
