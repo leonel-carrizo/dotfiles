@@ -91,17 +91,22 @@ return {
 								end
 							end,
 						},
-						-- stylua: ignore
 					},
 					lualine_y = {
-						{ "progress", separator = " ", padding = { left = 1, right = 0 } },
-						{ "location", padding = { left = 0, right = 1 } },
+						-- Show commands like 
+						{
+							function() vim.o.showcmdloc = "statusline" return "%S" end,
+							cond = function () return vim.o.showcmd end,
+						},
+						{ "location", separator = "", padding = { left = 0, right = 1 } },
+						{ "progress", padding = { left = 0, right = 1 } },
 					},
 					lualine_z = {
 						function()
 							return " " .. os.date "%R"
 						end,
 					},
+					-- stylua: ignore
 				},
 				extensions = { "nvim-tree", "lazy", "neo-tree" },
 			}
