@@ -100,3 +100,16 @@ map("n", "<leader>rm", function()
 end, { desc = "Rename word under cursor." })
 
 map("n", "<leader>Tn", "<cmd>tabnew<CR>", { desc = "Open new empty Tab" })
+
+-- Obsidian
+-- Create new link in highlighted text
+map("v", "<leader>oln", ":ObsidianLinkNew<CR>", { desc = "Obsidian Create New Link" })
+map("v", "<leader>oll", ":ObsidianLink<CR>", { desc = "Obsidian Link with note" })
+map("n", "<leader>ols", ":ObsidianLinks<CR>", { desc = "Obsidian all links current buffer" })
+map("v", "<leader>oe", ":ObsidianExtractNote<CR>", { desc = "Obsidian Extract selected text into note" })
+map("n", "<leader>oo", ":ObsidianOpen<CR>", { desc = "Obsidian Open Curren Note in App" })
+map("n", "<leader>oq", ":ObsidianQuickSwitch<CR>", { desc = "Obsidian quickly switch to another vault note" })
+map("n", "<leader>ott", ":ObsidianTemplate<CR>", { desc = "Obsidian insert template (picker)" })
+map("n", "<leader>otn", ":ObsidianNewFromTemplate<CR>", { desc = "Obsidian new note from template (picker)" })
+map("n", "<leader>of", ":ObsidianFollowLink vsplit<CR>", { desc = "Obsidian open reference under the cursor (vsplit)" })
+map("n", "<leader>ob", ":ObsidianBacklinks<CR>", { desc = "Obsidian list of references to the current buffer" })

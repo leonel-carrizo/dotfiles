@@ -112,6 +112,7 @@ return {
 				{
 					mode = { "n", "v" },
 					{ "<leader>t", group = "Terminal", icon = " " },
+					{ "<leader>o", group = "Obsidian", icon = "󱓩 "},
 					{ "<leader>T", group = "tabs" },
 					{ "<leader>c", group = "code" },
 					{ "<leader>f", group = "file/find" },
