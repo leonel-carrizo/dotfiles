@@ -48,9 +48,10 @@ return {
 			cmd = "Neotree",
 			keys = {
 				{
-					"<leader>fe",
+					"<leader>ef",
 					function()
 						require("neo-tree.command").execute {
+							action = "show",
 							toggle = true,
 							dir = require("utils.paths_utils").root_dir(),
 						}
@@ -58,38 +59,34 @@ return {
 					desc = "Explorer NeoTree (Root Dir)",
 				},
 				{
-					"<leader>fE",
-					function()
-						require("neo-tree.command").execute { toggle = true, dir = vim.uv.cwd() }
-					end,
-					desc = "Explorer NeoTree (cwd)",
-				},
-				{ "<leader>e", "<leader>fe", desc = "Explorer NeoTree (Root Dir)", remap = true },
-				{ "<leader>E", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
-				{
-					"<leader>ge",
+					"<leader>eg",
 					function()
 						require("neo-tree.command").execute { source = "git_status", toggle = true }
 					end,
 					desc = "Git Explorer",
 				},
 				{
-					"<leader>be",
+					"<leader>eb",
 					function()
 						require("neo-tree.command").execute { source = "buffers", toggle = true }
 					end,
 					desc = "Buffer Explorer",
 				},
-				{ "<leader>e", function ()
-					require("neo-tree.command").execute({ action = "focus" })
-				end, desc = "Explorer NeoTree focus",
+				{
+					"<leader>e",
+					function()
+						require("neo-tree.command").execute { action = "focus", toggle = true }
+					end,
+					desc = "Explorer NeoTree focus",
 				},
 				{
-					"<leader>fc", function ()
-						vim.cmd("tabnew")
-						require("neo-tree.command").execute({ action = "focus", dir =  vim.fn.stdpath('config')})
-					end, desc = "Open NeoVim settings files on new tab"
-				}
+					"<leader>es",
+					function()
+						vim.cmd "tabnew"
+						require("neo-tree.command").execute { action = "focus", dir = vim.fn.stdpath "config" }
+					end,
+					desc = "Open NeoVim settings files on new tab",
+				},
 			},
 			deactivate = function()
 				vim.cmd [[Neotree close]]
