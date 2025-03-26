@@ -18,7 +18,7 @@ return {
 				path = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/Home/",
 			},
 		},
-		notes_subdir = "inbox",
+		notes_subdir = "00 inbox",
 		new_notes_location = "notes_subdir",
 		-- disable_frontmatter = true,
 		templates = {
@@ -64,13 +64,19 @@ return {
 			-- vim.ui.open(url) -- need Neovim 0.10.0+
 		end,
 
+		image_name_func = function ()
+			local dateFormatted = os.date("%a%d%b%Y%H%M", os.time())
+			return "Img" .. dateFormatted
+		end,
+
 		attachments = {
 			img_folder = "Archive/Files_Assets",
 
 			img_text_func = function(client, path)
 				path = client:vault_relative_path(path) or path
-				local name_no_ext = path.name:gsub("%.[^%.]+$", "")
-				return string.format("![%s](%s)", name_no_ext, path)
+				local name_no_ext = path.stem
+				-- local extracted_part = name_no_ext:match(".*_(.*)")
+				return string.format("![[%s|%s]]", path.name, name_no_ext)
 			end,
 		},
 
