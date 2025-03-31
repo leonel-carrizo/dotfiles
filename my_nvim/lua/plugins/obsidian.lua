@@ -4,10 +4,9 @@ local function set_path()
 
 	if os_name == "Darwin" then
 		return "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/Home/"
-	elseif os_name == "linux" then
-		return "~/Documents/home"
+	elseif os_name == "Linux" then
+		return "$HOME/Documents/home/"
 	else
-		print("are you on Wondows???")
 		return nil
 	end
 end
