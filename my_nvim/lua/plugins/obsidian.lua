@@ -1,3 +1,17 @@
+--- get the path over the system
+local function set_path()
+	local os_name = io.popen("uname"):read("*l")
+
+	if os_name == "Darwin" then
+		return "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/Home/"
+	elseif os_name == "linux" then
+		return "~/Documents/home"
+	else
+		print("are you on Wondows???")
+		return nil
+	end
+end
+
 return {
 	"epwalsh/obsidian.nvim",
 	event = "VeryLazy",
@@ -15,7 +29,7 @@ return {
 		workspaces = {
 			{
 				name = "Home",
-				path = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/Home/",
+				path = set_path()
 			},
 		},
 		notes_subdir = "00 inbox",
