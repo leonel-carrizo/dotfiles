@@ -28,7 +28,7 @@ function M.ToggleNormCheck()
 		vim.api.nvim_set_hl(0, "LongLine", { bg = "red", fg = "yellow", force = true })
 		vim.g.highlight_long_lines_enabled = 1
 		vim.opt.list = true
-		print "Norm Check activated"
+		print "Space Check activated"
 	end
 end
 
