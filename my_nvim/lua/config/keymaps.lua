@@ -110,6 +110,6 @@ map("v", "<leader>oe", ":ObsidianExtractNote<CR>", { desc = "Obsidian Extract se
 map("n", "<leader>oo", ":ObsidianOpen<CR>", { desc = "Obsidian Open Curren Note in App" })
 map("n", "<leader>oq", ":ObsidianQuickSwitch<CR>", { desc = "Obsidian quickly switch to another vault note" })
 map("n", "<leader>ott", ":ObsidianTemplate<CR>", { desc = "Obsidian insert template (picker)" })
-map("n", "<leader>otn", ":ObsidianNewFromTemplate<CR>", { desc = "Obsidian new note from template (picker)" })
+map("n", "<leader>otn", ":ObsidianNewFromTemplate", { desc = "Obsidian new note from template (picker)" })
 map("n", "<leader>of", ":ObsidianFollowLink vsplit<CR>", { desc = "Obsidian open reference under the cursor (vsplit)" })
 map("n", "<leader>ob", ":ObsidianBacklinks<CR>", { desc = "Obsidian list of references to the current buffer" })
