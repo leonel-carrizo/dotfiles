@@ -31,7 +31,7 @@ return {
 				path = set_path()
 			},
 		},
-		notes_subdir = "00 inbox",
+		notes_subdir = "00 Inbox",
 
 		new_notes_location = "notes_subdir",
 
@@ -42,7 +42,8 @@ return {
 			if note.title then
 				note:add_alias(note.title)
 			end
-			local out = { id = note.id, aliases = note.aliases, tags = note.tags }
+			local date = os.date("%d-%m-%Y %H:%M:%S", os.time())
+			local out = { id = note.id, date = date, aliases = note.aliases, tags = note.tags }
 
 			-- `note.metadata` contains any manually added fields in the frontmatter.
 			-- So here we just make sure those fields are kept in the frontmatter.
@@ -57,7 +58,7 @@ return {
 
 		templates = {
 			subdir = "03 Templates",
-			date_format = "%Y-%m-%d",
+			date_format = "%d-%m-%Y",
 			time_format = "%H:%M:%S",
 		},
 
