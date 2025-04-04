@@ -41,28 +41,67 @@ return {
 				javascriptreact = { "standardjs" },
 				typescriptreact = { "standardjs" },
 				markdown = { "markdownlint" },
+				c = { "norminette" },
+				h = { "norminette" },
+				cpp = { "norminette" },
 			}
 
 			-- modify markdown rules
-			local markdownlint = lint.linters.markdownlint
-			markdownlint.args = { "--stdin", "-c", "/Users/leonel/.config/markdownlint/.markdownlint.jsonc", "-" }
+			lint.linters.markdownlint.args = {
+				"--stdin",
+				"-c",
+				"/Users/leonel/.config/markdownlint/.markdownlint.jsonc",
+				"-",
+			}
+
+			lint.linters.norminette = {
+				cmd = "norminette",
+				stdin = false,
+				append_fname = true,
+				args = {},
+				ignore_exitcode = true,
+				stream = "stdout",
+				parser = function(output, bufnr)
+					local diagnostics = {}
+					for line in vim.gsplit(output, "\n") do
+						-- formato: file: Error: DESCRIPTION (line: xx, col xx): message
+						-- [[Error:%s+(%S+)%s+%(%s*line:%s*(%d+),%s*col:%s*(%d+)%):%s+(.+)]]
+						local code, lnum, col, msg =
+							line:match [[Error:%s+([%a+_?]+)%s+%(line:%s+(%d+),%s+col:%s+(%d+)%):%s+(.*)$]]
+						if code and lnum and col and msg then
+							table.insert(diagnostics, {
+								bufnr = bufnr,
+								lnum = tonumber(lnum) - 1,
+								col = tonumber(col) - 1,
+								message = "Norm_Err: " .. msg,
+								severity = vim.diagnostic.severity.ERROR,
+								source = "norminette",
+							})
+						end
+					end
+					return diagnostics
+				end,
+			}
 
 			-- tigger the linters whit autocommand
 			local lint_enabled = true -- Inicialmente, el linter está activado
 			local lint_augorup = vim.api.nvim_create_augroup("lint", { clear = true })
-			vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
-				group = lint_augorup,
-				callback = function()
-					if lint_enabled then
-						lint.try_lint()
-					end
-				end,
-			})
+			vim.api.nvim_create_autocmd(
+				{ "BufEnter", "BufWritePost", "InsertLeave", "InsertEnter", "TextChanged", "TextChangedI" },
+				{
+					group = lint_augorup,
+					callback = function()
+						if lint_enabled then
+							lint.try_lint()
+						end
+					end,
+				}
+			)
 
 			-- autocommand for markdown Syntax_aware
 			local lint_syntax = false
 			local lint_syntax_group = vim.api.nvim_create_augroup("lint_syntax", { clear = true })
-			vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave", "TextChanged" }, {
+			vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
 				group = lint_syntax_group,
 				callback = function()
 					if lint_syntax then
