@@ -10,16 +10,16 @@ return {
 				css = { "prettier" },
 				html = { "prettier" },
 				-- javascript = { "prettier", "standardjs" },
-				markdown = { "mdformat" },
+				markdown = { "markdownlint" },
 			},
 			-- customize a formatter
 			formatters = {
-				-- 	["42norm_format"] = {
-				-- 		inherit = false,
-				-- 		command = "42norm_format",
-				-- 		args = { vim.fn.expand "%:p" },
-				-- 		stdin = false,
-				-- 	},
+				["markdownlint"] = {
+					inherit = false,
+					command = "markdownlint",
+					args = { "$FILENAME", "--fix", "--config", "~/.config/markdownlint/.markdownlint.jsonc" },
+					stdin = true,
+				},
 			},
 			-- format_on_save = {
 			-- 	-- These options will be passed to conform.format()
@@ -50,7 +50,7 @@ return {
 			lint.linters.markdownlint.args = {
 				"--stdin",
 				"-c",
-				"/Users/leonel/.config/markdownlint/.markdownlint.jsonc",
+				"~/.config/markdownlint/.markdownlint.jsonc",
 				"-",
 			}
 

@@ -66,7 +66,7 @@ end, { desc = "show spaces and long lines in  C" })
 -- formating files
 map("n", "<leader>fm", function()
 	require("conform").format { lsp_fallback = true, async = false, timeout_ms = 800 }
-	-- print "file formatted!, run: conformInfo for more."
+	vim.cmd("e!")
 end, { desc = "General Format file" })
 
 -- nvimtree
