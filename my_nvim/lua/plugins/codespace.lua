@@ -18,7 +18,7 @@ return {
 					inherit = false,
 					command = "markdownlint",
 					args = { "$FILENAME", "--fix", "--config", "~/.config/markdownlint/.markdownlint.jsonc" },
-					stdin = true,
+					stdin = false,
 				},
 			},
 			-- format_on_save = {
