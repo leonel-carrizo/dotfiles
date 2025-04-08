@@ -12,7 +12,7 @@ local function set_path()
 end
 
 return {
-	"epwalsh/obsidian.nvim",
+	"obsidian-nvim/obsidian.nvim",
 	event = "VeryLazy",
 	version = "*", -- recommended, use latest release instead of latest commit
 	lazy = true,
