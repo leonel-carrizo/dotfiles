@@ -10,7 +10,8 @@ function M.ToggleNormCheck()
 		-- Clear the highlight group
 		vim.g.highlight_long_lines_enabled = 0
 		vim.opt.list = false
-		print "Norm Check deactivated"
+		vim.o.colorcolumn="0"
+		print "Spaces Check deactivated"
 	else
 		-- Create a new autocommand group
 		vim.api.nvim_create_augroup("highlight_long_lines", { clear = true })
@@ -28,7 +29,8 @@ function M.ToggleNormCheck()
 		vim.api.nvim_set_hl(0, "LongLine", { bg = "red", fg = "yellow", force = true })
 		vim.g.highlight_long_lines_enabled = 1
 		vim.opt.list = true
-		print "Space Check activated"
+		vim.o.colorcolumn="80"
+		print "Spaces Check activated"
 	end
 end
 
