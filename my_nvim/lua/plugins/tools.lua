@@ -7,7 +7,7 @@ return {
 		lazy = true,
 		keys = {
 			{ "<C-n>", "<C-\\><C-N>", mode = "t", desc = "Terminal scape to normal mode" },
-			{ "<C-x>", "<C-x><C-v>", mode = "t", desc = "Terminal enter Vim mode" },
+			{ "<C-x>", "<C-\\><C-o>", mode = "t", desc = "Terminal enter Vim mode" },
 			{
 				"<leader>x",
 				function(bufnr)
