@@ -1,6 +1,6 @@
 --- get the path over the system
 local function set_path()
-	local os_name = io.popen("uname"):read("*l")
+	local os_name = io.popen("uname"):read "*l"
 
 	if os_name == "Darwin" then
 		return "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/Home/"
@@ -28,7 +28,7 @@ return {
 		workspaces = {
 			{
 				name = "Home",
-				path = set_path()
+				path = set_path(),
 			},
 		},
 		notes_subdir = "00 Inbox",
@@ -41,6 +41,9 @@ return {
 			-- Add the title of the note as an alias.
 			if note.title then
 				note:add_alias(note.title)
+			end
+			if note.id == note.title or note.id == nil then
+				note.id = tostring(os.date("%a%d%b%Y%H%M", os.time()))
 			end
 			local date = os.date("%d-%m-%Y %H:%M:%S", os.time())
 			local out = { id = note.id, date = date, aliases = note.aliases, tags = note.tags }
@@ -62,11 +65,6 @@ return {
 			time_format = "%H:%M:%S",
 		},
 
-		completion = {
-			nvim_cmp = true,
-			min_char = 2,
-		},
-
 		-- Customize how note IDs are generated.
 		-- return string DayMonthYeartime
 		---@return string
@@ -75,8 +73,15 @@ return {
 			return tostring(dateFormatted)
 		end,
 
+		---@diagnostic disable: luadoc-miss-type-name, undefined-doc-name, undefined-doc-param
+		---@param opts { path: string, label: string, id: string|integer|?, anchor: obsidian.note.HeaderAnchor|?, block: obsidian.note.Block|? }
+		---@return string
+		wiki_link_func = function(opts)
+			local file_name = require("obsidian.Note").fname(opts)
+			return string.format("[[%s|%s]]", file_name, opts.label)
+		end,
+
 		-- If file name is not given, return <Note>_<4random_chars>
-		---@diagnostic disable: luadoc-miss-type-name, undefined-doc-name
 		---@param spec { id: string, dir: obsidian.Path, title: string|? }
 		---@return string|obsidian.Path The full path to the new note.
 		note_path_func = function(spec)
