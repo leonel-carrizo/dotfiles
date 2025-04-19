@@ -1,3 +1,5 @@
+local home_path = os.getenv "HOME" .. "/"
+
 return {
 	-- for formatting files
 	{
@@ -13,14 +15,15 @@ return {
 				markdown = { "markdownlint" },
 			},
 			-- customize a formatter
-			formatters = {
-				["markdownlint"] = {
-					inherit = false,
-					command = "markdownlint",
-					args = { "$FILENAME", "--fix", "--config", "~/.config/markdownlint/.markdownlint.jsonc" },
-					stdin = false,
-				},
-			},
+			-- formatters = {
+			-- 	["markdownlint"] = {
+			-- 		args = function()
+			-- 			local styles_path = conf_path .. "/markdownlint/.markdownlint.jsonc"
+			-- 			return { "--fix", "--config", styles_path, "$FILENAME" }
+			-- 		end,
+			-- 		stdin = false,
+			-- 	},
+			-- },
 			-- format_on_save = {
 			-- 	-- These options will be passed to conform.format()
 			-- 	timeout_ms = 500,
@@ -47,12 +50,8 @@ return {
 			}
 
 			-- modify markdown rules
-			lint.linters.markdownlint.args = {
-				"--stdin",
-				"-c",
-				"~/.config/markdownlint/.markdownlint.jsonc",
-				"-",
-			}
+			local styles_path = home_path .. ".config/markdownlint/.markdownlint.jsonc"
+			lint.linters["markdownlint"].args = { "--stdin", "-c", styles_path, "-" }
 
 			lint.linters.norminette = {
 				cmd = "norminette",
@@ -192,7 +191,6 @@ return {
 				"lua",
 				"luadoc",
 				"luap",
-				"markdown",
 				"markdown_inline",
 				"python",
 				"query",
@@ -207,6 +205,15 @@ return {
 			},
 			sync_install = false,
 			auto_install = true,
+			incremental_selection = {
+				enable = true,
+				keymaps = {
+					init_selection = "gnn", -- set to `false` to disable one of the mappings
+					node_incremental = "grn",
+					scope_incremental = "grc",
+					node_decremental = "grm",
+				},
+			},
 		},
 		config = function(_, opts)
 			require("nvim-treesitter.configs").setup(opts)
