@@ -21,9 +21,7 @@ return {
 		-- Required.
 		"nvim-lua/plenary.nvim",
 	},
-	-- More settings on :
-	-- README: https://github.com/epwalsh/obsidian.nvim?tab=readme-ov-file#configuration-options
-	-- Default: https://github.com/epwalsh/obsidian.nvim/blob/main/lua/obsidian/config.lua#L302
+	-- README: https://github.com/obsidian-nvim/obsidian.nvim?tab=readme-ov-file#configuration-options
 	opts = {
 		workspaces = {
 			{
@@ -116,13 +114,13 @@ return {
 		end,
 
 		attachments = {
-			img_folder = "Archive/Files_Assets",
+			img_folder = "02 Archive/Files_Assets",
 
 			img_text_func = function(client, path)
 				path = client:vault_relative_path(path) or path
-				local name_no_ext = path.stem
+				-- local name_no_ext = path.stem
 				-- local extracted_part = name_no_ext:match(".*_(.*)")
-				return string.format("![[%s|%s]]", path.name, name_no_ext)
+				return string.format("![[./%s]]", path) -- Easier compatibility with image.nvim
 			end,
 		},
 
