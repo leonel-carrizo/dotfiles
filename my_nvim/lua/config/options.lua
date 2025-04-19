@@ -22,7 +22,7 @@ o.signcolumn = "yes"
 o.splitbelow = true
 o.splitright = true
 o.wrap = false
-o.numberwidth = 4
+o.numberwidth = 1
 o.nu = true
 o.relativenumber = true
 
@@ -61,7 +61,23 @@ opt.listchars = {
 	extends = "⇛",
 	precedes = "⇚",
 }
-opt.fillchars = { eob = " " }
+opt.fillchars = {
+	eob = "☠",
+	foldopen = "▾",
+	foldclose = "▸",
+	foldsep = " ",
+	fold = " ",
+}
 opt.whichwrap:append "<>[]hl"
 opt.shortmess:append "sI" -- Disable nvim intro
 opt.conceallevel = 1 -- for obsidian change how to show text
+opt.showcmd = false
+
+----------------------------- option for folding (statuscol.nvim) ------------
+o.foldenable = true
+o.foldmethod = "expr"
+o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+o.foldtext = ""
+o.foldcolumn = "1"
+o.foldlevel = 99
+o.foldlevelstart = 99

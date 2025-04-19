@@ -28,7 +28,7 @@ return {
 				"emmet_ls",
 				"jsonls",
 				"bashls",
-				"markdown_oxide",
+				"marksman",
 			}
 
 			for _, lsp in ipairs(servers) do
@@ -72,21 +72,36 @@ return {
 					package_uninstalled = " ",
 				},
 			},
-			max_concurrent_installers = 10,
+			max_concurrent_installers = 5,
+			ensure_installed = {
+				"markdownlint",
+				"clangd",
+				"markdown-toc",
+				"prettier",
+				"stylua",
+				"bashls",
+
+			}
 		},
 		config = function(_, opts)
 			require("mason").setup(opts)
 			require("mason-lspconfig").setup {
+				-- https://github.com/williamboman/mason-lspconfig.nvim#available-lsp-servers
 				ensure_installed = {
 					"lua_ls",
 					"clangd",
 					"eslint",
 					"rust_analyzer",
 					"html",
+					"ts_ls",
+					"pyright",
+					"jsonls",
 					"cssls",
 					"pyright",
 					"emmet_ls",
-					"markdown_oxide",
+					"marksman",
+					"asm_lsp",
+					"bashls",
 				},
 				automatic_installation = true,
 			}
