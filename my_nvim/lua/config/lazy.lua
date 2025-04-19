@@ -29,7 +29,7 @@ require("lazy").setup {
 	},
 	defaults = {
 		lazy = false,
-		version = false,
+		version = nil,
 	},
 	-- colorscheme that will be used when installing plugins.
 	install = { colorscheme = { "sonokai" } },
@@ -44,6 +44,9 @@ require("lazy").setup {
 			loaded = "",
 			not_loaded = "",
 		},
+	},
+	rocks = {
+		hererocks = true,
 	},
 	performance = {
 		rtp = {
