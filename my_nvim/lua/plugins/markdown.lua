@@ -29,7 +29,8 @@ return {
 				},
 				checked = {
 					icon = "",
-				}
+					scope_highlight = "@markup.striketthrough",
+				},
 			}
 		},
 		config = function(_, opts)
