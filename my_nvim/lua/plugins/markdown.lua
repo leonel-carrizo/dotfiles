@@ -23,6 +23,14 @@ return {
 				enabled = true,
 				skip_heading = true,
 			},
+			checkbox = {
+				unchecked = {
+					icon = "󰄱",
+				},
+				checked = {
+					icon = "",
+				}
+			}
 		},
 		config = function(_, opts)
 			require("obsidian").get_client().opts.ui.enable = false
