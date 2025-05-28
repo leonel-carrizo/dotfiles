@@ -29,7 +29,7 @@ return {
 				},
 				checked = {
 					icon = "",
-					scope_highlight = "@markup.striketthrough",
+					scope_highlight = "@markup.strikethrough",
 				},
 			}
 		},
