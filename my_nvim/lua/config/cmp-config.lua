@@ -31,6 +31,7 @@ end
 local options = {
 	completion = {
 		completeopt = "menu,menuone",
+		keyword_length = 2,
 	},
 
 	window = {
@@ -55,8 +56,8 @@ local options = {
 	mapping = cmp.mapping.preset.insert {
 		["<C-k>"] = cmp.mapping.select_prev_item(),
 		["<C-j>"] = cmp.mapping.select_next_item(),
-		["<C-d>"] = cmp.mapping.scroll_docs(-4),
-		["<C-u>"] = cmp.mapping.scroll_docs(4),
+		["<C-d>"] = cmp.mapping.scroll_docs(-2),
+		["<C-u>"] = cmp.mapping.scroll_docs(2),
 		["<C-Space>"] = cmp.mapping.complete(),
 		["<C-,>"] = cmp.mapping.close(),
 		["<D-e>"] = cmp.mapping.close(),
@@ -92,9 +93,10 @@ local options = {
 		{ name = "nvim_lua" },
 		{ name = "path" },
 		{ name = "buffer" },
-		{
-			{ name = "buffer" },
-		},
+		{ name = "cmdline" },
+		-- {
+		-- 	{ name = "buffer" },
+		-- },
 	},
 }
 

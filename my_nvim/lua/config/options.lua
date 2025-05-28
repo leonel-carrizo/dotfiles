@@ -35,9 +35,9 @@ o.shiftwidth = 4
 o.softtabstop = 0
 
 ------------------------------ Performance -----------------------------------
-o.timeoutlen = 400
-o.ttimeoutlen = 0
-o.updatetime = 250
+o.timeoutlen = 500
+o.ttimeoutlen = 50
+o.updatetime = 500
 o.swapfile = false
 o.backup = false
 o.undodir = os.getenv "HOME" .. "/.vim/undodir"

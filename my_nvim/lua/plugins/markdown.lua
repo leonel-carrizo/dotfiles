@@ -20,7 +20,8 @@ return {
 				width = 80,
 			},
 			indent = {
-				enable = true,
+				enabled = true,
+				skip_heading = true,
 			},
 		},
 		config = function(_, opts)

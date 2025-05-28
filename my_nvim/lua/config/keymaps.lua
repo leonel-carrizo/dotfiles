@@ -53,7 +53,7 @@ map("v", "<C-Up>", ":m '<-2<CR>gv=gv", { noremap = true, silent = true, desc = "
 -- for replacing
 map(
 	"n",
-	"<leader>s",
+	"<leader>ss",
 	[[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
 	{ desc = "Quick replacing words on editing file." }
 )

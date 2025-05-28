@@ -1,7 +1,8 @@
 return {
 	-- load luasnips + cmp related in insert mode only
 	"hrsh7th/nvim-cmp",
-	event = "InsertEnter",
+	lazy = true,
+	-- event = "InsertEnter",
 	dependencies = {
 		{
 			-- cmp sources plugins
