@@ -51,7 +51,7 @@ alias lll='lsd */**/*'
 alias la='lsd -a --group-dirs=first'
 alias l='lsd --group-dirs=first'
 alias lla='lsd -lha --group-dirs=first'
-alias ls='lsd --group-dirs=first'
+alias ls='lsd --group-dirs=first -1'
 alias myip="curl http://ipecho.net/plain; echo"
 alias nv='nvim'
 alias norm="norminette"
@@ -59,8 +59,10 @@ alias comp="cc -Wall -Werror -Wextra"
 alias cl="clear"
 alias gitb="lazy_git"
 alias gits="git status"
+alias rgrd='ranger --choosedir=$HOME/.config/ranger/.rangerdir; LASTDIR=`cat $HOME/.config/ranger/.rangerdir`; cd "$LASTDIR"'
 alias rgr="ranger"
 alias gdbc="gcc -Wall -Werror -Wextra -g"
+alias oo="cd $HOME/Documents/home/"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -96,6 +98,7 @@ bindkey "^[[F" end-of-line
 bindkey "^[[3~" delete-char
 bindkey "^[[1;3C" forward-word
 bindkey "^[[1;3D" backward-word
+bindkey -M viins "^R" history-incremental-search-backward
 source ~/.config/powerlevel10k/powerlevel10k.zsh-theme
 
 export TERMINAL=xterm-kitty
@@ -114,7 +117,7 @@ PATH=/snap/bin:/usr/sandbox/:$PATH
 PATH=/usr/share/games:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:$PATH
 PATH=/usr/local/games:/usr/games:$PATH
 PATH=/home/l3o/.local/bin/:/home/l3o/.cargo/bin/:/home/l3o/.luarocks:$PATH
-PATH=~/.console-ninja/.bin:$PATH
+
 PATH="/home/l3o/perl5/bin${PATH:+:${PATH}}"; export PATH;
 PERL5LIB="/home/l3o/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
 PERL_LOCAL_LIB_ROOT="/home/l3o/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
