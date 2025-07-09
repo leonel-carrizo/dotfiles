@@ -44,9 +44,9 @@ return {
 				javascriptreact = { "standardjs" },
 				typescriptreact = { "standardjs" },
 				markdown = { "markdownlint" },
-				c = { "norminette" },
-				h = { "norminette" },
-				cpp = { "norminette" },
+				-- c = { "norminette" },
+				-- h = { "norminette" },
+				-- cpp = { "norminette" },
 			}
 
 			-- modify markdown rules
@@ -83,7 +83,7 @@ return {
 			}
 
 			-- tigger the linters whit autocommand
-			local lint_enabled = true -- Inicialmente, el linter está activado
+			local lint_enabled = true
 			local lint_augorup = vim.api.nvim_create_augroup("lint", { clear = true })
 			vim.api.nvim_create_autocmd(
 				{ "BufEnter", "BufWritePost", "InsertLeave", "InsertEnter", "TextChanged", "TextChangedI" },
@@ -94,6 +94,20 @@ return {
 							lint.try_lint()
 						end
 					end,
+				}
+			)
+
+			local lint_norminette = false
+			local lint_norm_group = vim.api.nvim_create_augroup('lint_norm_group', {clear = true})
+			vim.api.nvim_create_autocmd(
+				{"BufEnter", "BufWritePost"},
+				{
+					group = lint_norm_group,
+					callback = function ()
+						if lint_norminette then
+							lint.try_lint "norminette"
+						end
+					end
 				}
 			)
 
@@ -129,6 +143,17 @@ return {
 					vim.notify("Syntan-aware disabled", vim.log.levels.INFO)
 				end
 			end, { desc = "Tigger Syntax-aware linter" })
+
+			vim.keymap.set("n", "<leader>ln", function ()
+				lint_norminette = not lint_norminette
+				if lint_norminette then
+					vim.notify("Norminette Lint ON", vim.log.levels.INFO)
+				else
+					local ns = require("lint").get_namespace("norminette")
+					vim.diagnostic.config({virtual_text = false}, ns)
+					vim.notify("Norminette Lint OFF", vim.log.levels.INFO)
+				end
+			end, {desc = "Acrtivate Norminette Linter"})
 		end,
 	},
 	{
@@ -187,7 +212,6 @@ return {
 				"javascript",
 				"jsdoc",
 				"json",
-				"jsonc",
 				"lua",
 				"luadoc",
 				"luap",

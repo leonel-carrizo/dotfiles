@@ -75,7 +75,7 @@ return {
 		---@param opts { path: string, label: string, id: string|integer|?, anchor: obsidian.note.HeaderAnchor|?, block: obsidian.note.Block|? }
 		---@return string
 		wiki_link_func = function(opts)
-			local file_name = require("obsidian.Note").fname(opts)
+			local file_name = require("obsidian.note").fname(opts)
 			return string.format("[[%s|%s]]", file_name, opts.label)
 		end,
 
