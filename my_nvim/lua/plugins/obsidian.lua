@@ -123,38 +123,7 @@ return {
 				return string.format("![[./%s]]", path) -- Easier compatibility with image.nvim
 			end,
 		},
+		legacy_commands = false,
 
-		-- more keymaps on ../config/keymaps.lua
-		mappings = {
-			-- Go to the linked file
-			["gf"] = {
-				action = function()
-					return require("obsidian").util.gf_passthrough()
-				end,
-				opts = { noremap = false, expr = true, buffer = true },
-			},
-			-- toggle check-boxes
-			["<leader>ch"] = {
-				action = function()
-					return require("obsidian").util.toggle_checkbox()
-				end,
-				opts = { buffer = true, desc = "Obsidian toggle check-boxes" },
-			},
-			-- Paste Imnage from Clipboard
-			["<leader>op"] = {
-				action = ":ObsidianPasteImg <CR>",
-				opts = { desc = "Obsidian Paste Image" },
-			},
-			-- Search in the vault
-			["<leader>os"] = {
-				action = ":ObsidianSearch <CR>",
-				opts = { desc = "Obsidian Search in vault" },
-			},
-			-- create new note
-			["<leader>on"] = {
-				action = ":ObsidianNew <CR>",
-				opts = { desc = "Obsidian Create New Note" },
-			},
-		},
 	},
 }
