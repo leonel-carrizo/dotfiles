@@ -33,30 +33,34 @@ return {
 
 		new_notes_location = "notes_subdir",
 
+		ui = { enable = false },
+
 		disable_frontmatter = false,
 		---@return table
-		note_frontmatter_func = function(note)
-			-- Add the title of the note as an alias.
-			if note.title then
-				note:add_alias(note.title)
-			end
-			if note.id == note.title or note.id == nil then
-				note.id = tostring(os.date("%a%d%b%Y%H%M", os.time()))
-			end
-			local date = os.date("%d-%m-%Y %H:%M:%S", os.time())
-			local out = { id = note.id, date = date, aliases = note.aliases, tags = note.tags }
-
-			-- `note.metadata` contains any manually added fields in the frontmatter.
-			-- So here we just make sure those fields are kept in the frontmatter.
-			if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
-				for k, v in pairs(note.metadata) do
-					out[k] = v
+		frontmatter = {
+			enabled = true,
+			func = function(note)
+				-- Add the title of the note as an alias.
+				if note.title then
+					note:add_alias(note.title)
 				end
-			end
+				if note.id == note.title or note.id == nil then
+					note.id = tostring(os.date("%a%d%b%Y%H%M", os.time()))
+				end
+				local date = os.date("%d-%m-%Y %H:%M:%S", os.time())
+				local out = { id = note.id, date = date, aliases = note.aliases, tags = note.tags }
 
-			return out
-		end,
+				-- `note.metadata` contains any manually added fields in the frontmatter.
+				-- So here we just make sure those fields are kept in the frontmatter.
+				if note.metadata ~= nil and not vim.tbl_isempty(note.metadata) then
+					for k, v in pairs(note.metadata) do
+						out[k] = v
+					end
+				end
 
+				return out
+			end,
+		},
 		templates = {
 			subdir = "03 Templates",
 			date_format = "%d-%m-%Y",
@@ -124,6 +128,5 @@ return {
 			end,
 		},
 		legacy_commands = false,
-
 	},
 }
