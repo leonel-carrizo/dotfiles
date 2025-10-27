@@ -102,10 +102,10 @@ map("n", "<leader>Tn", "<cmd>tabnew<CR>", { desc = "Open new empty Tab" })
 
 -- Obsidian
 -- Create new link in highlighted text
-map("n", "<leader>on", "Obsidian new<CR>", { desc = "Obsidian Create New Note" } )
-map("n", "<leader>os", "Obsidian search<CR>", { desc = "Obsidian Search in vaul" } )
-map("n", "<leader>op", "Obsidian paste_img<CR>", { desc = "Obsidian Paste Image" } )
-map("n", "<leader>och", "Obsidian toggle_checkbox<CR>", { desc = "Obsidian Paste Image" } )
+map("n", "<leader>on", ":Obsidian new<CR>", { desc = "Obsidian Create New Note" } )
+map("n", "<leader>os", ":Obsidian search<CR>", { desc = "Obsidian Search in vaul" } )
+map("n", "<leader>op", ":Obsidian paste_img<CR>", { desc = "Obsidian Paste Image" } )
+map("n", "<leader>och", ":Obsidian toggle_checkbox<CR>", { desc = "Obsidian Paste Image" } )
 map("v", "<leader>oln", ":Obsidian link_new<CR>", { desc = "Obsidian Create New Link" })
 map("v", "<leader>oll", ":Obsidian link<CR>", { desc = "Obsidian Link with note" })
 map("n", "<leader>ols", ":Obsidian links<CR>", { desc = "Obsidian all links current buffer" })

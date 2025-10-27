@@ -29,15 +29,17 @@ case "$BLOCK_BUTTON" in
 	posX=$(($BLOCK_X - $WIDTH / 2))
 	posY=$(($BLOCK_Y - $HEIGHT))
 
-	i3-msg -q "exec yad --calendar --undecorated \
-		--mouse --width=350 --height=250 \
-        --escape-ok --selectable-labels --selectable-labels \
-        --buttons-layout=spread --timeout=120 --timeout-indicator=top \
-        > /dev/null"
+	#i3-msg -q "exec yad --calendar --undecorated \
+	#	--mouse --width=350 --height=250 \
+    #    --escape-ok --selectable-labels --selectable-labels \
+    #    --buttons-layout=spread --timeout=120 --timeout-indicator=top \
+    #    > /dev/null"
 
 	# i3-msg -q "exec yad --calendar --undecorated \
 	# 	--posx=1600 --posy=30 --width=315 -- \
 	# 	--height=200 --escape-ok > /dev/null"
+
+	i3-msg -q "exec gnome-calendar"
 esac
 echo "$LABEL$(date "$DATEFMT")"
 echo "$LABEL$(date "$SHORTFMT")"

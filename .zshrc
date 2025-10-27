@@ -59,7 +59,7 @@ alias comp="cc -Wall -Werror -Wextra"
 alias cl="clear"
 alias gitb="lazy_git"
 alias gits="git status"
-alias rgrd='ranger --choosedir=$HOME/.config/ranger/.rangerdir; LASTDIR=`cat $HOME/.config/ranger/.rangerdir`; cd "$LASTDIR"'
+alias rgrg='ranger --choosedir=$HOME/.config/ranger/.rangerdir; LASTDIR=`cat $HOME/.config/ranger/.rangerdir`; cd "$LASTDIR"'
 alias rgr="ranger"
 alias gdbc="gcc -Wall -Werror -Wextra -g"
 alias oo="cd $HOME/Documents/home/"

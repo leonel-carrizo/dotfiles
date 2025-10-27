@@ -18,6 +18,7 @@ set nocompatible
 
 let mapleader="\<Space>"
 set timeoutlen=250
+set updatetime=250
 autocmd InsertEnter * set timeoutlen=0
 autocmd InsertLeave * set timeoutlen=250
 
@@ -38,6 +39,14 @@ syntax on
 
 " clear highlight after a search
 nnoremap <silent> <Leader>. :nohl<CR> 
+
+" Enter on normal mode
+inoremap jk <ESC>
+vnoremap jk <ESC>
+tnoremap jk <ESC>
+
+" Enter on command mode
+nnoremap ; <ESC>:
 
 " Show cursor position.
 set cursorline

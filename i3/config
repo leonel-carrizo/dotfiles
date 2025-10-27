@@ -44,8 +44,8 @@ mode "move"{
 
 # change focus
 bindsym $mod+h focus left
-bindsym $mod+k focus down
-bindsym $mod+j focus up
+bindsym $mod+k focus up
+bindsym $mod+j focus down
 bindsym $mod+l focus right
 
 # alternatively, you can use the cursor keys:
@@ -56,8 +56,8 @@ bindsym $mod+Right focus right
 
 # move focused window
 bindsym $mod+Shift+h move left
-bindsym $mod+Shift+k move down
-bindsym $mod+Shift+j move up
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+j move down
 bindsym $mod+Shift+l move right
 
 # alternatively, you can use the cursor keys:
@@ -189,15 +189,15 @@ bar {
 bindsym Mod1+Mod4+space bar mode toggle
 
 ######## GAPS ########
-gaps inner 0px
-gaps outer 0px
+gaps inner 3px
+gaps outer 3px
 #
 
 ####### Don’t focus window upon opening #######
 # no_focus [all]
 
 #onedark-graphite-theme
-# class                 border  backgr. text    indicator child_border
+# class                 order  backgr. text    indicator child_border
 client.focused          #268bd2 #2E3440 #E5E9F0 #268bd2   #268bd2
 client.focused_inactive #4C566A #5f676a #ffffff #434C5E   #434C5E
 client.unfocused        #333333 #222222 #888888 #292d2e   #222222
@@ -206,12 +206,12 @@ client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 client.background       #3B4252
 
 ######## HIDE TITLE BAR ########
-for_window [class="^.*"] border pixel 1
+for_window [class="^.*"] border pixel 2
 
 # ##### NORMAL TITLE BAR #######
 # for_window [class="^.*"] border normal
-for_window [title="so_long game"] border normal
-title_align center
+# for_window [title="so_long game"] border normal
+# title_align center
 # for_window [all] title_window_icon padding 5px
 
 ###### CALCULATOR FLOATING MODE #######
@@ -231,7 +231,7 @@ for_window [class="Yad"] floating enable
 
 ##### Kitty-update-system i3block FLOATING MODE ######
 for_window [title="updating system"] floating enable
-for_window [title="updating system"] resize set 750 500, move position center
+for_window [title="updating system"] resize set 850 600, move position center
 
 ###########################################################
 #
@@ -307,7 +307,7 @@ bindsym $mod+n exec kitty -e nvim
 bindsym $mod+b exec brave
 
 # open a browser file
-bindsym $mod+t exec thunar
+bindsym $mod+t exec nautilus
 
 #kill focused window
 bindsym Mod1+q kill
@@ -316,8 +316,8 @@ bindsym Mod1+q kill
 bindsym $mod+Ctrl+u exec --no-startup-id ~/.local/bin/sysupdate
 
 ###### TOGGLE BETWEEN WORKSPACE ########
-bindsym $mod+Ctrl+Right workspace next
-bindsym $mod+Ctrl+Left workspace prev
+# bindsym $mod+Ctrl+Right workspace next
+# bindsym $mod+Ctrl+Left workspace prev
 
 # start bemenu (a program launcher)
 bindsym --release Alt_R exec --no-startup-id bemenu-run -l 10 -wifcs -W 0.26 -p 'Apps' --fixed-height -M 10 \
@@ -338,6 +338,5 @@ bindsym $mod+minus scratchpad show
 
 # focus next workspace
 bindsym $mod+Control+l workspace next
-
 # focus previous workspace
-bindsym $mod+Control+h workspace next
+bindsym $mod+Control+h workspace prev

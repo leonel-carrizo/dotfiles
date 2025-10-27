@@ -31,3 +31,7 @@ dunst -conf "~/.config/dunst/dunstrc" &
 # charge cursor size
 xrdb ~/.Xresources
 
+# for small windows
+export GDK_SCALE=1.5
+export GDK_DPI_SCALE=0.75
+export QT_SCALE_FACTOR=1.5
