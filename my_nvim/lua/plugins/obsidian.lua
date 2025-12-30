@@ -35,7 +35,6 @@ return {
 
 		ui = { enable = false },
 
-		disable_frontmatter = false,
 		---@return table
 		frontmatter = {
 			enabled = true,

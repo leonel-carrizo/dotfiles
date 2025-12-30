@@ -1,23 +1,16 @@
 return {
 	{
 		"neovim/nvim-lspconfig",
-		-- this fucntion must returns a table, this will applay for all servers
-		-- if this is set, you must change the `config` approach. `config` override this.
+		envent = "VeryLazy",
 		-- See: http://www.lazyvim.org/plugins/lsp#nvim-lspconfig
-		opts = function()
-			return {}
-		end,
 		config = function()
-			local lspconfig = require "lspconfig"
 			local lspopts = require "config.lsp-config"
 			local lsp_capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 			-- load defaults for lua
-			require("config.lsp-config").defaults()
+			lspopts.defaults()
 
 			local servers = {
-				-- "lua_ls",
-				-- "clangd",
 				"eslint",
 				"ts_ls",
 				"rust_analyzer",
@@ -27,39 +20,31 @@ return {
 				"jsonls",
 				"bashls",
 				"marksman",
-				"some-sass-language-server",
+				"somesass_ls",
 			}
 
-			for _, lsp in ipairs(servers) do
-				lspconfig[lsp].setup {
-					on_attach = lspopts.on_attach,
-					on_init = lspopts.on_init,
-					-- capabilities = lspopts.capabilities,
+			vim.lsp.enable(servers)
+
+			vim.lsp.config (
+				"clangd", {
 					capabilities = lsp_capabilities,
-				}
-			end
-
-			lspconfig.clangd.setup {
-				on_attach = lspopts.on_attach,
-				on_init = lspopts.on_init,
-				capabilities = lsp_capabilities,
-				cmd = { "clangd", "--clang-tidy" },
-				init_options = {
-					fallbackFlags = {}, -- empty so you must create a compile_commands.json
+					cmd = { "clangd", "--clang-tidy" },
+					init_options = {
+						fallbackFlags = {}, -- empty so you must create a compile_commands.json
+					},
 				},
-			}
-			-- lsp individual for javascript
-			lspconfig.eslint.setup {
-				on_attach = function(_, bufnr)
-					lspopts.on_attach(_, bufnr)
-					vim.api.nvim_create_autocmd("BufWritePre", {
-						buffer = bufnr,
-						command = "EslintFixAll",
-					})
-				end,
-				-- on_init = lspopts.on_init,
-				capabilities = lspopts.capabilities,
-			}
+				"eslint", {
+					on_attach = function(_, bufnr)
+						lspopts.on_attach(_, bufnr)
+						vim.api.nvim_create_autocmd("BufWritePre", {
+							buffer = bufnr,
+							command = "EslintFixAll",
+						})
+					end,
+					-- on_init = lspopts.on_init,
+					capabilities = lspopts.capabilities,
+				}
+				)
 		end,
 		dependencies = { "williamboman/mason.nvim" },
 	},
@@ -88,7 +73,8 @@ return {
 				"prettier",
 				"bashls",
 				"html-lsp",
-				"some-sass-language-server", },
+				"some-sass-language-server",
+			},
 		},
 		config = function(_, opts)
 			require("mason").setup(opts)
