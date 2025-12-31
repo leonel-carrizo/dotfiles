@@ -16,6 +16,7 @@ g.mail42 = "lcarrizo@student.42london.com"
 ------------------------------ User Interface --------------------------------
 o.mouse = "a"
 o.termguicolors = true
+o.guicursor = "n-v-c-sm:block-blinkon500-blinkoff500,i-ci-ve:ver25,r-cr-o:hor20,t:block-blinkon500-blinkoff500-TermCursor"
 o.cursorline = true
 o.cursorlineopt = "both" -- Enable cursorline
 o.signcolumn = "yes"
