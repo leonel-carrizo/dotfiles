@@ -41,8 +41,7 @@ return {
 							command = "EslintFixAll",
 						})
 					end,
-					-- on_init = lspopts.on_init,
-					capabilities = lspopts.capabilities,
+					capabilities = lsp_capabilities,
 				}
 				)
 		end,
