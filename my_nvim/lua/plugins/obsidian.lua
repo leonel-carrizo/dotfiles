@@ -101,29 +101,51 @@ return {
 			return path:with_suffix ".md"
 		end,
 
-		-- Customize behavior when use `:ObsidianFollowLink` on a link to an external
-		---@param url string
-		follow_url_func = function(url)
-			-- Open the URL in the default web browser.
-			vim.fn.jobstart { "open", url } -- Mac OS
-			-- vim.fn.jobstart({"xdg-open", url})  -- linux
-			-- vim.cmd(':silent exec "!start ' .. url .. '"') -- Windows
-			-- vim.ui.open(url) -- need Neovim 0.10.0+
-		end,
-
 		image_name_func = function()
 			local dateFormatted = os.date("%a%d%b%Y%H%M", os.time())
 			return "Img" .. dateFormatted
 		end,
 
 		attachments = {
-			img_folder = "02 Archive/Files_Assets",
+			folder = "/02 Archive/Files_Assets",
 
 			img_text_func = function(client, path)
 				path = client:vault_relative_path(path) or path
 				-- local name_no_ext = path.stem
 				-- local extracted_part = name_no_ext:match(".*_(.*)")
 				return string.format("![[./%s]]", path) -- Easier compatibility with image.nvim
+			end,
+		},
+		---@class obsidian.config.CallbackConfig
+		---
+		---Runs right after setup
+		---@field post_setup? fun()
+		---
+		---Runs when entering a note buffer.
+		---@field enter_note? fun(note: obsidian.Note)
+		---
+		---Runs when leaving a note buffer.
+		---@field leave_note? fun(note: obsidian.Note)
+		---
+		---Runs right before writing a note buffer.
+		---@field pre_write_note? fun(note: obsidian.Note)
+		---
+		---Runs anytime the workspace is set/changed.
+		---@field post_set_workspace? fun(workspace: obsidian.Workspace)
+		callbacks = {
+			enter_note = function()
+				-- for opening the attached files 
+				vim.ui.open = (function(overridden)
+					return function(uri, opt)
+						if vim.endswith(uri, ".png") then
+							vim.cmd("edit " .. uri)
+							return
+						elseif vim.endswith(uri, ".pdf") then
+							opt = { cmd = { "zathura" } }
+						end
+						return overridden(uri, opt)
+					end
+				end)(vim.ui.open)
 			end,
 		},
 		legacy_commands = false,
