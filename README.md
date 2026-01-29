@@ -52,8 +52,8 @@ sudo plymouth-set-default-theme archGrey -R
 
 * `capture`, `capture-full`: screenshots.
 * `update_lockscreenbg`: update lockscreen background.
-* `kb-layout`: keyboard layout switch
-* `lazy_git`: shortcut for lazygit
+* `kb-layout`: keyboard layout switch.-
+* `lazy_git`: shortcut for lazygit.-
 * `42norm_format`: formatter for 42-school style
 
 Add `bin/` to your `$PATH` or symlink the individual scripts if needed.
