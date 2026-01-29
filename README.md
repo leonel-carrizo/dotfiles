@@ -73,7 +73,7 @@ Add `bin/` to your `$PATH` or symlink the individual scripts if needed.
 ## 💻 Compatibility
 
 ✅ Tested on **Linux (Arch)**
-❌ Not tested on macOS or Windows — may require adaptation
+❌ Not tested on macOS or Windows — may require adaptation.
 
 ---
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue)  © Leonel Carrizo
