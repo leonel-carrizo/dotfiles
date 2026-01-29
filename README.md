@@ -10,8 +10,8 @@ Personal dotfiles and system configuration files for my development and desktop 
 * **Window Managers**: i3wm, Qtile
 * **Terminal Emulators**: Alacritty, Kitty
 * **Editor**: Neovim (LazyVim, NvChad, 42-style)
-* **Notification Daemon**: Dunst
-* **Lockscreen & Logout**: Betterlockscreen, Wlogout
+* **Notification Daemon**: Dunst.
+* **Lockscreen & Logout**: Betterlockscreen, Wlogout.
 * **Compositor & Wallpaper**: Picom, Nitrogen
 * **File manager**: Ranger
 * **Other tools**: Neofetch, libinput gestures, etc.
