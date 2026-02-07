@@ -89,7 +89,7 @@ return {
 					"cssls",
 					"pyright",
 					"marksman",
-					"asm_lsp",
+					-- "asm_lsp",
 					"bashls",
 				},
 				automatic_installation = true,

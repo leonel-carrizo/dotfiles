@@ -253,9 +253,9 @@ function! CheckBraces()
     endif
 endfunction
 "-------------------------------------------------------------------------------
-call plug#begin('~/.vim/plugged')
+"call plug#begin('~/.vim/plugged')
 ""Plug 'morhetz/gruvbox'
-call plug#end()
+"call plug#end()
 
 ""let g:gruvbox_contrast_dark='hard'
 ""colorscheme gruvbox 
