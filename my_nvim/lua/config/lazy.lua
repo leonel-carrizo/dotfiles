@@ -46,7 +46,7 @@ require("lazy").setup {
 		},
 	},
 	rocks = {
-		hererocks = true,
+		hererocks = false,
 	},
 	performance = {
 		rtp = {
