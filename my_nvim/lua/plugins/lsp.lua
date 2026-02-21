@@ -67,7 +67,7 @@ return {
 			},
 			max_concurrent_installers = 5,
 			ensure_installed = { -- Instal any client from Mason repo
-				"markdownlint",
+				"markdownlint-cli2",
 				"markdown-toc",
 				"prettier",
 				"bashls",

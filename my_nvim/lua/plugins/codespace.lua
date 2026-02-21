@@ -1,4 +1,5 @@
 local home_path = os.getenv "HOME" .. "/"
+local markdown_styles_path = home_path .. ".config/markdownlint-cli2/.markdownlint-cli2.jsonc"
 
 return {
 	-- for formatting files
@@ -6,24 +7,19 @@ return {
 		"stevearc/conform.nvim",
 		-- event = { "BufReadPre", "BufNewFile" }, -- for format on save
 		opts = {
+			log_level = vim.log.levels.DEBUG,
 			formatters_by_ft = {
 				lua = { "stylua" },
 				-- c = { "42norm_format" },
 				css = { "prettier" },
 				html = { "prettier" },
 				-- javascript = { "prettier", "standardjs" },
-				markdown = { "markdownlint" },
+				markdown = { "markdownlint-cli2" },
 			},
-			-- customize a formatter
-			-- formatters = {
-			-- 	["markdownlint"] = {
-			-- 		args = function()
-			-- 			local styles_path = conf_path .. "/markdownlint/.markdownlint.jsonc"
-			-- 			return { "--fix", "--config", styles_path, "$FILENAME" }
-			-- 		end,
-			-- 		stdin = false,
-			-- 	},
-			-- },
+			-- config = function(opts)
+			-- 	require("conform").setup(opts)
+			-- end,
+			-- -- },
 			-- format_on_save = {
 			-- 	-- These options will be passed to conform.format()
 			-- 	timeout_ms = 500,
@@ -43,15 +39,14 @@ return {
 				typescript = { "standardjs" },
 				javascriptreact = { "standardjs" },
 				typescriptreact = { "standardjs" },
-				markdown = { "markdownlint" },
+				markdown = { "markdownlint-cli2" },
 				-- c = { "norminette" },
 				-- h = { "norminette" },
 				-- cpp = { "norminette" },
 			}
 
 			-- modify markdown rules
-			local styles_path = home_path .. ".config/markdownlint/.markdownlint.jsonc"
-			lint.linters["markdownlint"].args = { "--stdin", "-c", styles_path, "-" }
+			lint.linters["markdownlint-cli2"].args = { "--config", markdown_styles_path, "-" }
 
 			lint.linters.norminette = {
 				cmd = "norminette",
@@ -98,18 +93,15 @@ return {
 			)
 
 			local lint_norminette = false
-			local lint_norm_group = vim.api.nvim_create_augroup('lint_norm_group', {clear = true})
-			vim.api.nvim_create_autocmd(
-				{"BufEnter", "BufWritePost"},
-				{
-					group = lint_norm_group,
-					callback = function ()
-						if lint_norminette then
-							lint.try_lint "norminette"
-						end
+			local lint_norm_group = vim.api.nvim_create_augroup("lint_norm_group", { clear = true })
+			vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
+				group = lint_norm_group,
+				callback = function()
+					if lint_norminette then
+						lint.try_lint "norminette"
 					end
-				}
-			)
+				end,
+			})
 
 			-- autocommand for markdown Syntax_aware
 			local lint_syntax = false
@@ -144,16 +136,16 @@ return {
 				end
 			end, { desc = "Tigger Syntax-aware linter" })
 
-			vim.keymap.set("n", "<leader>ln", function ()
+			vim.keymap.set("n", "<leader>ln", function()
 				lint_norminette = not lint_norminette
 				if lint_norminette then
 					vim.notify("Norminette Lint ON", vim.log.levels.INFO)
 				else
-					local ns = require("lint").get_namespace("norminette")
-					vim.diagnostic.config({virtual_text = false}, ns)
+					local ns = require("lint").get_namespace "norminette"
+					vim.diagnostic.config({ virtual_text = false }, ns)
 					vim.notify("Norminette Lint OFF", vim.log.levels.INFO)
 				end
-			end, {desc = "Acrtivate Norminette Linter"})
+			end, { desc = "Acrtivate Norminette Linter" })
 		end,
 	},
 	{
