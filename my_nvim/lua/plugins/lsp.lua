@@ -21,6 +21,7 @@ return {
 				"bashls",
 				"marksman",
 				"somesass_ls",
+				"golangci-lint-langserver",
 			}
 
 			vim.lsp.enable(servers)
