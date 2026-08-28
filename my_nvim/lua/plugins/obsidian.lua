@@ -74,13 +74,10 @@ return {
 			return tostring(dateFormatted)
 		end,
 
-		---@diagnostic disable: luadoc-miss-type-name, undefined-doc-name, undefined-doc-param
-		---@param opts { path: string, label: string, id: string|integer|?, anchor: obsidian.note.HeaderAnchor|?, block: obsidian.note.Block|? }
-		---@return string
-		wiki_link_func = function(opts)
-			local file_name = require("obsidian.note").fname(opts)
-			return string.format("[[%s|%s]]", file_name, opts.label)
-		end,
+		link = {
+			style = "wiki",
+			format = "shortest",
+		},
 
 		-- If file name is not given, return <Note>_<4random_chars>
 		---@param spec { id: string, dir: obsidian.Path, title: string|? }
