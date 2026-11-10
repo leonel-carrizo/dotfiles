@@ -1,0 +1,649 @@
+#!/bin/bash
+#
+# vbox-secureboot — Install, repair and verify VirtualBox on Fedora with
+# Secure Boot enabled.
+#
+# The signing is always delegated to the packaging system, never done by hand:
+#
+#   - RPM Fusion (akmod-VirtualBox): akmods builds and signs the modules with
+#     the key in /etc/pki/akmods/ (the RPM macros _kmodtool_signmodules_privkey
+#     and _kmodtool_signmodules_pubkey point there) and rebuilds them on every
+#     kernel update. The modules are signed before being compressed, which is
+#     the only correct order.
+#   - Oracle (dnf repo / .run installer): /sbin/vboxconfig builds and signs the
+#     modules with /var/lib/shim-signed/mok/MOK.{priv,der}.
+#
+# The script is idempotent: it derives the current state from the system, so it
+# can be run as many times as needed, including once before and once after the
+# reboot required to enroll the key in the firmware.
+#
+# Usage: vbox-secureboot <command> [options]
+#
+set -euo pipefail
+
+declare KERN_VER
+KERN_VER="$(uname -r)"
+readonly KERN_VER
+
+readonly AKMODS_PRIV="/etc/pki/akmods/private/private_key.priv"
+readonly AKMODS_PUB="/etc/pki/akmods/certs/public_key.der"
+declare RPMFUSION_RELEASE_URL
+RPMFUSION_RELEASE_URL="https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora 2>/dev/null || echo 44).noarch.rpm"
+
+# --- Command line options ---
+TARGET_KERNEL="$KERN_VER"
+USE_ENROLLED_KEY=""
+USE_ENROLLED_CERT=""
+ASSUME_YES=false
+
+# --- Output helpers ---
+log()  { echo "==> $*"; }
+warn() { echo "AVISO: $*" >&2; }
+die()  { echo "ERROR: $*" >&2; exit 1; }
+
+# contains <text> <pattern> -> true when <pattern> appears in <text>
+#
+# Plain shell pattern matching is used on purpose: piping into "grep -q" makes
+# grep exit as soon as it matches, which sends SIGPIPE to the previous stage of
+# the pipeline. With "set -o pipefail" that makes the whole pipeline fail with
+# status 141, so a successful match would be reported as a failure.
+contains() {
+    [[ "$1" == *"$2"* ]]
+}
+
+# ask <question> -> true when the user answers yes
+ask() {
+    local answer
+    if $ASSUME_YES; then
+        return 0
+    fi
+    read -r -p "$1 [s/N] " answer || true
+    [[ "$answer" == "s" || "$answer" == "S" || "$answer" == "y" || "$answer" == "Y" ]]
+}
+
+usage() {
+    cat <<EOF
+vbox-secureboot — Installar, reparar y verificar VirtualBox en Fedora con
+Secure Boot activado.
+
+Uso: vbox-secureboot <comando> [opciones]
+
+Comandos:
+  install    Instalación completa desde cero. Es idempotente: se puede ejecutar
+             varias veces y se reanuda sola tras el reinicio del firmware.
+  repair     Reconstruye, firma, carga y verifica los módulos.
+  verify     Comprobaciones de solo lectura (no necesita root).
+  status     Diagnóstico completo del sistema.
+
+Opciones:
+  --kernel <versión>      Trabajar sobre otro kernel instalado en lugar del
+                           kernel en ejecución.
+  --use-enrolled-key <priv> [cert]
+                           Instala una llave ya enrolada en el firmware en las
+                           rutas por defecto de akmods. Es el camino de
+                           rescate cuando el menú de MokManager no es
+                           accesible.
+  -y, --yes                No pide confirmación en los pasos destructivos.
+
+Códigos de salida:
+  0   Todo correcto.
+  1   Error.
+  2   Requiere una acción (reiniciar para enrolar la llave) y reejecutar.
+EOF
+}
+
+# =============================================================================
+# State helpers
+# =============================================================================
+
+# detect_source -> prints: rpmfusion | oracle | none
+detect_source() {
+    if rpm -q akmod-VirtualBox &>/dev/null; then
+        echo "rpmfusion"
+    elif [[ -x /sbin/vboxconfig ]]; then
+        echo "oracle"
+    else
+        echo "none"
+    fi
+}
+
+# oracle_package_nevra -> prints the NEVRA of an Oracle VirtualBox package
+oracle_package_nevra() {
+    local candidate nevra
+    while read -r candidate; do
+        if [[ "$candidate" =~ ^VirtualBox-[0-9]+(\.[0-9]+)*$ ]]; then
+            nevra="$(rpm -q --qf '%{NAME}-%{VERSION}-%{RELEASE}.%{ARCH}' "$candidate")"
+            printf '%s\n' "$nevra"
+            return 0
+        fi
+    done < <(rpm -qa --qf '%{NAME}\n')
+    return 1
+}
+
+# cert_fingerprint <cert.der> -> SHA1 fingerprint, lowercase, without colons
+cert_fingerprint() {
+    openssl x509 -inform DER -in "$1" -noout -fingerprint -sha1 2>/dev/null \
+        | sed 's/.*=//; s/://g' | tr '[:upper:]' '[:lower:]'
+}
+
+# key_state <cert.der> -> prints: enrolled | pending | none | unknown
+#
+# The enrollment state is checked by comparing the SHA1 fingerprint of the
+# certificate against the MOK lists. The wording of "mokutil --test-key" varies
+# between versions and some versions write it to stderr, so the fingerprint
+# comparison is the reliable method.
+key_state() {
+    local pubkey="$1" fp enrolled pending
+    fp="$(cert_fingerprint "$pubkey")"
+    if [[ -z "$fp" ]]; then
+        echo "unknown"
+        return
+    fi
+
+    enrolled="$(mokutil --list-enrolled 2>&1 | tr -d ':' | tr '[:upper:]' '[:lower:]')"
+    pending="$(mokutil --list-new 2>&1 | tr -d ':' | tr '[:upper:]' '[:lower:]')"
+
+    if contains "$enrolled" "$fp"; then
+        echo "enrolled"
+    elif contains "$pending" "$fp"; then
+        echo "pending"
+    elif contains "$enrolled $pending" "is already"; then
+        # Fallback for mokutil versions without a readable MOK list.
+        echo "enrolled"
+    else
+        echo "none"
+    fi
+}
+
+# key_is_enrolled <cert.der>
+key_is_enrolled() {
+    [[ "$(key_state "$1")" == "enrolled" ]]
+}
+
+# key_file_state <path> -> describes the state of a key file
+#
+# The akmods directories are only readable by root, so the state cannot be
+# checked without privileges.
+key_file_state() {
+    local path="$1"
+    if [[ $EUID -ne 0 ]]; then
+        echo "no comprobable sin root"
+        return
+    fi
+    if [[ -f "$path" ]]; then
+        echo "existe"
+    else
+        echo "FALTA"
+    fi
+}
+
+# signing_key_paths -> prints the private key path and the certificate path
+signing_key_paths() {
+    local priv pub
+    priv="$(rpm --eval '%{__kmodtool_signmodules_privkey}' 2>/dev/null || true)"
+    pub="$(rpm --eval '%{__kmodtool_signmodules_pubkey}' 2>/dev/null || true)"
+    printf '%s\n%s\n' "${priv:-$AKMODS_PRIV}" "${pub:-$AKMODS_PUB}"
+}
+
+# =============================================================================
+# Actions
+# =============================================================================
+
+# show_mok_manager_instructions <cert.der>
+show_mok_manager_instructions() {
+    cat <<EOF
+
+La llave todavía no está enrolada en el firmware. Enrola y vuelve a ejecutar
+este script:
+
+  1. Reinicia el equipo.
+  2. En la pantalla azul de MokManager PULSA UNA TECLA para abrir el menú
+     (sin pulsar una tecla, el sistema arranca normal y no aparece nada).
+  3. Elige: Enroll MOK -> Continue -> Yes
+  4. Introduce la contraseña de un solo uso que definiste al importar la llave.
+  5. Vuelve a ejecutar:  sudo vbox-secureboot install
+
+EOF
+}
+
+# ensure_enrolled <cert.der>
+#
+# Exits with status 2 when the enrollment still needs a reboot.
+ensure_enrolled() {
+    local pubkey="$1" state
+    state="$(key_state "$pubkey")"
+
+    case "$state" in
+        enrolled)
+            log "La llave está enrolada en el firmware: $pubkey"
+            ;;
+        pending)
+            log "Hay una solicitud de enrolamiento pendiente"
+            show_mok_manager_instructions "$pubkey"
+            exit 2
+            ;;
+        none)
+            log "Importando la llave en el gestor MOK: $pubkey"
+            mokutil --import "$pubkey"
+            show_mok_manager_instructions "$pubkey"
+            exit 2
+            ;;
+        *)
+            warn "No se pudo determinar el estado de $pubkey en el MOK."
+            warn "Comprueba las llaves enroladas con: sudo mokutil --list-enrolled"
+            exit 1
+            ;;
+    esac
+}
+
+# install_key_at_default_location <priv> <cert>
+#
+# The RPM build environment cannot read /root, so a key stored there is silently
+# skipped by the signing step. The key is therefore installed in the default
+# akmods location, which the build reads reliably.
+install_key_at_default_location() {
+    local priv="$1" pub="$2" stamp
+
+    if grep -q "ENCRYPTED" "$priv"; then
+        die "La llave privada está cifrada con contraseña y brp-kmodsign no puede usarla.
+      Genera una copia sin contraseña:
+        openssl rsa -in $priv -out ${priv}.nopass 2>/dev/null
+      y vuelve a ejecutar este script con esa ruta."
+    fi
+
+    stamp="$(date +%F)"
+    if [[ -f "$AKMODS_PRIV" ]]; then
+        cp -a "$AKMODS_PRIV" "${AKMODS_PRIV}.bak-${stamp}"
+    fi
+    if [[ -f "$AKMODS_PUB" ]]; then
+        cp -a "$AKMODS_PUB" "${AKMODS_PUB}.bak-${stamp}"
+    fi
+
+    log "Instalando la llave en las rutas por defecto de akmods"
+    install -o root -g akmods -m 0640 "$priv" "$AKMODS_PRIV"
+    install -o root -g akmods -m 0644 "$pub"  "$AKMODS_PUB"
+    if command -v restorecon >/dev/null; then
+        restorecon -F "$AKMODS_PRIV" "$AKMODS_PUB" 2>/dev/null || true
+    fi
+    log "  $AKMODS_PRIV"
+    log "  $AKMODS_PUB"
+}
+
+# rebuild_modules <kernel>
+rebuild_modules() {
+    local kernel="$1"
+    command -v akmods >/dev/null || die "akmods no está instalado (sudo dnf install akmods)"
+
+    log "Reconstruyendo y firmando los módulos con akmods (kernel $kernel)"
+    if ! akmods --force --rebuild --kernels "$kernel"; then
+        warn "akmods falló. Revisa el log: /var/cache/akmods/akmods.log"
+        warn "Si el error menciona 'does not import it' (namespace de KVM), el paquete"
+        warn "akmod-VirtualBox no soporta este kernel: actualiza RPM Fusion o usa un kernel anterior."
+        exit 1
+    fi
+
+    # A module built without a signature is rejected by Secure Boot, so this
+    # has to be checked before trying to load anything.
+    local m signer unsigned=false
+    for m in vboxdrv vboxnetflt vboxnetadp; do
+        signer="$(modinfo -k "$kernel" -F signer "$m" 2>/dev/null || true)"
+        if [[ -z "$signer" ]]; then
+            warn "$m: SIN FIRMA"
+            unsigned=true
+        fi
+    done
+    if $unsigned; then
+        die "Los módulos se han construido sin firmar. Revisa /var/cache/akmods/akmods.log"
+    fi
+
+    depmod -a "$kernel"
+}
+
+# load_modules
+load_modules() {
+    local m failed=false
+    log "Cargando los módulos"
+    for m in vboxdrv vboxnetflt vboxnetadp vboxpci; do
+        modinfo -n "$m" &>/dev/null || continue
+        if modprobe "$m"; then
+            echo "  [OK] $m"
+        else
+            warn "  No se pudo cargar $m"
+            failed=true
+        fi
+    done
+    if $failed; then
+        return 1
+    fi
+    return 0
+}
+
+# verify_system <kernel>
+verify_system() {
+    local kernel="$1" m signer ok=true
+
+    echo
+    log "Verificación"
+    echo "  Secure Boot:     $(mokutil --sb-state 2>&1 | head -n 1)"
+    echo "  Kernel:          $kernel"
+    echo "  Fuente:          $(detect_source)"
+
+    local priv pub
+    {
+        read -r priv
+        read -r pub
+    } < <(signing_key_paths)
+    echo "  Llave de firma:  $pub"
+
+    local state
+    state="$(key_state "$pub")"
+    if [[ "$state" == "unknown" ]]; then
+        state="desconocida (usa sudo para leer la llave)"
+    fi
+    echo "  Estado de la MOK: $state"
+
+    for m in vboxdrv vboxnetflt vboxnetadp; do
+        local path
+        path="$(modinfo -k "$kernel" -F filename "$m" 2>/dev/null || true)"
+        if [[ -z "$path" ]]; then
+            echo "  $m: no encontrado para el kernel $kernel"
+            ok=false
+            continue
+        fi
+        signer="$(modinfo -k "$kernel" -F signer "$m" 2>/dev/null || true)"
+        if [[ -n "$signer" ]]; then
+            echo "  $m: firmado por '$signer'"
+        else
+            echo "  $m: SIN FIRMA ($path)"
+            ok=false
+        fi
+    done
+
+    local loaded
+    loaded="$(lsmod 2>/dev/null | grep -c '^vbox' || true)"
+    echo "  Módulos cargados: $loaded"
+
+    if [[ -x /usr/bin/VBoxManage ]]; then
+        echo "  VirtualBox:      $(VBoxManage --version 2>/dev/null | head -n 1)"
+    fi
+    echo
+    if $ok; then
+        log "Todo listo: VirtualBox funciona con Secure Boot activado."
+    else
+        warn "Hay módulos sin firmar o ausentes. Ejecuta: sudo vbox-secureboot repair"
+    fi
+}
+
+# =============================================================================
+# Commands
+# =============================================================================
+
+cmd_install() {
+    require_root
+    require_fedora
+
+    log "Kernel en ejecución: $KERN_VER"
+
+    # --- Phase 0: preflight ---
+    if ! rpm -q "kernel-devel-$KERN_VER" &>/dev/null; then
+        log "Instalando kernel-devel para $KERN_VER"
+        dnf install -y "kernel-devel-$KERN_VER"
+    fi
+
+    # --- Phase 1: repositories ---
+    if contains "$(dnf repolist --enabled 2>&1)" "rpmfusion-free"; then
+        log "Repositorio RPM Fusion ya habilitado"
+    else
+        log "Habilitando el repositorio RPM Fusion"
+        dnf install -y "$RPMFUSION_RELEASE_URL"
+        dnf makecache --refresh
+    fi
+
+    # --- Phase 2: packages ---
+    local oracle
+    if oracle="$(oracle_package_nevra)"; then
+        log "Detectado el paquete de Oracle: $oracle"
+        warn "El paquete de Oracle no reconstruye los módulos con los kernels nuevos."
+        if ask "  ¿Sustituirlo por el de RPM Fusion?"; then
+            backup_vm_config
+            dnf remove -y "$oracle"
+        else
+            die "No se puede continuar con el paquete de Oracle: usa el comando 'repair'."
+        fi
+    fi
+
+    if ! rpm -q VirtualBox &>/dev/null; then
+        log "Instalando VirtualBox y akmod-VirtualBox desde RPM Fusion"
+        dnf install -y VirtualBox akmod-VirtualBox
+    else
+        log "VirtualBox ya está instalado: $(rpm -q VirtualBox)"
+    fi
+    if ! rpm -q akmod-VirtualBox &>/dev/null; then
+        dnf install -y akmod-VirtualBox
+    fi
+
+    # --- Phase 3: signing key ---
+    if [[ -n "$USE_ENROLLED_KEY" ]]; then
+        local cert="$USE_ENROLLED_CERT"
+        [[ -n "$cert" ]] || cert="${USE_ENROLLED_KEY%.priv}.der"
+        [[ -f "$USE_ENROLLED_KEY" ]] || die "No existe la llave privada: $USE_ENROLLED_KEY"
+        [[ -f "$cert" ]] || die "No existe el certificado: $cert"
+        key_is_enrolled "$cert" || die "La llave $cert no está enrolada en el firmware."
+        install_key_at_default_location "$USE_ENROLLED_KEY" "$cert"
+    else
+        if [[ ! -f "$AKMODS_PUB" ]]; then
+            log "Generando el par de llaves de akmods (kmodgenca -a)"
+            kmodgenca -a
+        fi
+    fi
+
+    local priv pub
+    {
+        read -r priv
+        read -r pub
+    } < <(signing_key_paths)
+    ensure_enrolled "$pub"
+
+    # --- Phase 4: build ---
+    rebuild_modules "$TARGET_KERNEL"
+
+    # --- Phase 5: load ---
+    if [[ "$TARGET_KERNEL" == "$KERN_VER" ]]; then
+        load_modules || warn "Algunos módulos no se pudieron cargar"
+    else
+        log "El kernel objetivo ($TARGET_KERNEL) no es el que está en ejecución: no se cargan módulos"
+    fi
+
+    # --- Phase 6: verification ---
+    verify_system "$TARGET_KERNEL"
+}
+
+cmd_repair() {
+    require_root
+
+    local source
+    source="$(detect_source)"
+    case "$source" in
+        rpmfusion)
+            log "Fuente: RPM Fusion (akmods)"
+            if [[ -n "$USE_ENROLLED_KEY" ]]; then
+                local cert="$USE_ENROLLED_CERT"
+                [[ -n "$cert" ]] || cert="${USE_ENROLLED_KEY%.priv}.der"
+                key_is_enrolled "$cert" || die "La llave $cert no está enrolada en el firmware."
+                install_key_at_default_location "$USE_ENROLLED_KEY" "$cert"
+            else
+                if [[ ! -f "$AKMODS_PUB" ]]; then
+                    log "Generando el par de llaves de akmods (kmodgenca -a)"
+                    kmodgenca -a
+                fi
+            fi
+            local priv pub
+            {
+                read -r priv
+                read -r pub
+            } < <(signing_key_paths)
+            ensure_enrolled "$pub"
+            rebuild_modules "$TARGET_KERNEL"
+            load_modules || warn "Algunos módulos no se pudieron cargar"
+            ;;
+        oracle)
+            log "Fuente: Oracle (/sbin/vboxconfig)"
+            log "Ejecutando /sbin/vboxconfig (compila, firma y carga los módulos)"
+            if ! /sbin/vboxconfig; then
+                die "vboxconfig falló. Revisa /var/log/vbox-setup.log para más detalles"
+            fi
+            ;;
+        *)
+            die "No se encontró VirtualBox instalado"
+            ;;
+    esac
+
+    verify_system "$TARGET_KERNEL"
+}
+
+cmd_verify() {
+    verify_system "$TARGET_KERNEL"
+}
+
+cmd_status() {
+    log "Sistema"
+    # shellcheck disable=SC1091
+    echo "  Distribución:     $(. /etc/os-release 2>/dev/null && echo "${PRETTY_NAME:-desconocida}" || echo desconocida)"
+    echo "  Kernel:           $KERN_VER"
+    echo "  Secure Boot:      $(mokutil --sb-state 2>&1 | head -n 1)"
+    echo "  Fuente:           $(detect_source)"
+    echo "  VirtualBox:       $(rpm -q VirtualBox 2>/dev/null || echo 'no instalado')"
+    echo "  akmod-VirtualBox: $(rpm -q akmod-VirtualBox 2>/dev/null || echo 'no instalado')"
+    echo "  akmods.service:   $(systemctl is-enabled akmods.service 2>/dev/null || echo 'no disponible')"
+
+    local priv pub
+    {
+        read -r priv
+        read -r pub
+    } < <(signing_key_paths)
+    echo "  Llave privada:    $priv ($(key_file_state "$priv"))"
+    echo "  Certificado:      $pub ($(key_file_state "$pub"))"
+    if [[ -f "$pub" ]]; then
+        echo "  Huella SHA1:      $(cert_fingerprint "$pub")"
+        echo "  Estado MOK:       $(key_state "$pub")"
+    fi
+
+    echo
+    log "Llaves enroladas en el firmware"
+    mokutil --list-enrolled 2>&1 | grep -E '^SHA1 Fingerprint|^Subject:' | sed 's/^/  /' || true
+
+    echo
+    log "Módulos"
+    for m in vboxdrv vboxnetflt vboxnetadp; do
+        echo "  $m: $(modinfo -F filename "$m" 2>/dev/null || echo 'no encontrado')"
+        echo "       firmante: $(modinfo -F signer "$m" 2>/dev/null || echo 'sin firma')"
+    done
+    echo
+    lsmod | grep -E '^vbox' || echo "  (ningún módulo vbox cargado)"
+
+    local logfile="/var/cache/akmods/akmods.log"
+    if [[ -f "$logfile" ]]; then
+        echo
+        log "Últimos errores de akmods"
+        grep -iE 'error|fail' "$logfile" 2>/dev/null | tail -n 5 | sed 's/^/  /' || true
+    fi
+}
+
+# =============================================================================
+# Helpers
+# =============================================================================
+
+require_root() {
+    if [[ $EUID -ne 0 ]]; then
+        die "Este comando necesita privilegios de root: sudo vbox-secureboot <comando>"
+    fi
+}
+
+require_fedora() {
+    if [[ ! -f /etc/fedora-release ]]; then
+        die "Este script está pensado para Fedora."
+    fi
+}
+
+backup_vm_config() {
+    local real_user real_home src backup
+    real_user="${SUDO_USER:-${USER:-root}}"
+    real_home="$(getent passwd "$real_user" 2>/dev/null | cut -d: -f6)"
+    src="${real_home:-/root}/.config/VirtualBox"
+    [[ -d "$src" ]] || src="/root/.config/VirtualBox"
+    if [[ -d "$src" ]]; then
+        backup="${real_home:-/root}/virtualbox-config-backup-$(date +%F).tar.gz"
+        log "Respaldando la configuración de las VMs en $backup"
+        tar czf "$backup" -C "$(dirname "$src")" "$(basename "$src")"
+    else
+        warn "No se encontró ninguna configuración de VirtualBox que respaldar"
+    fi
+}
+
+parse_args() {
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --kernel)
+                [[ $# -ge 2 ]] || die "--kernel necesita un valor"
+                TARGET_KERNEL="$2"
+                shift 2
+                ;;
+            --use-enrolled-key)
+                [[ $# -ge 2 ]] || die "--use-enrolled-key necesita un valor"
+                USE_ENROLLED_KEY="$2"
+                shift 2
+                # The certificate is optional and defaults to the same path with
+                # the .der extension.
+                if [[ $# -gt 0 && "$1" != -* ]]; then
+                    USE_ENROLLED_CERT="$1"
+                    shift
+                fi
+                ;;
+            -y|--yes)
+                ASSUME_YES=true
+                shift
+                ;;
+            -h|--help)
+                usage
+                exit 0
+                ;;
+            *)
+                die "Opción desconocida: $1 (usa --help)"
+                ;;
+        esac
+    done
+}
+
+main() {
+    local command="${1:-}"
+    [[ -n "$command" ]] || { usage; exit 1; }
+    shift || true
+
+    case "$command" in
+        install)
+            parse_args "$@"
+            cmd_install
+            ;;
+        repair)
+            parse_args "$@"
+            cmd_repair
+            ;;
+        verify)
+            parse_args "$@"
+            cmd_verify
+            ;;
+        status)
+            parse_args "$@"
+            cmd_status
+            ;;
+        -h|--help|help)
+            usage
+            ;;
+        *)
+            usage
+            die "Comando desconocido: $command"
+            ;;
+    esac
+}
+
+main "$@"

@@ -55,6 +55,7 @@ sudo plymouth-set-default-theme archGrey -R
 * `kb-layout`: keyboard layout switch.-
 * `lazy_git`: shortcut for lazygit.-
 * `42norm_format`: formatter for 42-school style
+* `vbox-secureboot`: install, repair and verify VirtualBox kernel module signing with Secure Boot (Fedora, needs root).
 
 Add `bin/` to your `$PATH` or symlink the individual scripts if needed.
 
